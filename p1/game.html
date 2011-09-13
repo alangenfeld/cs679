@@ -4,13 +4,30 @@
   <link href="css/game.css" title="compact" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="title centered">
-    DAT GAME
-  </div>
-  <div class="screen centered">
-    <canvas id="display" height="320" width="480" />
+  <span>
+    Update Time:
+  </span>
+  <span id="ut"></span>
+  <br/>
+  <span>
+    Render Time:
+  </span>
+  <span id="rt"></span>
+  <br/>
+  <span>
+    FPS:
+  </span>
+  <span id="fps"></span>
+  <div class="content">
+    <div class="title centered">
+      DAT GAME
+    </div>
+    <div class="screen centered">
+      <canvas id="display" height="320" width="480" />
+    </div>
   </div>
 </body>
+  <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/eng.js"></script>
   <script type="text/javascript" src="js/game.js"></script>
 <html>
