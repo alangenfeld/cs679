@@ -1,21 +1,38 @@
+function Ball() {
 
-var start = function() {
+  this.x = 10;
+  this.y = 10;
+  this.Vx = 4;
+  this.Vy = 4;
+  this.init();
 
-  var display = document.getElementById("display");
+  this.update = function() {
+    this.x += this.Vx;
+    this.y += this.Vy;
+    
+    if (this.x > display.width) {
+      this.Vx = -4;
+    }
+    if (this.x < 0) {
+      this.Vx = 4;
+    }
+    if (this.y > display.height) {
+      this.Vy = -4;
+    }
+    if (this.y < 0) {
+      this.Vy = 4;
+    }
+    
+  }
 
-  var ctx = display.getContext("2d");
+  this.draw = function() {
+    ctx.fillRect(this.x, this.y, 10, 10);
+  }
 
-  var x,y,w,h;
+}
+Ball.prototype = new GameObject;
 
-  w = h = 10;
-  x = y = 0;
 
-  var loop = function() {
-    ctx.clearRect(0, 0, display.width, display.height);
-    x+=1;
-    y+=1;
-    ctx.fillRect(x, y, w, h);
-    var gloop = setTimeout(loop, 100);
-  };
-  loop();
-};
+ball = new Ball();
+
+GameLoop();
