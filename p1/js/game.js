@@ -13,6 +13,7 @@ function Boid(x, y) {
   this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, g_speed);
   this.init();
 
+  // comment
   this.update = function() {
     var influences = new Array(this.dir);
     for (idx in g_boids) {
