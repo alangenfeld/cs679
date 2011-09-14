@@ -1,4 +1,4 @@
-/*
+/**
  * This is a clowny js game engine 
  */
 
@@ -34,7 +34,7 @@ var GameLoop = function() {
   }
   var t3 = Date.now();
 
-  var frames = 1000 / (t3 - lastRender);
+  var frames = Math.floor(1000 / (t3 - lastRender));
   lastRender = t3;
 
   var updateTime = t2 - t1;

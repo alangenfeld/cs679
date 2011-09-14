@@ -1,4 +1,4 @@
-/*
+/**
  * why not have some utility classes
  */
 function Point(x, y) {
