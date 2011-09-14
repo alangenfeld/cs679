@@ -58,10 +58,35 @@ Boid.prototype = new GameObject;
 /*******************************************************************************
  * the game
  *******************************************************************************/
-var g_speed = 4;
-var g_vision = 60;
-var g_zone = 20;
-var g_bubble = 10;
+var g_speed = parseInt($("spd_in").value);
+$("spd_in").onchange = function() {
+  g_speed = parseInt(this.value);
+  $("spd").innerHTML = this.value;
+};
+
+var g_vision = parseInt($("vision_in").value);
+$("vision_in").onchange = function() {
+  g_vision = parseInt(this.value);
+  $("vision").innerHTML = this.value;
+};
+
+var g_zone = parseInt($("zone_in").value);
+$("zone_in").onchange = function() {
+  g_zone = parseInt(this.value);
+  $("zone").innerHTML = this.value;
+};
+
+var g_bubble = parseInt($("bubble_in").value);
+$("bubble_in").onchange = function() {
+  g_bubble = parseInt(this.value);
+  $("bubble").innerHTML = this.value;
+};
+
+
+
+
+
+
 
 var g_boids = new Array();
 g_boids.push(new Boid());
@@ -70,6 +95,7 @@ display.onclick = function(e) {
   g_boids.push(new Boid(e.offsetX, e.offsetY));
 };
 
+// prevent double click from highlighting text 
 display.onselectstart = function () {
   return false;
 };

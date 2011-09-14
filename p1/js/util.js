@@ -1,6 +1,10 @@
 /**
  * why not have some utility classes
  */
+function $() {
+  return document.getElementById.apply(document, arguments);
+}
+
 function Point(x, y) {
   this.x = x;
   this.y = y;

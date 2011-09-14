@@ -11,13 +11,13 @@ var g_ObjMan = new Array();
 var g_ResMan = new Array();
 
 // drawing context
-var display = document.getElementById("display");
+var display = $("display");
 var ctx = display.getContext("2d");
 
 // stats
-var fps = document.getElementById("fps");
-var rt = document.getElementById("rt");
-var ut = document.getElementById("ut");
+var fps = $("fps");
+var rt = $("rt");
+var ut = $("ut");
 
 // heart of the beast
 var lastRender = 0;
