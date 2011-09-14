@@ -53,17 +53,17 @@ function GameObject() {
 
   this.init = function() {
     g_ObjMan.push(this);
-  }
+  };
 
   this.update = function() {
     return;
-  }
+  };
 
   this.draw = function() {
     return;
-  }
+  };
 
   this.shutdown = function() {
     g_ObjMan.splice(g_ObjMan.indexOf(this), 1);
-  }
+  };
 }
