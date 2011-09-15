@@ -82,12 +82,6 @@ $("bubble_in").onchange = function() {
   $("bubble").innerHTML = this.value;
 };
 
-
-
-
-
-
-
 var g_boids = new Array();
 g_boids.push(new Boid());
 
