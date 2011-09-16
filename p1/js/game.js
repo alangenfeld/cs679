@@ -190,7 +190,6 @@ $("bubble_in").onchange = function() {
 
 
 
-
 var g_boid_size = 5;
 var g_player_size = 20;
 var g_shot_size = 10;
