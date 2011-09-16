@@ -185,11 +185,6 @@ $("bubble_in").onchange = function() {
   $("bubble").innerHTML = this.value;
 };
 
-
-
-
-
-
 var g_boid_size = 5;
 var g_player_size = 20;
 var g_shot_size = 10;
