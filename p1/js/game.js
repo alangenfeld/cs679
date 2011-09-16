@@ -29,9 +29,14 @@ function Boid(x, y) {
 	var v =	this.loc.vectorTo(g_boids[idx].loc, g_speed);
 	influences.push(v);
       }
-    }
+    };
+
     this.dir = averageVectors(influences, g_speed);
-    this.cleanup();
+
+    this.avoidPlayer();
+    this.avoidShots();
+    this.avoidEdges();
+    //this.cleanup();
     this.loc.move(this.dir);
   };
 
@@ -46,14 +51,112 @@ function Boid(x, y) {
     } else if (this.loc.y < 0) {
       this.loc.y = this.loc.y + display.height;
     }
+  };
 
+  this.avoidEdges = function() {
+
+    if (this.loc.x < g_boid_size) {
+	this.dir.x = 1;
+    } else if (this.loc.x > g_canvas_width - g_boid_size) {
+	this.dir.x = -1;
+    }
+
+    if (this.loc.y < g_boid_size) {
+	this.dir.y = 1;
+    } else if (this.loc.y > g_canvas_height - g_boid_size) {
+	this.dir.y = -1;
+    }
+
+  };
+
+  this.avoidPlayer = function() {
+    if (this.loc.distance(player.loc) < 20) {
+      // TODO: look into why this wasn't working
+      //this.dir = this.loc.vectorTo(player.loc, g_speed).inverse();
+
+      var temp = this.loc.vectorTo(player.loc, g_speed);
+      temp.inverse();
+      this.dir = temp;
+    }
+  };
+
+  this.avoidShots = function() {
+    for (idx in g_shots) {
+      if (this.loc.distance(g_shots[idx].loc) < 20) {
+	// TODO: look into why this wasn't working
+        //this.dir = this.loc.vectorTo(g_shots[idx].loc, g_speed).inverse();
+
+        var temp = this.loc.vectorTo(g_shots[idx].loc, g_speed);
+	temp.inverse();
+	this.dir = temp;
+	continue;
+      }
+    }
+  };
+
+
+  this.draw = function() {
+    ctx.fillRect(this.loc.x, this.loc.y, g_boid_size, g_boid_size);
+  };
+}
+
+function Player(x, y) {
+
+  // player location/direction
+  this.loc = new Point(x, y);
+  this.dir = new Vector(0, 0, g_player_speed);
+
+  this.init();
+
+  this.update = function() {
+    this.dir.x = g_dir*g_player_speed;
+
+    this.cleanup();
+    this.loc.move(this.dir);
   };
 
   this.draw = function() {
-    ctx.fillRect(this.loc.x, this.loc.y, 5, 5);
+    //console.log("player.draw()");
+    ctx.fillRect(this.loc.x, this.loc.y, g_player_size, g_player_size);
   };
+
+  this.shoot = function() {
+    g_shots.push(new Shot(this.loc.x + g_shot_size/2, this.loc.y - g_shot_size));
+  };
+
+  this.cleanup = function() {
+    if(this.loc.x < 0) {
+      this.loc.x = 0;
+    } else if(this.loc.x + g_player_size > g_canvas_width) {
+      this.loc.x = g_canvas_width - g_player_size;
+    }
+  };
+    
+
 }
+
+function Shot(x, y) {
+
+    this.loc = new Point(x, y);
+    this.dir = new Vector(0, -1, g_shot_speed);
+    this.init();
+  
+    this.draw = function() {
+        //console.log("player.draw()");
+        ctx.fillRect(this.loc.x, this.loc.y, g_shot_size, g_shot_size);
+    };
+
+    this.update = function() {
+	if(this.loc.y < g_shot_size) {
+	    // delete shot
+	}
+	this.loc.move(this.dir);
+    };
+}
+
 Boid.prototype = new GameObject;
+Player.prototype = new GameObject;
+Shot.prototype = new GameObject;
 
 /*******************************************************************************
  * the game
@@ -88,8 +191,23 @@ $("bubble_in").onchange = function() {
 
 
 
+var g_boid_size = 5;
+var g_player_size = 20;
+var g_shot_size = 10;
+
+var g_player_speed = 4;
+var g_shot_speed = 4;
+
+var g_canvas_width = document.getElementById("display").width;
+var g_canvas_height = document.getElementById("display").height;
+
+var g_dir = 0;
+
+var player = new Player(0, g_canvas_height - g_player_size);
 var g_boids = new Array();
 g_boids.push(new Boid());
+
+var g_shots = new Array();
 
 display.onclick = function(e) {
   g_boids.push(new Boid(e.offsetX, e.offsetY));
@@ -98,6 +216,30 @@ display.onclick = function(e) {
 // prevent double click from highlighting text 
 display.onselectstart = function () {
   return false;
+};
+
+window.addEventListener("keydown",handleKeyDown,true);
+window.addEventListener("keyup",handleKeyUp,true);
+
+function handleKeyDown(e) {
+  console.log("KeyDown: " + e.keyCode);
+
+  if (e.keyCode == 37) {
+    g_dir = -1;
+  } else if (e.keyCode == 39) {
+    g_dir = 1;
+  } else if(e.keyCode == 32) {
+    player.shoot();
+  }
+};
+
+function handleKeyUp(e) {
+  console.log("KeyUp: " + e.keyCode);
+  if (e.keyCode == 37 && g_dir == -1) {
+    g_dir = 0;
+  } else if (e.keyCode == 39 && g_dir == 1) {
+    g_dir = 0;
+  }
 };
 
 GameLoop();

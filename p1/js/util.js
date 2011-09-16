@@ -33,8 +33,13 @@ function Vector(x, y, mag) {
     mag = 1;
   }
 
-  this.x = (x/length) * mag;
-  this.y = (y/length) * mag;
+  this.x = 0;
+  this.y = 0;
+
+  if(length != 0) {
+    this.x = (x/length) * mag;
+    this.y = (y/length) * mag;
+  }
 
   this.inverse = function() {
     this.x = -this.x;
