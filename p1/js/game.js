@@ -55,15 +55,15 @@ function Boid(x, y) {
 
   this.avoidEdges = function() {
 
-    if (this.loc.x < g_boid_size) {
+    if (this.loc.x < g_boid_size/2) {
 	this.dir.x = 1;
-    } else if (this.loc.x > g_canvas_width - g_boid_size) {
+    } else if (this.loc.x > g_canvas_width - g_boid_size/2) {
 	this.dir.x = -1;
     }
 
-    if (this.loc.y < g_boid_size) {
+    if (this.loc.y < g_boid_size/2) {
 	this.dir.y = 1;
-    } else if (this.loc.y > g_canvas_height - g_boid_size) {
+    } else if (this.loc.y > g_canvas_height - g_boid_size/2) {
 	this.dir.y = -1;
     }
 
@@ -96,7 +96,7 @@ function Boid(x, y) {
 
 
   this.draw = function() {
-    ctx.fillRect(this.loc.x, this.loc.y, g_boid_size, g_boid_size);
+    ctx.fillRect(this.loc.x - g_boid_size/2, this.loc.y - g_boid_size/2, g_boid_size, g_boid_size);
   };
 }
 
@@ -117,7 +117,7 @@ function Player(x, y) {
 
   this.draw = function() {
     //console.log("player.draw()");
-    ctx.fillRect(this.loc.x, this.loc.y, g_player_size, g_player_size);
+    ctx.fillRect(this.loc.x - g_player_size/2, this.loc.y - g_player_size/2, g_player_size, g_player_size);
   };
 
   this.shoot = function() {
@@ -125,10 +125,10 @@ function Player(x, y) {
   };
 
   this.cleanup = function() {
-    if(this.loc.x < 0) {
-      this.loc.x = 0;
-    } else if(this.loc.x + g_player_size > g_canvas_width) {
-      this.loc.x = g_canvas_width - g_player_size;
+    if(this.loc.x - g_player_size/2 < 0) {
+      this.loc.x = g_player_size/2;
+    } else if(this.loc.x + g_player_size/2 > g_canvas_width) {
+      this.loc.x = g_canvas_width - g_player_size/2;
     }
   };
     
@@ -143,14 +143,16 @@ function Shot(x, y) {
   
     this.draw = function() {
         //console.log("player.draw()");
-        ctx.fillRect(this.loc.x, this.loc.y, g_shot_size, g_shot_size);
+        ctx.fillRect(this.loc.x - g_shot_size/2, this.loc.y - g_shot_size/2, g_shot_size, g_shot_size);
     };
 
     this.update = function() {
-	if(this.loc.y < g_shot_size) {
-	    // delete shot
+	if(this.loc.y < g_shot_size/2) {
+	    g_shots.splice(g_shots.indexOf(this), 1);
+	    this.shutdown()
+	} else {
+	    this.loc.move(this.dir);
 	}
-	this.loc.move(this.dir);
     };
 }
 
@@ -197,7 +199,7 @@ var g_canvas_height = document.getElementById("display").height;
 
 var g_dir = 0;
 
-var player = new Player(0, g_canvas_height - g_player_size);
+var player = new Player(g_player_size/2, g_canvas_height - g_player_size/2);
 var g_boids = new Array();
 g_boids.push(new Boid());
 
@@ -216,7 +218,6 @@ window.addEventListener("keydown",handleKeyDown,true);
 window.addEventListener("keyup",handleKeyUp,true);
 
 function handleKeyDown(e) {
-  console.log("KeyDown: " + e.keyCode);
 
   if (e.keyCode == 37) {
     g_dir = -1;
@@ -228,7 +229,6 @@ function handleKeyDown(e) {
 };
 
 function handleKeyUp(e) {
-  console.log("KeyUp: " + e.keyCode);
   if (e.keyCode == 37 && g_dir == -1) {
     g_dir = 0;
   } else if (e.keyCode == 39 && g_dir == 1) {
