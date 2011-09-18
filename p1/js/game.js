@@ -55,22 +55,22 @@ function Boid(x, y) {
 
   this.avoidEdges = function() {
 
-    if (this.loc.x < g_boid_size/2) {
+    if (this.loc.x - g_boid_size/2 < 1 + g_bubble) {
 	this.dir.x = 1;
-    } else if (this.loc.x > g_canvas_width - g_boid_size/2) {
+    } else if (this.loc.x + g_boid_size/2 > g_canvas_width - 1 - g_bubble) {
 	this.dir.x = -1;
     }
 
-    if (this.loc.y < g_boid_size/2) {
+    if (this.loc.y - g_boid_size/2 < 1 + g_bubble) {
 	this.dir.y = 1;
-    } else if (this.loc.y > g_canvas_height - g_boid_size/2) {
+    } else if (this.loc.y + g_boid_size/2 > g_canvas_height - 1 - g_bubble) {
 	this.dir.y = -1;
     }
 
   };
 
   this.avoidPlayer = function() {
-    if (this.loc.distance(player.loc) < 20) {
+    if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + g_bubble) {
       // TODO: look into why this wasn't working
       //this.dir = this.loc.vectorTo(player.loc, g_speed).inverse();
 
@@ -82,9 +82,15 @@ function Boid(x, y) {
 
   this.avoidShots = function() {
     for (idx in g_shots) {
-      if (this.loc.distance(g_shots[idx].loc) < 20) {
-	// TODO: look into why this wasn't working
-        //this.dir = this.loc.vectorTo(g_shots[idx].loc, g_speed).inverse();
+      var dist = this.loc.distance(g_shots[idx].loc);
+
+      if (dist < g_boid_size/2 + g_shot_size/2 + g_bubble) {
+
+	// remove boid if its hit
+	if (dist < g_boid_size/2 + g_shot_size/2) {
+	    g_boids.splice(g_boids.indexOf(this), 1);
+	    this.shutdown()
+	}
 
         var temp = this.loc.vectorTo(g_shots[idx].loc, g_speed);
 	temp.inverse();
@@ -109,7 +115,7 @@ function Player(x, y) {
   this.init();
 
   this.update = function() {
-    this.dir.x = g_dir*g_player_speed;
+    this.dir.x = g_key_dir*g_player_speed;
 
     this.cleanup();
     this.loc.move(this.dir);
@@ -192,12 +198,15 @@ var g_player_size = 20;
 var g_shot_size = 10;
 
 var g_player_speed = 4;
-var g_shot_speed = 4;
+var g_shot_speed = 8;
 
 var g_canvas_width = document.getElementById("display").width;
 var g_canvas_height = document.getElementById("display").height;
 
-var g_dir = 0;
+var g_key_dir = 0;
+var g_spawn_boids = 0;
+var g_mouse_x = 0;
+var g_mouse_y = 0;
 
 var player = new Player(g_player_size/2, g_canvas_height - g_player_size/2);
 var g_boids = new Array();
@@ -205,9 +214,22 @@ g_boids.push(new Boid());
 
 var g_shots = new Array();
 
-display.onclick = function(e) {
-  g_boids.push(new Boid(e.offsetX, e.offsetY));
-};
+display.onmousedown = function(e) {
+    g_spawn_boids = 1;
+}
+
+display.onmouseup = function(e) {
+    g_spawn_boids = 0;
+}
+
+display.onmousemove = function(e) {
+    g_mouse_x = e.offsetX;
+    g_mouse_y = e.offsetY;
+}
+
+//display.onclick = function(e) {
+//  g_boids.push(new Boid(e.offsetX, e.offsetY));
+//};
 
 // prevent double click from highlighting text 
 display.onselectstart = function () {
@@ -220,19 +242,19 @@ window.addEventListener("keyup",handleKeyUp,true);
 function handleKeyDown(e) {
 
   if (e.keyCode == 37) {
-    g_dir = -1;
+    g_key_dir = -1;
   } else if (e.keyCode == 39) {
-    g_dir = 1;
-  } else if(e.keyCode == 32) {
-    player.shoot();
+    g_key_dir = 1;
   }
 };
 
 function handleKeyUp(e) {
-  if (e.keyCode == 37 && g_dir == -1) {
-    g_dir = 0;
-  } else if (e.keyCode == 39 && g_dir == 1) {
-    g_dir = 0;
+  if (e.keyCode == 37 && g_key_dir == -1) {
+    g_key_dir = 0;
+  } else if (e.keyCode == 39 && g_key_dir == 1) {
+    g_key_dir = 0;
+  } else if(e.keyCode == 32) {
+    player.shoot();
   }
 };
 

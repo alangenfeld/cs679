@@ -34,6 +34,10 @@ var GameLoop = function() {
   }
   var t3 = Date.now();
 
+  if(g_spawn_boids == 1) {
+    g_boids.push(new Boid(g_mouse_x, g_mouse_y));
+  }
+
   var frames = Math.floor(1000 / (t3 - lastRender));
   lastRender = t3;
 
