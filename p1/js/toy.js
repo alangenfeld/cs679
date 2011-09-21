@@ -48,6 +48,7 @@ var player = new Player(g_player_size/2, display.height - g_player_size/2);
 var g_boids = new Array();
 var g_shots = new Array();
 var g_spawner = new BoidSpawner();
+var statsOn = true;
 
 /**
  * Runtime

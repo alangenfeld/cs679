@@ -3,24 +3,18 @@
  *******************************************************************************/
 
 /**
- * Static Variables
- */
-var g_boid_size = 5;
-var g_player_size = 20;
-var g_shot_size = 20;
-
-var g_player_speed = 4;
-var g_shot_speed = 8;
-var g_shots_per_sec = 2;
-
-/**
  * Setup
  */
 var g_boids = new Array();
+var g_shots = new Array();
+var statsOn = false;
 
 /**
  * Runtime
  */
-g_boids.push(new Boid());
+var player = new Wizard();
+var farms = new Array(new Farm(0, 0));
+farms.push(new Farm(display.width, 0));
+farms.push(new Farm(display.width/2, 0));
 
 GameLoop();

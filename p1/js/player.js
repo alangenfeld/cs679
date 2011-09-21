@@ -50,9 +50,9 @@ Player.prototype = new GameObject;
 /**
  * Projectile to kill the boids
  */
-function Shot(x, y) {
+function Shot(x, y, v) {
   this.loc = new Point(x, y);
-  this.dir = new Vector(0, -1, g_shot_speed);
+  this.dir = v? v : new Vector(0, -1, g_shot_speed);
   this.init();
   
   this.draw = function() {

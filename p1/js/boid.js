@@ -4,28 +4,32 @@
 function Boid(x, y) {
   x = !x ? Math.random() * display.width : x;
   y = !y ? Math.random() * display.height : y;
+  this.speed = g_speed;
+  this.bubble = g_bubble;
+  this.vision = g_vision;
+  this.zone = g_zone;
   this.loc = new Point(x, y);
-  this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, g_speed);
-  this.init();
+  this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, this.speed);
+//  this.init();
 
   this.update = function() {
     var influences = new Array(this.dir);
     for (idx in g_boids) {
       if (g_boids[idx] == this) {
 	continue;
-      } else if (this.loc.distance(g_boids[idx].loc) < g_bubble) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, g_speed * g_boids.length);
+      } else if (this.loc.distance(g_boids[idx].loc) < this.bubble) {
+	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed * g_boids.length);
 	v.inverse();
 	influences.push(v);
-      } else if (this.loc.distance(g_boids[idx].loc) < g_zone) {
+      } else if (this.loc.distance(g_boids[idx].loc) < this.zone) {
 	influences.push(g_boids[idx].dir);
-      } else if (this.loc.distance(g_boids[idx].loc) < g_vision) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, g_speed);
+      } else if (this.loc.distance(g_boids[idx].loc) < this.vision) {
+	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed);
 	influences.push(v);
       }
     };
 
-    this.dir = averageVectors(influences, g_speed);
+    this.dir = averageVectors(influences, this.speed);
 
     this.avoidPlayer();
     this.avoidShots();
@@ -46,25 +50,25 @@ function Boid(x, y) {
   };
 
   this.avoidEdges = function() {
-    if (this.loc.x - g_boid_size/2 < 1 + g_bubble) {
+    if (this.loc.x - g_boid_size/2 < 1 + this.bubble) {
 	this.dir.x = 1;
-    } else if (this.loc.x + g_boid_size/2 > display.width - 1 - g_bubble) {
+    } else if (this.loc.x + g_boid_size/2 > display.width - 1 - this.bubble) {
 	this.dir.x = -1;
     }
 
-    if (this.loc.y - g_boid_size/2 < 1 + g_bubble) {
+    if (this.loc.y - g_boid_size/2 < 1 + this.bubble) {
 	this.dir.y = 1;
-    } else if (this.loc.y + g_boid_size/2 > display.height - 1 - g_bubble) {
+    } else if (this.loc.y + g_boid_size/2 > display.height - 1 - this.bubble) {
 	this.dir.y = -1;
     }
   };
 
   this.avoidPlayer = function() {
-    if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + g_bubble) {
+    if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + this.bubble) {
       // TODO: look into why this wasn't working
-      //this.dir = this.loc.vectorTo(player.loc, g_speed).inverse();
+      //this.dir = this.loc.vectorTo(player.loc, this.speed).inverse();
 
-      var temp = this.loc.vectorTo(player.loc, g_speed);
+      var temp = this.loc.vectorTo(player.loc, this.speed);
       temp.inverse();
       this.dir = temp;
     }
@@ -74,7 +78,7 @@ function Boid(x, y) {
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
 
-      if (dist < g_boid_size/2 + g_shot_size/2 + g_bubble) {
+      if (dist < g_boid_size/2 + g_shot_size/2 + this.bubble) {
 
 	// remove boid if its hit
 	if (dist < g_boid_size/2 + g_shot_size/2) {
@@ -82,7 +86,7 @@ function Boid(x, y) {
 	    this.shutdown();
 	}
 
-        var temp = this.loc.vectorTo(g_shots[idx].loc, g_speed);
+        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
 	temp.inverse();
 	this.dir = temp;
 	continue;
