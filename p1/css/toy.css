@@ -1,7 +1,11 @@
+.util {
+  float: left;
+}
+
 .screen {
   border: solid black 1px;
   width: 480px;
-  height: 640px;
+  height: 320px;
 }
 
 .centered {
