@@ -10,7 +10,7 @@ function Boid(x, y) {
   this.zone = g_zone;
   this.loc = new Point(x, y);
   this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, this.speed);
-//  this.init();
+  this.init();
 
   this.update = function() {
     var influences = new Array(this.dir);
@@ -80,16 +80,16 @@ function Boid(x, y) {
 
       if (dist < g_boid_size/2 + g_shot_size/2 + this.bubble) {
 
-	// remove boid if its hit
-	if (dist < g_boid_size/2 + g_shot_size/2) {
-	    g_boids.splice(g_boids.indexOf(this), 1);
-	    this.shutdown();
-	}
+        // remove boid if its hit
+        if (dist < g_boid_size/2 + g_shot_size/2) {
+          g_boids.splice(g_boids.indexOf(this), 1);
+          this.shutdown();
+        }
 
         var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
-	temp.inverse();
-	this.dir = temp;
-	continue;
+        temp.inverse();
+        this.dir = temp;
+        continue;
       }
     }
   };

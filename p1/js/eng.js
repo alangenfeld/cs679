@@ -14,6 +14,7 @@ var updateStats = function() {
     $("ut").innerHTML = updateFinish - loopStart;
     $("rt").innerHTML = renderFinish - updateFinish;
     $("fps").innerHTML = Math.floor(1000 / (renderFinish - lastRender));
+    $("num_objs").innerHTML = objectManager.objects.length;
   }
   lastRender = renderFinish;
   return (1000/targetFPS) - (renderFinish - loopStart);
