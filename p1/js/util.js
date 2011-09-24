@@ -41,6 +41,10 @@ function Vector(x, y, mag) {
     this.y = (y/length) * mag;
   }
 
+  this.angle = function() {
+    return Math.atan(this.y/this.x);
+  };
+  
   this.inverse = function() {
     this.x = -this.x;
     this.y = -this.y;
@@ -57,5 +61,5 @@ function averageVectors(vectors, mag) {
   }
   x /= vectors.length;
   y /= vectors.length;
-  return new Vector(x, y, g_speed);
+  return new Vector(x, y, mag);
 }

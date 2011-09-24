@@ -30,8 +30,19 @@ function Boid(x, y) {
     };
     influences.push(this.wind());
     influences.push(this.avoidShots());
-    this.dir = averageVectors(influences, this.speed);
+    var newDir = averageVectors(influences, this.speed);
 
+    var delta = newDir.angle() - this.dir.angle();
+    if (Math.abs(delta) > (Math.PI / 4)) {
+      if (delta > 0) {
+	// limit movement
+      } else {
+	// limit movement
+      }
+    } else {
+//      this.dir = newDir;
+    }
+    this.dir = newDir;
     this.avoidPlayer();
     this.avoidEdges();
     this.loc.move(this.dir);

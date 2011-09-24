@@ -8,8 +8,15 @@
   margin: 0 auto;
 }
 
-.title {
-  font-size: large;
-  text-align: center;
+.left {
+  float: left;
 }
 
+#msg {
+  position: absolute;
+  font-size: xx-large;
+  text-align: center;
+  width: inherit;
+  top: 320px;
+  z-index: -1;
+}

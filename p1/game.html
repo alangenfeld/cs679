@@ -2,15 +2,10 @@
 <html lang="en">
 <head>
   <link href="css/game.css" title="compact" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-  <div class="title centered">
-    Game
-  </div>
-  <div class="screen centered">
-    <canvas id="display" height="640" width="480" />
-  </div>
-  <div id="info">
+  <div id="info" class="left">
     <span>
       Wave:
     </span>
@@ -21,6 +16,12 @@
     </span>
     <span id="sheepPassed"></span>
   </div>
+
+  <div class="screen centered">
+    <div id="msg" class="title"></div>
+    <canvas id="display" height="640" width="480" />
+  </div>
+
 </body>
   <script type="text/javascript" src="js/util.js"></script>
   <script type="text/javascript" src="js/eng.js"></script>

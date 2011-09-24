@@ -29,7 +29,7 @@ function Player(x, y) {
   };
 
   this.draw = function() {
-    //console.log("player.draw()");
+    ctx.fillStyle="#000000";
     ctx.fillRect(this.loc.x - g_player_size/2, this.loc.y - g_player_size/2, g_player_size, g_player_size);
   };
 
@@ -62,7 +62,6 @@ function Shot(x, y, v) {
 	    g_shot_size/2, 0 ,Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
-    ctx.fillStyle="#000000";
   };
   
   this.update = function() {

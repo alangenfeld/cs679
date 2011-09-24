@@ -9,14 +9,18 @@ function Wave() {
   $("waveNum").innerHTML = this.num;
 
   this.update = function() {
-    if ((Date.now() - this.lastSpawn) > 10000) {  
+    var now = Date.now();
+    if ((now - this.lastSpawn) > 20000) {  
       this.spawn = true;  
-      this.lastSpawn = Date.now();
+      this.lastSpawn = now;
       this.num++;
       $("waveNum").innerHTML = this.num;
-    }
-    else {
-     this.spawn = false; 
+      $("msg").innerHTML = "Wave " + this.num;
+      $("msg").style.opacity = 1.0;
+    } else {
+      var opacity = parseFloat($("msg").style.opacity);
+      $("msg").style.opacity = opacity * .95;
+      this.spawn = false; 
     }
   };
 }
@@ -32,7 +36,9 @@ function Farm(x,y) {
 
   this.update = function() {
     if (wave.spawn) {
-      for (var i=0; i < 15; i++) {
+//      var numSheep = Math.random()*10 + wave.num + 2;
+      var numSheep = 2;
+      for (var i=0; i < numSheep; i++) {
 	var rx = (Math.random() * 8) - 4;
 	var ry = (Math.random() * 8) - 4;
 	g_boids.push(new Sheep(this.loc.x + rx, this.loc.y + ry));	

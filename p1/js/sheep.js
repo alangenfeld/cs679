@@ -1,12 +1,14 @@
 /**
  * Pesky enemies
  */
-function Sheep(x, y) {
+function BasicSheep(x, y) {
   this.loc = new Point(x,y);
-  this.size = 7;
-  this.bubble = 10;
+  this.size = 12;
+  this.bubble = 14;
   this.vision = 20;
   this.zone = 25;
+  this.speed = 3;
+  this.color = "#FFFFFF";
   if (x && y) {
     this.init();
   }
@@ -29,6 +31,8 @@ function Sheep(x, y) {
   };
 
   this.draw = function() {
+    ctx.fillStyle = this.color;
+
     // body
     ctx.beginPath();
     ctx.arc(this.loc.x, this.loc.y, 
@@ -37,6 +41,8 @@ function Sheep(x, y) {
     ctx.strokeStyle = "black"; // line color
     ctx.closePath();
     ctx.stroke();
+    ctx.fill();
+
     // head
     ctx.beginPath();
     ctx.arc(this.loc.x + this.dir.x * this.size/4, 
@@ -46,7 +52,52 @@ function Sheep(x, y) {
     ctx.strokeStyle = "black"; // line color
     ctx.closePath();
     ctx.stroke();
+    ctx.fill();
   };
 }
-Sheep.prototype = new Boid;
-  
+BasicSheep.prototype = new Boid;
+
+function BigSheep(x, y) {
+  this.loc = new Point(x,y);
+  this.size = 24;
+  this.bubble = 30;
+  this.speed = 2;
+  this.color = "#F0F0F0";
+  if (x && y) {
+    this.init();
+  }
+}
+BigSheep.prototype = new BasicSheep;
+
+function YellowSheep(x, y) {
+  this.loc = new Point(x,y);
+  this.bubble = 30;
+  this.color = "#F0F0C0";
+  if (x && y) {
+    this.init();
+  }
+}
+YellowSheep.prototype = new BasicSheep;
+
+function CrazySheep(x, y) {
+  this.loc = new Point(x,y);
+  this.vision = 30;
+  this.color = "#FFC0FF";
+  if (x && y) {
+    this.init();
+  }
+}
+CrazySheep.prototype = new BasicSheep;
+
+function Sheep(x, y) {
+  var n = Math.random();
+  if (n < .1) {
+    return new YellowSheep(x, y);    
+  } else if (n < .4) {
+    return new CrazySheep(x, y);    
+  } else if (n < .8) {
+    return new BigSheep(x, y);    
+  } else {
+    return new BasicSheep(x, y);    
+  }
+};
