@@ -56,8 +56,13 @@ function Shot(x, y, v) {
   this.init();
   
   this.draw = function() {
-    //console.log("player.draw()");
-    ctx.fillRect(this.loc.x - g_shot_size/2, this.loc.y - g_shot_size/2, g_shot_size, g_shot_size);
+    ctx.fillStyle="#FF0000";
+    ctx.beginPath();
+    ctx.arc(this.loc.x, this.loc.y, 
+	    g_shot_size/2, 0 ,Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle="#000000";
   };
   
   this.update = function() {

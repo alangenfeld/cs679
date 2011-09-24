@@ -2,15 +2,15 @@
  * Flocking creature
  */
 function Boid(x, y) {
-  x = !x ? Math.random() * display.width : x;
-  y = !y ? Math.random() * display.height : y;
   this.speed = g_speed;
   this.bubble = g_bubble;
   this.vision = g_vision;
   this.zone = g_zone;
   this.loc = new Point(x, y);
   this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, this.speed);
-  this.init();
+  if (x && y) {
+    this.init();
+  }
 
   this.update = function() {
     var influences = new Array(this.dir);
@@ -28,11 +28,11 @@ function Boid(x, y) {
 	influences.push(v);
       }
     };
-
+    influences.push(this.wind());
+    influences.push(this.avoidShots());
     this.dir = averageVectors(influences, this.speed);
 
     this.avoidPlayer();
-    this.avoidShots();
     this.avoidEdges();
     this.loc.move(this.dir);
   };
@@ -47,6 +47,10 @@ function Boid(x, y) {
     } else if (this.loc.y < 0) {
       this.loc.y = this.loc.y + display.height;
     }
+  };
+
+  this.wind = function() {
+    return new Vector(0, 0);
   };
 
   this.avoidEdges = function() {
@@ -82,16 +86,20 @@ function Boid(x, y) {
 
         // remove boid if its hit
         if (dist < g_boid_size/2 + g_shot_size/2) {
-          g_boids.splice(g_boids.indexOf(this), 1);
-          this.shutdown();
+	  this.leave();
         }
 
-        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
+        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed*5);
         temp.inverse();
-        this.dir = temp;
-        continue;
+	return temp;
       }
     }
+    return new Vector(0,0);
+  };
+
+  this.leave = function() {
+    g_boids.splice(g_boids.indexOf(this), 1);
+    this.shutdown();
   };
 
   this.draw = function() {

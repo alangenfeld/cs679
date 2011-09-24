@@ -15,7 +15,8 @@ function Wizard() {
   };
 
   this.shoot = function(v) {
-    g_shots.push(new Shot(this.loc.x + g_shot_size/2, this.loc.y - g_shot_size, v));
+    g_shots.push(new Shot(this.loc.x + this.dir.x,
+			  this.loc.y + this.dir.y, v));
   };
 }
 Wizard.prototype = new Player;
