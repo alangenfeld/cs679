@@ -14,17 +14,32 @@ function Boid(x, y) {
 
   this.update = function() {
     var influences = new Array(this.dir);
-    for (idx in g_boids) {
-      if (g_boids[idx] == this) {
+    var other_boids;
+
+    // look in the same bucket
+    if(g_update_complexity == 1) {
+      other_boids = getBucket(this.loc);
+    }
+    // look in same bucket + 8 neighboring buckets
+    else if(g_update_complexity == 2) {
+      other_boids = getBuckets(this.loc);
+    }
+    // look at all
+    else {
+      other_boids = g_boids;
+    }
+
+    for (idx in other_boids) {
+      if (other_boids[idx] == this) {
 	continue;
-      } else if (this.loc.distance(g_boids[idx].loc) < this.bubble) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed * g_boids.length);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.bubble) {
+	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed * other_boids.length);
 	v.inverse();
 	influences.push(v);
-      } else if (this.loc.distance(g_boids[idx].loc) < this.zone) {
-	influences.push(g_boids[idx].dir);
-      } else if (this.loc.distance(g_boids[idx].loc) < this.vision) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.zone) {
+	influences.push(other_boids[idx].dir);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.vision) {
+	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed);
 	influences.push(v);
       }
     };
