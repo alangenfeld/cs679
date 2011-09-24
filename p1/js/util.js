@@ -63,12 +63,12 @@ function averageVectors(vectors, mag) {
 /**
  * Spatial Bucket Manager
  *
- *  - buckets start at -100, -100
+ *  - buckets start at 0, -100
  *  - bucket size of 50x50
  */
 function BucketManager(width, height) {
-  this.width = width + 200;
-  this.height = height + 200;
+  this.width = width;
+  this.height = height + 100;
 
   this.bucket_width = 50;
   this.bucket_height = 50;
@@ -86,8 +86,14 @@ function BucketManager(width, height) {
     //console.log("add()");
     //console.log(objs);
     for (idx in objs) {
-      var index = (Math.floor(objs[idx].loc.y / this.bucket_height) + 2) * this.numBucketsX + (Math.floor(objs[idx].loc.x / this.bucket_width) + 2);
-	  //console.log("index: " + index);
+	  var indexX = Math.floor(objs[idx].loc.x / this.bucket_width);
+	  var indexY = Math.floor(objs[idx].loc.y / this.bucket_height) + 2;
+
+	  if(indexY < 0) {
+        indexY = 0;
+	  }
+
+      var index = indexY * this.numBucketsX + indexX;
 	  this.buckets[index].push(objs[idx]);
     }
   };
@@ -105,53 +111,83 @@ var bucketManager = new BucketManager(display.width, display.height);
 
 // Returns boids in same bucket as given Point
 this.getBucket = function(loc) {
-  return bucketManager.buckets[(Math.floor(loc.y / bucketManager.bucket_height) + 2) * bucketManager.numBucketsX + (Math.floor((loc.x / bucketManager.bucket_width)) + 2)];
+  var indexX = Math.floor(loc.x / bucketManager.bucket_width);
+  var indexY = Math.floor(loc.y / bucketManager.bucket_height) + 2;
+
+  if(indexY < 0) {
+    indexY = 0;
+  } else if(indexY > bucketManager.numBucketsY - 1) {
+    indexY = bucketManager.numBucketsY - 1;
+  }
+
+  if(indexX < 0) {
+    indexX = 0;
+  } else if(indexX > bucketManager.numBucketsX - 1) {
+    indexX = bucketManager.numBucketsX - 1;
+  }
+
+  var index = indexY * bucketManager.numBucketsX + indexX;
+
+  return bucketManager.buckets[indexY * bucketManager.numBucketsX + indexX];
 }
 
 // Returns boids in same bucket + 8 neighboring buckets as given Point
 this.getBuckets = function(loc) {
-  var index = (Math.floor(loc.y / bucketManager.bucket_height) + 2) * bucketManager.numBucketsX + (Math.floor((loc.x / bucketManager.bucket_width)) + 2);
-  var xIndex = index % bucketManager.numBucketsX;
-  var yIndex = Math.floor(index / bucketManager.numBucketsX);
+  var indexX = Math.floor(loc.x / bucketManager.bucket_width);
+  var indexY = Math.floor(loc.y / bucketManager.bucket_height) + 2;
+
+  if(indexY < 0) {
+    indexY = 0;
+  } else if(indexY > bucketManager.numBucketsY - 1) {
+    indexY = bucketManager.numBucketsY - 1;
+  }
+
+  if(indexX < 0) {
+    indexX = 0;
+  } else if(indexX > bucketManager.numBucketsX - 1) {
+    indexX = bucketManager.numBucketsX - 1;
+  }
+
+  var index = indexY * bucketManager.numBucketsX + indexX;
   var mBuckets = bucketManager.buckets[index];
 
   // left
-  if(xIndex != 0) {
+  if(indexX != 0) {
     mBuckets = mBuckets.concat(bucketManager.buckets[index - 1]);
 
     // top
-    if(yIndex != 0) {
+    if(indexY != 0) {
       mBuckets = mBuckets.concat(bucketManager.buckets[index - 1 - bucketManager.numBucketsX]);
     }
 
     // bottom
-    if(yIndex != bucketManager.numBucketsY - 1) {
+    if(indexY != bucketManager.numBucketsY - 1) {
       mBuckets = mBuckets.concat(bucketManager.buckets[index - 1 + bucketManager.numBucketsX]);
     }
   }
 
   // top
-  if(yIndex != 0) {
+  if(indexY != 0) {
     mBuckets = mBuckets.concat(bucketManager.buckets[index - bucketManager.numBucketsX]);
   }
 
   // right
-  if(xIndex != bucketManager.numBucketsX - 1) {
+  if(indexX != bucketManager.numBucketsX - 1) {
     mBuckets = mBuckets.concat(bucketManager.buckets[index + 1]);
 
     // top
-    if(yIndex != 0) {
+    if(indexY != 0) {
       mBuckets = mBuckets.concat(bucketManager.buckets[index + 1 - bucketManager.numBucketsX]);
     }
 
     // bottom
-    if(yIndex != bucketManager.numBucketsY - 1) {
+    if(indexY != bucketManager.numBucketsY - 1) {
       mBuckets = mBuckets.concat(bucketManager.buckets[index + 1 + bucketManager.numBucketsX]);
     }
   }
 
   // bottom
-  if(yIndex != 0) {
+  if(indexY != bucketManager.numBucketsY - 1) {
     mBuckets = mBuckets.concat(bucketManager.buckets[index + bucketManager.numBucketsX]);
   }
 

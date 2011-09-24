@@ -84,9 +84,6 @@ function Boid(x, y) {
 
   this.avoidPlayer = function() {
     if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + this.bubble) {
-      // TODO: look into why this wasn't working
-      //this.dir = this.loc.vectorTo(player.loc, this.speed).inverse();
-
       var temp = this.loc.vectorTo(player.loc, this.speed);
       temp.inverse();
       this.dir = temp;
