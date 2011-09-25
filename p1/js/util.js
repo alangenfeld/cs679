@@ -94,7 +94,9 @@ function BucketManager(width, height) {
 	  }
 
       var index = indexY * this.numBucketsX + indexX;
-	  this.buckets[index].push(objs[idx]);
+
+      // add to new bucket
+      this.buckets[index].push(objs[idx]);
     }
   };
 
@@ -103,8 +105,6 @@ function BucketManager(width, height) {
       this.buckets[idx].length = 0;
     }
   };
-
-
 
 };
 var bucketManager = new BucketManager(display.width, display.height);

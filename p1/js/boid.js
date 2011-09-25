@@ -11,9 +11,10 @@ function Boid(x, y) {
   if (x && y) {
     this.init();
   }
+  this.influences = new Array();
 
   this.update = function() {
-    var influences = new Array(this.dir);
+    this.influences.push(this.dir);
     var other_boids;
 
     // look in the same bucket
@@ -35,17 +36,18 @@ function Boid(x, y) {
       } else if (this.loc.distance(other_boids[idx].loc) < this.bubble) {
 	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed * other_boids.length);
 	v.inverse();
-	influences.push(v);
+	this.influences.push(v);
       } else if (this.loc.distance(other_boids[idx].loc) < this.zone) {
-	influences.push(other_boids[idx].dir);
+	this.influences.push(other_boids[idx].dir);
       } else if (this.loc.distance(other_boids[idx].loc) < this.vision) {
 	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed);
-	influences.push(v);
+	this.influences.push(v);
       }
     };
-    influences.push(this.wind());
-    influences.push(this.avoidShots());
-    this.dir = averageVectors(influences, this.speed);
+    this.influences.push(this.wind());
+    //influences.push(this.avoidShots());
+    this.dir = averageVectors(this.influences, this.speed);
+    this.influences.length = 0;
 
     this.avoidPlayer();
     this.avoidEdges();
@@ -90,6 +92,7 @@ function Boid(x, y) {
     }
   };
 
+  /*
   this.avoidShots = function() {
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
@@ -108,6 +111,7 @@ function Boid(x, y) {
     }
     return new Vector(0,0);
   };
+  */
 
   this.leave = function() {
     g_boids.splice(g_boids.indexOf(this), 1);
