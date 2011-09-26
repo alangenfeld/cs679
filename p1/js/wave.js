@@ -36,8 +36,8 @@ function Farm(x,y) {
 
   this.update = function() {
     if (wave.spawn) {
-//      var numSheep = Math.random()*10 + wave.num + 2;
-      var numSheep = 2;
+      var numSheep = Math.random()*10 + wave.num + 2;
+//      var numSheep = 2;
       for (var i=0; i < numSheep; i++) {
 	var rx = (Math.random() * 8) - 4;
 	var ry = (Math.random() * 8) - 4;

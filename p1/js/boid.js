@@ -44,21 +44,11 @@ function Boid(x, y) {
 	this.influences.push(v);
       }
     };
-    this.influences.push(this.wind());
-//    this.influences.push(this.avoidShots());
-    var newDir = averageVectors(this.influences, this.speed);
 
-    var delta = newDir.angle() - this.dir.angle();
-    if (Math.abs(delta) > (Math.PI / 4)) {
-      if (delta > 0) {
-	// limit movement
-      } else {
-	// limit movement
-      }
-    } else {
-//      this.dir = newDir;
-    }
-    this.dir = newDir;
+    this.influences.push(this.wind());
+    //influences.push(this.avoidShots());
+    this.dir = averageVectors(this.influences, this.speed);
+    this.influences.length = 0;
 
     this.avoidPlayer();
     this.avoidEdges();
