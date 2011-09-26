@@ -44,9 +44,9 @@ function Boid(x, y) {
 	this.influences.push(v);
       }
     };
-    influences.push(this.wind());
-    influences.push(this.avoidShots());
-    var newDir = averageVectors(influences, this.speed);
+    this.influences.push(this.wind());
+//    this.influences.push(this.avoidShots());
+    var newDir = averageVectors(this.influences, this.speed);
 
     var delta = newDir.angle() - this.dir.angle();
     if (Math.abs(delta) > (Math.PI / 4)) {
