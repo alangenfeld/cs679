@@ -50,7 +50,11 @@ function GameObject() {
 function ObjectManager() {
   this.objects = new Array();
 
+
   this.updateAll = function() {
+    bucketManager.clear();
+    bucketManager.add(g_boids);
+
     for (idx in this.objects) {
       this.objects[idx].update();
     }

@@ -29,6 +29,12 @@ $("bubble_in").onchange = function() {
   $("bubble").innerHTML = this.value;
 };
 
+var g_update_complexity = parseInt($("update_in").value);
+$("update_in").onchange = function() {
+  g_update_complexity = parseInt(this.value);
+  $("update").innerHTML = this.value;
+};
+
 /**
  * Static Variables
  */
@@ -54,6 +60,6 @@ var statsOn = true;
  * Runtime
  */
 
-g_boids.push(new Boid());
+g_boids.push(new Boid(Math.random() * display.width, Math.random() * display.height));
 
 GameLoop();

@@ -11,21 +11,37 @@ function Boid(x, y) {
   if (x && y) {
     this.init();
   }
+  this.influences = new Array();
 
   this.update = function() {
-    var influences = new Array(this.dir);
-    for (idx in g_boids) {
-      if (g_boids[idx] == this) {
+    this.influences.push(this.dir);
+    var other_boids;
+
+    // look in the same bucket
+    if(g_update_complexity == 1) {
+      other_boids = getBucket(this.loc);
+    }
+    // look in same bucket + 8 neighboring buckets
+    else if(g_update_complexity == 2) {
+      other_boids = getBuckets(this.loc);
+    }
+    // look at all
+    else {
+      other_boids = g_boids;
+    }
+
+    for (idx in other_boids) {
+      if (other_boids[idx] == this) {
 	continue;
-      } else if (this.loc.distance(g_boids[idx].loc) < this.bubble) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed * g_boids.length);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.bubble) {
+	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed * other_boids.length);
 	v.inverse();
-	influences.push(v);
-      } else if (this.loc.distance(g_boids[idx].loc) < this.zone) {
-	influences.push(g_boids[idx].dir);
-      } else if (this.loc.distance(g_boids[idx].loc) < this.vision) {
-	var v =	this.loc.vectorTo(g_boids[idx].loc, this.speed);
-	influences.push(v);
+	this.influences.push(v);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.zone) {
+	this.influences.push(other_boids[idx].dir);
+      } else if (this.loc.distance(other_boids[idx].loc) < this.vision) {
+	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed);
+	this.influences.push(v);
       }
     };
     influences.push(this.wind());
@@ -43,6 +59,7 @@ function Boid(x, y) {
 //      this.dir = newDir;
     }
     this.dir = newDir;
+
     this.avoidPlayer();
     this.avoidEdges();
     this.loc.move(this.dir);
@@ -80,15 +97,13 @@ function Boid(x, y) {
 
   this.avoidPlayer = function() {
     if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + this.bubble) {
-      // TODO: look into why this wasn't working
-      //this.dir = this.loc.vectorTo(player.loc, this.speed).inverse();
-
       var temp = this.loc.vectorTo(player.loc, this.speed);
       temp.inverse();
       this.dir = temp;
     }
   };
 
+  /*
   this.avoidShots = function() {
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
@@ -107,6 +122,7 @@ function Boid(x, y) {
     }
     return new Vector(0,0);
   };
+  */
 
   this.leave = function() {
     g_boids.splice(g_boids.indexOf(this), 1);

@@ -65,12 +65,48 @@ function Shot(x, y, v) {
   };
   
   this.update = function() {
+    var other_boids;
+
+    // look in the same bucket
+    if(g_update_complexity == 1) {
+      other_boids = getBucket(this.loc);
+    }
+    // look in same bucket + 8 neighboring buckets
+    else if(g_update_complexity == 2) {
+      other_boids = getBuckets(this.loc);
+    }
+    // look at all
+    else {
+      other_boids = g_boids;
+    }
+
+    // check if shot is close to boid
+    for (idx in other_boids) {
+      var boid = other_boids[idx];
+	  var dist = this.loc.distance(boid.loc)
+
+      if (dist < g_boid_size/2 + g_shot_size/2 + boid.bubble) {
+
+        // remove boid if its hit
+        if (dist < g_boid_size/2 + g_shot_size/2) {
+          boid.leave();
+        } else {
+          var temp = boid.loc.vectorTo(this.loc, boid.speed*5);
+          temp.inverse();
+          boid.influences.push(temp);
+		}
+      }
+	  //boid.influences.push(new Vector(0,0));
+    }
+
+    // move shot
     if(this.loc.y < g_shot_size/2) {
       g_shots.splice(g_shots.indexOf(this), 1);
       this.shutdown();
     } else {
       this.loc.move(this.dir);
     }
+
   };
 }
 Shot.prototype = new GameObject;

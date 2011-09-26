@@ -5,6 +5,7 @@ var g_speed = 3;
 var g_bubble = 8;
 var g_vision = 20;
 var g_zone = 25;
+var g_update_complexity = 2;
 
 var g_boid_size = 4;
 var g_player_size = 20;
