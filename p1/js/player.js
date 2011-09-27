@@ -65,6 +65,8 @@ function Shot(x, y, v) {
   };
   
   this.update = function() {
+
+    /*
     var other_boids;
 
     // look in the same bucket
@@ -98,6 +100,7 @@ function Shot(x, y, v) {
       }
 	  //boid.influences.push(new Vector(0,0));
     }
+	*/
 
     // move shot
     if(this.loc.y < g_shot_size/2) {

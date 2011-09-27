@@ -90,14 +90,7 @@ function BucketManager(width, height) {
     //console.log("add()");
     //console.log(objs);
     for (idx in objs) {
-	  var indexX = Math.floor(objs[idx].loc.x / this.bucket_width);
-	  var indexY = Math.floor(objs[idx].loc.y / this.bucket_height) + 2;
-
-	  if(indexY < 0) {
-        indexY = 0;
-	  }
-
-      var index = indexY * this.numBucketsX + indexX;
+      var index = getBucketIndex(objs[idx].loc);
 
       // add to new bucket
       this.buckets[index].push(objs[idx]);
@@ -113,8 +106,7 @@ function BucketManager(width, height) {
 };
 var bucketManager = new BucketManager(display.width, display.height);
 
-// Returns boids in same bucket as given Point
-this.getBucket = function(loc) {
+this.getBucketIndex = function(loc) {
   var indexX = Math.floor(loc.x / bucketManager.bucket_width);
   var indexY = Math.floor(loc.y / bucketManager.bucket_height) + 2;
 
@@ -130,9 +122,14 @@ this.getBucket = function(loc) {
     indexX = bucketManager.numBucketsX - 1;
   }
 
-  var index = indexY * bucketManager.numBucketsX + indexX;
+  return indexY * bucketManager.numBucketsX + indexX;
+}
 
-  return bucketManager.buckets[indexY * bucketManager.numBucketsX + indexX];
+// Returns boids in same bucket as given Point
+this.getBucket = function(loc) {
+  var index = getBucketIndex(loc);
+
+  return bucketManager.buckets[index];
 }
 
 // Returns boids in same bucket + 8 neighboring buckets as given Point
