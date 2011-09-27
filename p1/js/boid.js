@@ -47,7 +47,8 @@ function Boid(x, y) {
 
     influences.push(this.wind());
     influences.push(this.avoidShots());
-    this.dir = averageVectors(influences, this.speed);
+    var avg = averageVectors(influences, this.speed);
+    this.dir = limitAngle(this.dir, avg, 90);
 
     this.avoidPlayer();
     this.avoidEdges();

@@ -42,7 +42,13 @@ function Vector(x, y, mag) {
   }
 
   this.angle = function() {
-    return Math.atan(this.y/this.x);
+    var rad = Math.atan2(this.y, this.x);
+
+	if(rad > 0) {
+      return 180*(rad / Math.PI);
+    } else {
+      return 180*(rad / Math.PI) + 360;
+	}
   };
   
   this.inverse = function() {
@@ -62,6 +68,21 @@ function averageVectors(vectors, mag) {
   x /= vectors.length;
   y /= vectors.length;
   return new Vector(x, y, mag);
+}
+
+function limitAngle(initialDir, finalDir, limit) {
+  var angle1 = initialDir.angle();
+  var angle2 = finalDir.angle();
+
+  if(angle1 < 90 && angle2 > 270) {
+    angle2 -= 360;
+  }
+
+  if(Math.abs(angle1 - angle2) > 90) {
+    // get vector
+  }
+
+  return finalDir;
 }
 
 /**
