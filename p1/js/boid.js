@@ -14,7 +14,6 @@ function Boid(x, y) {
 
   this.update = function() {
     influences = new Array();
-    influences.push(this.dir);
     var other_boids;
 
     // look in the same bucket
@@ -34,7 +33,7 @@ function Boid(x, y) {
       if (other_boids[idx] == this) {
 	continue;
       } else if (this.loc.distance(other_boids[idx].loc) < this.bubble) {
-	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed * other_boids.length);
+	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed);
 	v.inverse();
 	influences.push(v);
       } else if (this.loc.distance(other_boids[idx].loc) < this.zone) {
@@ -47,8 +46,9 @@ function Boid(x, y) {
 
     influences.push(this.wind());
     influences.push(this.avoidShots());
-    var avg = averageVectors(influences, this.speed);
-    this.dir = limitAngle(this.dir, avg, 90);
+    this.dir = averageVectors(this.dir, influences, this.speed);
+
+    //this.dir = limitAngle(this.dir, avg, 10);
 
     this.avoidPlayer();
     this.avoidEdges();
@@ -104,7 +104,7 @@ function Boid(x, y) {
 	  this.leave();
         }
 
-        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed*5);
+        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
         temp.inverse();
 	return temp;
       }

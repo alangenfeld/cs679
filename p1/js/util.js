@@ -57,7 +57,7 @@ function Vector(x, y, mag) {
   };
 }
 
-function averageVectors(vectors, mag) {
+function averageVectors(initialDir, vectors) {
   var x = 0;
   var y = 0;
 
@@ -67,9 +67,10 @@ function averageVectors(vectors, mag) {
   }
   x /= vectors.length;
   y /= vectors.length;
-  return new Vector(x, y, mag);
+  return new Vector((initialDir.x + x)/2, (initialDir.y + y)/2, initialDir.mag);
 }
 
+/*
 function limitAngle(initialDir, finalDir, limit) {
   var angle1 = initialDir.angle();
   var angle2 = finalDir.angle();
@@ -78,12 +79,15 @@ function limitAngle(initialDir, finalDir, limit) {
     angle2 -= 360;
   }
 
-  if(Math.abs(angle1 - angle2) > 90) {
-    // get vector
+  var diff = Math.abs(angle1 - angle2);
+  if(diff > limit) {
+    var mag = Math.floor(diff/limit);
+	return new Vector((mag*initialDir.x + finalDir.x)/(mag+1), (mag*initialDir.y + finalDir.y)/(mag+1), initialDir.mag);
   }
 
   return finalDir;
 }
+*/
 
 /**
  * Spatial Bucket Manager

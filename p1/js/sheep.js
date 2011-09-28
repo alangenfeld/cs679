@@ -14,14 +14,18 @@ function BasicSheep(x, y) {
   }
   
   this.avoidEdges = function() { 
-    if (this.loc.x - g_boid_size/2 < 1 + this.bubble) {
+    if (this.loc.x - this.size/2 < 1 + this.bubble) {
       this.dir.x = 1;
-    } else if (this.loc.x + g_boid_size/2 > display.width - 1 - this.bubble) {
+    } else if (this.loc.x + this.size/2 > display.width - 1 - this.bubble) {
       this.dir.x = -1;
     }
-    
-    if (this.loc.y + g_boid_size/2 > display.height) {
-      gameInfo.sheepSuccess();
+
+    if (wall.health > 0 && this.loc.y + this.size/2 > display.height - wall.height) {
+	  if (wall.health > 0) {
+        wall.health -= 10;
+	  } else if (this.loc.y + g_boid_size/2 > display.height) {
+        gameInfo.sheepSuccess();
+	  }
       this.leave();
     }
   };
@@ -89,6 +93,16 @@ function CrazySheep(x, y) {
 }
 CrazySheep.prototype = new BasicSheep;
 
+function BlackSheep(x, y) {
+  this.loc = new Point(x,y);
+  this.bubble = 50;
+  this.color = "#000000";
+  if (x && y) {
+    this.init();
+  }
+}
+BlackSheep.prototype = new BasicSheep;
+
 function Sheep(x, y) {
   var n = Math.random();
   if (n < .1) {
@@ -97,6 +111,8 @@ function Sheep(x, y) {
     return new CrazySheep(x, y);    
   } else if (n < .8) {
     return new BigSheep(x, y);    
+  } else if (n < .82) {
+    return new BlackSheep(x, y);
   } else {
     return new BasicSheep(x, y);    
   }
