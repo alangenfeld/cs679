@@ -89,9 +89,9 @@ function Boid(x, y) {
     if (this.loc.distance(player.loc) < this.size/2 + g_player_size/2) {
       if(player.stunTime == 0) {
         player.stunTime = 100;
+        gameInfo.addToScore(-1000);
       }
       this.leave();
-      gameInfo.addToScore(-1000);
     }
   };
 
@@ -104,7 +104,7 @@ function Boid(x, y) {
         if (dist < this.size/2 + g_shots[idx].size/2) {
 	  this.leave();
 	  gameInfo.addToScore(100);
-	  if(wall.health < 1000) {
+	  if(wall.health < 1000 && wall.health != 0) {
 	    wall.health++;
 	  }
         }

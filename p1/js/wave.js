@@ -6,7 +6,7 @@ function Wave() {
   this.lastSpawn = 0;
   this.num = 0;
   this.init();
-  $("waveNum").innerHTML = this.num;
+  //$("waveNum").innerHTML = this.num;
 
   this.update = function() {
     var now = Date.now();
@@ -14,7 +14,7 @@ function Wave() {
       this.spawn = true;  
       this.lastSpawn = now;
       this.num++;
-      $("waveNum").innerHTML = this.num;
+      //$("waveNum").innerHTML = this.num;
       $("msg").innerHTML = "Wave " + this.num;
       $("msg").style.opacity = 1.0;
 
