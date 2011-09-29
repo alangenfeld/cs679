@@ -61,7 +61,9 @@ GameInfo.prototype = new GameObject;
 /**
  * Runtime
  */
+resourceManager.addImage("sheep", "img/sheep.png");
 resourceManager.addImage("sheep_s", "img/sheep_s.png");
+resourceManager.addImage("sheep_b", "img/sheep_b.png");
 var player, farms, gameInfo, wall, wave;
 function gameSetup() {
   gameInfo = new GameInfo;

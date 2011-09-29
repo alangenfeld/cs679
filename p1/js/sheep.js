@@ -9,7 +9,7 @@ function BasicSheep(x, y) {
   this.zone = 22;
   this.speed = 3;
   this.color = "#FFFFFF";
-
+  this.sprite = "sheep_s";
   if (x && y) {
     this.init();
   }
@@ -35,36 +35,9 @@ function BasicSheep(x, y) {
   };
 
   this.draw = function() {
-    this.image = resourceManager.getImage("sheep_s");    
-    ctx.drawImage(resourceManager.getImage("sheep_s"),
+    ctx.drawImage(resourceManager.getImage(this.sprite),
 		  this.loc.x, this.loc.y);
   };
-/**
-    ctx.fillStyle = this.color;
-
-    // body
-    ctx.beginPath();
-    ctx.arc(this.loc.x, this.loc.y, 
-	    this.size/2, 0, Math.PI*2, true);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "black"; // line color
-    ctx.closePath();
-    ctx.stroke();
-    ctx.fill();
-
-    // head
-    ctx.beginPath();
-    ctx.arc(this.loc.x + this.dir.x * this.size/4, 
-	    this.loc.y + this.dir.y * this.size/4, 
-	    this.size/3, 0, Math.PI*2, true);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "black"; // line color
-    ctx.closePath();
-    ctx.stroke();
-    ctx.fill();
-  };
-*/
-
 }
 BasicSheep.prototype = new Boid;
 
@@ -74,7 +47,7 @@ function BigSheep(x, y) {
   this.bubble = 30;
   this.speed = 2;
   this.color = "#F0F0F0";
-
+  this.sprite = "sheep";
   if (x && y) {
     this.init();
   }
@@ -85,7 +58,7 @@ function BlackSheep(x, y) {
   this.loc = DisplacedPoint(x,y);
   this.bubble = 50;
   this.color = "#000000";
-
+  this.sprite = "sheep_b";
   if (x && y) {
     this.init();
   }
