@@ -7,7 +7,7 @@
  */
 var g_boids = new Array();
 var g_shots = new Array();
-var statsOn = false;
+var statsOn = true;
 
 function GameInfo() {
   this.init();
@@ -15,12 +15,12 @@ function GameInfo() {
   this.gameOver = false;
 
   this.sheepPassed = 0;
-  $("sheepPassed").innerHTML = this.sheepPassed;
+  //$("sheepPassed").innerHTML = this.sheepPassed;
 
   this.sheepSuccess = function() {
     this.sheepPassed++;
     this.lastSheepPassed = Date.now();
-    $("sheepPassed").innerHTML = this.sheepPassed;
+    //$("sheepPassed").innerHTML = this.sheepPassed;
   };
 
   this.score = 0;
