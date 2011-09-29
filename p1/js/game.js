@@ -7,7 +7,8 @@
  */
 var g_boids = new Array();
 var g_shots = new Array();
-var statsOn = true;
+var statsOn = false;
+var rotateSheep = false;
 
 function GameInfo() {
   this.init();

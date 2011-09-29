@@ -132,7 +132,6 @@ function BucketManager(width, height) {
   };
 
 };
-var bucketManager = new BucketManager(display.width, display.height);
 
 this.getBucketIndex = function(loc) {
   var indexX = Math.floor(loc.x / bucketManager.bucket_width);

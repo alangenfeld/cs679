@@ -35,8 +35,18 @@ function BasicSheep(x, y) {
   };
 
   this.draw = function() {
-    ctx.drawImage(resourceManager.getImage(this.sprite),
-		  this.loc.x, this.loc.y);
+    if(rotateSheep) {
+	  var angle = this.dir.angle() - 90;
+      ctx.save();
+      ctx.translate(this.loc.x, this.loc.y);
+      ctx.rotate(angle/180*Math.PI);
+      ctx.drawImage(resourceManager.getImage(this.sprite),
+		  -this.size/2, -this.size/2);
+      ctx.restore();
+	} else {
+      ctx.drawImage(resourceManager.getImage(this.sprite),
+		  this.loc.x - this.size/2, this.loc.y - this.size/2);
+    };
   };
 }
 BasicSheep.prototype = new Boid;

@@ -32,7 +32,7 @@
   text-align: center;
   width: inherit;
   top: 320px;
-  z-index: -1;
+  z-index: 0;
 }
 
 #msg2 {
@@ -41,5 +41,5 @@
   text-align: center;
   width: inherit;
   top: 350px;
-  z-index: -1;
+  z-index: 0;
 }

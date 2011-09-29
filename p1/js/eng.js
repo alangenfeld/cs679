@@ -75,6 +75,9 @@ function ObjectManager() {
 };
 var objectManager = new ObjectManager;
 
+// Moved here to make firefox happy
+var bucketManager = new BucketManager(display.width, display.height);
+
 /**
  * Ye Olde Manager of Objects
  */
@@ -91,6 +94,7 @@ function ResourceManager() {
   };
 }
 var resourceManager = new ResourceManager;
+resourceManager.addImage("grass", "img/grass.png");
 
 /**
  * The heart of the beast
@@ -138,6 +142,9 @@ var Game = function() {
     
     // clear screen and redraw objects
     ctx.clearRect(0, 0, display.width, display.height);
+	var img = resourceManager.getImage("grass");
+	img.style.zindex = -1;
+    ctx.drawImage(img, 0, 0);
     objectManager.drawAll();
     renderFinish = Date.now();
     
@@ -179,8 +186,8 @@ function Mouse() {
   display.onmouseup = unpress.bind(this);
 
   function move(e) {
-    this.x = e.offsetX;
-    this.y = e.offsetY;
+    this.x = e.offsetX? e.offsetX: e.layerX;
+    this.y = e.offsetY? e.offsetY: e.layerY;
   };
   display.onmousemove = move.bind(this);
 
