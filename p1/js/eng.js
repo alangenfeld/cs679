@@ -11,10 +11,10 @@ var targetFPS = 30;
 var lastRender, loopStart, updateFinish, renderFinish;
 var updateStats = function() {
   if(statsOn){
-    $("ut").innerHTML = updateFinish - loopStart;
-    $("rt").innerHTML = renderFinish - updateFinish;
-    $("fps").innerHTML = Math.floor(1000 / (renderFinish - lastRender));
-    $("num_objs").innerHTML = objectManager.objects.length;
+    $("ut").innerHTML = (updateFinish - loopStart) + " ut";
+    $("rt").innerHTML = (renderFinish - updateFinish) + " rt";
+    $("fps").innerHTML = (Math.floor(1000 / (renderFinish - lastRender))) + " fps";
+    $("num_objs").innerHTML = (objectManager.objects.length) + " objs";
   }
   lastRender = renderFinish;
   return (1000/targetFPS) - (renderFinish - loopStart);

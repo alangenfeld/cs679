@@ -7,7 +7,7 @@ function Wall(width, height) {
   this.height = height;
   this.health = 1000;
 
-  $("wallHp").innerHTML = this.health;
+  //$("wallHp").innerHTML = this.health;
   this.init();
 
   this.draw = function() {
@@ -20,7 +20,7 @@ function Wall(width, height) {
 
   this.hit = function(dmg) {
     this.health -= dmg;
-    $("wallHp").innerHTML = this.health;
+    //$("wallHp").innerHTML = this.health;
   };
 }
 Wall.prototype = new GameObject;
