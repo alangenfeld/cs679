@@ -2,7 +2,7 @@
  * Pesky enemies
  */
 function BasicSheep(x, y) {
-  this.loc = new Point(x,y);
+  this.loc = DisplacedPoint(x,y);
   this.size = 8;
   this.bubble = 12;
   this.vision = 18;
@@ -61,7 +61,7 @@ function BasicSheep(x, y) {
 BasicSheep.prototype = new Boid;
 
 function BigSheep(x, y) {
-  this.loc = new Point(x,y);
+  this.loc = DisplacedPoint(x,y);
   this.size = 24;
   this.bubble = 30;
   this.speed = 2;
@@ -73,7 +73,7 @@ function BigSheep(x, y) {
 BigSheep.prototype = new BasicSheep;
 
 function BlackSheep(x, y) {
-  this.loc = new Point(x,y);
+  this.loc = DisplacedPoint(x,y);
   this.bubble = 50;
   this.color = "#000000";
   if (x && y) {

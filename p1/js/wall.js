@@ -5,7 +5,7 @@
 function Wall(width, height) {
   this.width = width;
   this.height = height;
-  this.health = 10;
+  this.health = 1000;
 
   $("wallHp").innerHTML = this.health;
   this.init();

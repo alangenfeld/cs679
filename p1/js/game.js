@@ -68,8 +68,8 @@ function gameSetup() {
   wave = new Wave();
 
   player = new Wizard();
-  farms = new Array(new Farm(0, -30));
-  farms.push(new Farm(display.width, -30));
+  farms = new Array(new Farm(display.width/4, -30));
+  farms.push(new Farm(3*display.width/4, -30));
   farms.push(new Farm(display.width/2, -30));
 }  
 

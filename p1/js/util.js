@@ -4,6 +4,11 @@
 function $() {
   return document.getElementById.apply(document, arguments);
 }
+function DisplacedPoint(x, y) {
+  var rx = Math.random()*20 - 10;
+  var ry = Math.random()*20 - 10;
+  return new Point(x+rx,y+ry);
+}
 
 function Point(x, y) {
   this.x = x;
