@@ -50,7 +50,6 @@ function GameObject() {
 function ObjectManager() {
   this.objects = new Array();
 
-
   this.updateAll = function() {
     bucketManager.clear();
     bucketManager.add(g_boids);
@@ -69,6 +68,10 @@ function ObjectManager() {
   this.remove = function(obj) {
     this.objects.splice(this.objects.indexOf(obj), 1);
   };
+
+  this.clear = function() {
+    this.objects = new Array();
+  };
 };
 var objectManager = new ObjectManager;
 
@@ -77,8 +80,8 @@ var objectManager = new ObjectManager;
  */
 var Game = function() {
   this.paused = false;
-  this.over = false;
   this.gloop = null;
+  this.reset = null;
 
   this.pause = function () {
     if (this.paused) {
@@ -88,6 +91,25 @@ var Game = function() {
       this.paused = true;
       this.gloop = null;
     }
+  };
+
+  this.wait = function() {
+    if(keyboard.space) {
+      if (game.reset) {
+	game.reset();
+	game.reset = null;
+      }
+      game.paused = false;
+      game.start();
+    } else {
+      this.gloop = setTimeout(game.wait, 30); 
+    }
+  };
+
+  // takes a reset function as a callback
+  this.over = function(rst) {
+    this.paused = true;
+    this.reset = rst;
   };
 
   this.start = function() {
@@ -103,8 +125,8 @@ var Game = function() {
     renderFinish = Date.now();
     
     var sleep = updateStats();
-    if (this.paused) {
-      this.gloop = null;
+    if (game.paused) {
+      this.gloop = setTimeout(game.wait, sleep);
     } else {
       this.gloop = setTimeout(game.start, sleep);
     }
@@ -145,11 +167,13 @@ function Mouse() {
   };
   display.onmousemove = move.bind(this);
 
+  /*
   function leave(e) {
     this.leftPressed = false;
     this.rightPressed = false;
   };
   display.onmouseout = leave.bind(this);
+  */
 
   // disable context menu
   function disableContextMenu(e) {

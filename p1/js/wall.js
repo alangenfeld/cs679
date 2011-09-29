@@ -5,7 +5,7 @@
 function Wall(width, height) {
   this.width = width;
   this.height = height;
-  this.health = 1000;
+  this.health = 10;
 
   $("wallHp").innerHTML = this.health;
   this.init();
@@ -25,4 +25,4 @@ function Wall(width, height) {
 }
 Wall.prototype = new GameObject;
 
-var wall = new Wall(display.width, g_player_size/2);
+

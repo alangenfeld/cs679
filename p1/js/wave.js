@@ -29,7 +29,6 @@ function Wave() {
   };
 }
 Wave.prototype = new GameObject;
-var wave = new Wave();
 
 /**
  * Sheep generators
@@ -42,8 +41,8 @@ function Farm(x,y) {
     if (wave.spawn) {
       var numSheep = wave.num;
       for (var i=0; i < numSheep; i++) {
-	var rx = (Math.random() * 8) - 4;
-	var ry = (Math.random() * 8) - 4;
+	var rx = (Math.random() * 20) - 10;
+	var ry = (Math.random() * 20) - 10;
 	SheepSpawner(this.loc.x + rx, this.loc.y + ry);	
       }
     }
