@@ -3,10 +3,10 @@
  */
 function BasicSheep(x, y) {
   this.loc = new Point(x,y);
-  this.size = 12;
-  this.bubble = 14;
-  this.vision = 20;
-  this.zone = 25;
+  this.size = 8;
+  this.bubble = 12;
+  this.vision = 18;
+  this.zone = 22;
   this.speed = 3;
   this.color = "#FFFFFF";
   if (x && y) {
@@ -21,11 +21,11 @@ function BasicSheep(x, y) {
     }
 
     if (this.loc.y > display.height - wall.height) {
-	  if (wall.health > 0) {
-        wall.health -= 10;
-	  } else if (this.loc.y - this.size/2 > display.height) {
+      if (wall.health > 0) {
+        wall.hit(this.size);
+      } else if (this.loc.y - this.size/2 > display.height) {
         gameInfo.sheepSuccess();
-	  }
+      }
       this.leave();
     }
   };
@@ -73,26 +73,6 @@ function BigSheep(x, y) {
 }
 BigSheep.prototype = new BasicSheep;
 
-function YellowSheep(x, y) {
-  this.loc = new Point(x,y);
-  this.bubble = 30;
-  this.color = "#F0F0C0";
-  if (x && y) {
-    this.init();
-  }
-}
-YellowSheep.prototype = new BasicSheep;
-
-function CrazySheep(x, y) {
-  this.loc = new Point(x,y);
-  this.vision = 30;
-  this.color = "#FFC0FF";
-  if (x && y) {
-    this.init();
-  }
-}
-CrazySheep.prototype = new BasicSheep;
-
 function BlackSheep(x, y) {
   this.loc = new Point(x,y);
   this.bubble = 50;
@@ -103,17 +83,19 @@ function BlackSheep(x, y) {
 }
 BlackSheep.prototype = new BasicSheep;
 
-function Sheep(x, y) {
+function SheepSpawner(x, y) {
   var n = Math.random();
-  if (n < .1) {
-    return new YellowSheep(x, y);    
-  } else if (n < .4) {
-    return new CrazySheep(x, y);    
-  } else if (n < .8) {
-    return new BigSheep(x, y);    
-  } else if (n < .82) {
-    return new BlackSheep(x, y);
+  if (n < .25) {
+    for (var i=0; i<2; i++) {
+      g_boids.push(new BigSheep(x, y));    
+    }
+  } else if (n < .5) {
+    for (var i=0; i<5; i++) {
+      g_boids.push(new BlackSheep(x, y));    
+    }
   } else {
-    return new BasicSheep(x, y);    
+    for (var i=0; i<20; i++) {
+      g_boids.push(new BasicSheep(x, y));    
+    }
   }
 };

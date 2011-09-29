@@ -75,21 +75,42 @@ var objectManager = new ObjectManager;
 /**
  * The heart of the beast
  */
-var GameLoop = function() {
-  loopStart = Date.now();
+var Game = function() {
+  this.paused = false;
+  this.over = false;
+  this.gloop = null;
 
-  // update each game object
-  objectManager.updateAll();
-  updateFinish = Date.now();
+  this.pause = function () {
+    if (this.paused) {
+      this.paused = false;      
+      this.start();
+    } else {
+      this.paused = true;
+      this.gloop = null;
+    }
+  };
 
-  // clear screen and redraw objects
-  ctx.clearRect(0, 0, display.width, display.height);
-  objectManager.drawAll();
-  renderFinish = Date.now();
-
-  var sleep = updateStats();
-  this.gloop = setTimeout(GameLoop, sleep);
+  this.start = function() {
+    loopStart = Date.now();
+    
+    // update each game object
+    objectManager.updateAll();
+    updateFinish = Date.now();
+    
+    // clear screen and redraw objects
+    ctx.clearRect(0, 0, display.width, display.height);
+    objectManager.drawAll();
+    renderFinish = Date.now();
+    
+    var sleep = updateStats();
+    if (this.paused) {
+      this.gloop = null;
+    } else {
+      this.gloop = setTimeout(game.start, sleep);
+    }
+  };
 };
+var game = new Game;
 
 /**
  * Mouse singleton
@@ -102,7 +123,6 @@ function Mouse() {
 
   function press(e) {
     if(e.which == 1) {
-      console.log("press");
       this.leftPressed = true;
 	} else if(e.which == 3) {
       this.rightPressed = true;
@@ -112,7 +132,6 @@ function Mouse() {
 
   function unpress(e) {
     if(e.which == 1) {
-      console.log("unpress");
       this.leftPressed = false;
 	} else if(e.which == 3) {
       this.rightPressed = false;

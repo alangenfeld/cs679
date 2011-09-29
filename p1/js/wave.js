@@ -40,12 +40,11 @@ function Farm(x,y) {
 
   this.update = function() {
     if (wave.spawn) {
-      var numSheep = Math.random()*10 + wave.num + 2;
-//      var numSheep = 2;
+      var numSheep = wave.num;
       for (var i=0; i < numSheep; i++) {
 	var rx = (Math.random() * 8) - 4;
 	var ry = (Math.random() * 8) - 4;
-	g_boids.push(new Sheep(this.loc.x + rx, this.loc.y + ry));	
+	SheepSpawner(this.loc.x + rx, this.loc.y + ry);	
       }
     }
   };

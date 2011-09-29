@@ -10,14 +10,6 @@ var g_shots = new Array();
 var statsOn = false;
 
 function GameInfo() {
-  this.sheepPassed = 0;
-  $("sheepPassed").innerHTML = this.sheepPassed;
-
-  this.sheepSuccess = function() {
-    this.sheepPassed++;
-    $("sheepPassed").innerHTML = this.sheepPassed;
-  };
-
   this.score = 0;
   $("score").innerHTML = this.score;
 
@@ -36,4 +28,4 @@ var farms = new Array(new Farm(0, -30));
 farms.push(new Farm(display.width, -30));
 farms.push(new Farm(display.width/2, -30));
 
-GameLoop();
+game.start();

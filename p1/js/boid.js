@@ -33,7 +33,7 @@ function Boid(x, y) {
     for (idx in other_boids) {
       if (other_boids[idx] == this) {
 	continue;
-      } else if (this.loc.distance(other_boids[idx].loc) < this.bubble) {
+      } else if (this.loc.distance(other_boids[idx].loc) < other_boids[idx].bubble) {
 	var v =	this.loc.vectorTo(other_boids[idx].loc, this.speed);
 	v.inverse();
 	influences.push(v);
@@ -97,10 +97,10 @@ function Boid(x, y) {
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
 
-      if (dist < this.size/2 + g_shots[idx].size/2 + this.bubble) {
+      if (dist < this.size/2 + g_shots[idx].size/2 + g_shots[idx].bubble) {
 
         // remove boid if its hit
-        if (dist < g_boid_size/2 + g_shots[idx].size/2) {
+        if (dist < this.size/2 + g_shots[idx].size/2) {
 	  this.leave();
 	  gameInfo.addToScore(100);
         }
