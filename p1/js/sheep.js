@@ -3,10 +3,10 @@
  */
 function BasicSheep(x, y) {
   this.loc = DisplacedPoint(x,y);
-  this.size = 8;
-  this.bubble = 12;
-  this.vision = 18;
-  this.zone = 22;
+  this.size = 20;
+  this.bubble = 22;
+  this.vision = 24;
+  this.zone = 28;
   this.speed = 3;
   this.color = "#FFFFFF";
   this.sprite = "sheep_s";
@@ -53,8 +53,8 @@ BasicSheep.prototype = new Boid;
 
 function BigSheep(x, y) {
   this.loc = DisplacedPoint(x,y);
-  this.size = 24;
-  this.bubble = 30;
+  this.size = 40;
+  this.bubble = 50;
   this.speed = 2;
   this.color = "#F0F0F0";
   this.sprite = "sheep";

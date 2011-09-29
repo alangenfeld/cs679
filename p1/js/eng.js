@@ -202,10 +202,10 @@ function Mouse() {
   function disableContextMenu(e) {
     return false;
   };
-  document.oncontextmenu = disableContextMenu.bind(this);
+  $("gameArea").oncontextmenu = disableContextMenu.bind(this);
 
   // prevent double click from highlighting text 
-  document.onselectstart = function () {
+  $("gameArea").onselectstart = function () {
     return false;
   };
 }
