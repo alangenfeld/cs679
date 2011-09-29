@@ -57,7 +57,7 @@ function Vector(x, y, mag) {
   };
 }
 
-function averageVectors(initialDir, vectors) {
+function averageVectors(initialDir, vectors, mag) {
   var x = 0;
   var y = 0;
 
@@ -67,7 +67,7 @@ function averageVectors(initialDir, vectors) {
   }
   x /= vectors.length;
   y /= vectors.length;
-  return new Vector((initialDir.x + x)/2, (initialDir.y + y)/2, initialDir.mag);
+  return new Vector((initialDir.x + x)/2, (initialDir.y + y)/2, mag);
 }
 
 /*

@@ -6,6 +6,7 @@ function Boid(x, y) {
   this.bubble = g_bubble;
   this.vision = g_vision;
   this.zone = g_zone;
+  this.size = g_boid_size;
   this.loc = new Point(x, y);
   this.dir = new Vector(Math.random()*2 - 1, Math.random()*2 - 1, this.speed);
   if (x && y) {
@@ -47,7 +48,6 @@ function Boid(x, y) {
     influences.push(this.wind());
     influences.push(this.avoidShots());
     this.dir = averageVectors(this.dir, influences, this.speed);
-
     //this.dir = limitAngle(this.dir, avg, 10);
 
     this.avoidPlayer();
@@ -72,21 +72,21 @@ function Boid(x, y) {
   };
 
   this.avoidEdges = function() {
-    if (this.loc.x - g_boid_size/2 < 1 + this.bubble) {
+    if (this.loc.x - this.size/2 < 1 + this.bubble) {
 	this.dir.x = 1;
-    } else if (this.loc.x + g_boid_size/2 > display.width - 1 - this.bubble) {
+    } else if (this.loc.x + this.size/2 > display.width - 1 - this.bubble) {
 	this.dir.x = -1;
     }
 
-    if (this.loc.y - g_boid_size/2 < 1 + this.bubble) {
+    if (this.loc.y - this.size/2 < 1 + this.bubble) {
 	this.dir.y = 1;
-    } else if (this.loc.y + g_boid_size/2 > display.height - 1 - this.bubble) {
+    } else if (this.loc.y + this.size/2 > display.height - 1 - this.bubble) {
 	this.dir.y = -1;
     }
   };
 
   this.avoidPlayer = function() {
-    if (this.loc.distance(player.loc) < g_boid_size/2 + g_player_size/2 + this.bubble) {
+    if (this.loc.distance(player.loc) < this.size/2 + g_player_size/2 + this.bubble) {
       var temp = this.loc.vectorTo(player.loc, this.speed);
       temp.inverse();
       this.dir = temp;
@@ -97,11 +97,12 @@ function Boid(x, y) {
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
 
-      if (dist < g_boid_size/2 + g_shot_size/2 + this.bubble) {
+      if (dist < this.size/2 + g_shots[idx].size/2 + this.bubble) {
 
         // remove boid if its hit
-        if (dist < g_boid_size/2 + g_shot_size/2) {
+        if (dist < g_boid_size/2 + g_shots[idx].size/2) {
 	  this.leave();
+	  gameInfo.addToScore(100);
         }
 
         var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
@@ -118,7 +119,7 @@ function Boid(x, y) {
   };
 
   this.draw = function() {
-    ctx.fillRect(this.loc.x - g_boid_size/2, this.loc.y - g_boid_size/2, g_boid_size, g_boid_size);
+    ctx.fillRect(this.loc.x - this.size/2, this.loc.y - this.size/2, this.size, this.size);
   };
 }
 Boid.prototype = new GameObject;

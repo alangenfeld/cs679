@@ -20,10 +20,10 @@ function BasicSheep(x, y) {
       this.dir.x = -1;
     }
 
-    if (wall.health > 0 && this.loc.y + this.size/2 > display.height - wall.height) {
+    if (this.loc.y > display.height - wall.height) {
 	  if (wall.health > 0) {
         wall.health -= 10;
-	  } else if (this.loc.y + g_boid_size/2 > display.height) {
+	  } else if (this.loc.y - this.size/2 > display.height) {
         gameInfo.sheepSuccess();
 	  }
       this.leave();

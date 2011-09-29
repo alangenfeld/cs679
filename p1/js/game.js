@@ -17,6 +17,14 @@ function GameInfo() {
     this.sheepPassed++;
     $("sheepPassed").innerHTML = this.sheepPassed;
   };
+
+  this.score = 0;
+  $("score").innerHTML = this.score;
+
+  this.addToScore = function(num) {
+    this.score += num;
+	$("score").innerHTML = this.score;
+  };
 }
 var gameInfo = new GameInfo;
 

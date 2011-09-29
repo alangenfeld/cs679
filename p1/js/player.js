@@ -50,16 +50,17 @@ Player.prototype = new GameObject;
 /**
  * Projectile to kill the boids
  */
-function Shot(x, y, v) {
+function Shot(x, y, v, size) {
   this.loc = new Point(x, y);
   this.dir = v? v : new Vector(0, -1, g_shot_speed);
+  this.size = size? size : g_shot_size;
   this.init();
   
   this.draw = function() {
     ctx.fillStyle="#FF0000";
     ctx.beginPath();
     ctx.arc(this.loc.x, this.loc.y, 
-	    g_shot_size/2, 0 ,Math.PI*2, true);
+	    this.size/2, 0 ,Math.PI*2, true);
     ctx.closePath();
     ctx.fill();
   };
@@ -87,10 +88,10 @@ function Shot(x, y, v) {
       var boid = other_boids[idx];
 	  var dist = this.loc.distance(boid.loc)
 
-      if (dist < g_boid_size/2 + g_shot_size/2 + boid.bubble) {
+      if (dist < g_boid_size/2 + this.size/2 + boid.bubble) {
 
         // remove boid if its hit
-        if (dist < g_boid_size/2 + g_shot_size/2) {
+        if (dist < g_boid_size/2 + this.size/2) {
           boid.leave();
         } else {
           var temp = boid.loc.vectorTo(this.loc, boid.speed*5);
@@ -103,7 +104,7 @@ function Shot(x, y, v) {
 	*/
 
     // move shot
-    if(this.loc.y < g_shot_size/2) {
+    if(this.loc.y < -this.size) {
       g_shots.splice(g_shots.indexOf(this), 1);
       this.shutdown();
     } else {

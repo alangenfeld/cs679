@@ -17,6 +17,10 @@ function Wave() {
       $("waveNum").innerHTML = this.num;
       $("msg").innerHTML = "Wave " + this.num;
       $("msg").style.opacity = 1.0;
+
+      if(this.num > 1) {
+        gameInfo.addToScore(1000*this.num);
+      }
     } else {
       var opacity = parseFloat($("msg").style.opacity);
       $("msg").style.opacity = opacity * .95;

@@ -97,15 +97,26 @@ var GameLoop = function() {
 function Mouse() {
   this.x = 0;
   this.y = 0;
-  this.pressed = false;
+  this.leftPressed = false;
+  this.rightPressed = false;
 
   function press(e) {
-    this.pressed = true;
+    if(e.which == 1) {
+      console.log("press");
+      this.leftPressed = true;
+	} else if(e.which == 3) {
+      this.rightPressed = true;
+	}
   };
   display.onmousedown = press.bind(this);
 
   function unpress(e) {
-    this.pressed = false;
+    if(e.which == 1) {
+      console.log("unpress");
+      this.leftPressed = false;
+	} else if(e.which == 3) {
+      this.rightPressed = false;
+	}
   };
   display.onmouseup = unpress.bind(this);
 
@@ -114,6 +125,18 @@ function Mouse() {
     this.y = e.offsetY;
   };
   display.onmousemove = move.bind(this);
+
+  function leave(e) {
+    this.leftPressed = false;
+    this.rightPressed = false;
+  };
+  display.onmouseout = leave.bind(this);
+
+  // disable context menu
+  function disableContextMenu(e) {
+    return false;
+  };
+  display.oncontextmenu = disableContextMenu.bind(this);
 
   // prevent double click from highlighting text 
   display.onselectstart = function () {
