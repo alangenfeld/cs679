@@ -27,13 +27,13 @@ function Wizard() {
   };
 
   this.shoot = function(v) {
-    g_shots.push(new Shot(this.loc.x + 15 + this.dir.x,
-			  this.loc.y + this.dir.y, v, g_shot_size, g_shot_size*3));
+    g_shots.push(new RockShot(this.loc.x + 15 + this.dir.x,
+			  this.loc.y + this.dir.y, v));
   };
 
   this.shootBig = function(v) {
-    g_shots.push(new Shot(this.loc.x + this.dir.x,
-			  this.loc.y + this.dir.y, v, g_shot_size*4));
+    g_shots.push(new FireShot(this.loc.x + this.dir.x,
+			  this.loc.y + this.dir.y, v));
   };
 
   this.draw = function() {
