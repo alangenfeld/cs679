@@ -5,19 +5,24 @@ function Wizard() {
   this.loc = new Point(display.width/2, display.height - g_player_size);
   this.lastBigShot = 0;
   this.init();
+  this.stunTime = 0;
 
   this.update = function() {
-    if (mouse.leftPressed && (Date.now() - this.lastShot) > 1000/g_shots_per_sec) {
-      var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_shot_speed);
-      this.shoot(v);
-      this.lastShot = Date.now();
-    }
-    else if (mouse.rightPressed && (Date.now() - this.lastBigShot) > 1000/g_big_shots_per_sec) {
-		console.log("BIG SHOT");
-      var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_big_shot_speed);
-      this.shootBig(v);
-      this.lastBigShot = Date.now();
-    }
+
+    if (this.stunTime > 0) {
+      this.stunTime--;
+	} else {
+	  if (mouse.leftPressed && (Date.now() - this.lastShot) > 1000/g_shots_per_sec) {
+	    var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_shot_speed);
+	    this.shoot(v);
+	    this.lastShot = Date.now();
+	  }
+	  else if (mouse.rightPressed && (Date.now() - this.lastBigShot) > 1000/g_big_shots_per_sec) {
+	    var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_big_shot_speed);
+	    this.shootBig(v);
+	    this.lastBigShot = Date.now();
+	  }
+	}
   };
 
   this.shoot = function(v) {
@@ -31,7 +36,11 @@ function Wizard() {
   };
 
   this.draw = function() {
-    ctx.fillStyle="#000000";
+    if (this.stunTime % 4 > 1) {
+      ctx.fillStyle="#FFFFFF";
+	} else {
+      ctx.fillStyle="#000000";
+	}
     ctx.fillRect(this.loc.x - g_player_size/2, this.loc.y - g_player_size/2, g_player_size, g_player_size);
 
     if ((Date.now() - this.lastBigShot) < 1000/g_big_shots_per_sec) {
@@ -39,7 +48,7 @@ function Wizard() {
 		ctx.arc(this.loc.x, this.loc.y,
 			g_player_size/2 + 2, 0, Math.PI*2*(Date.now() - this.lastBigShot) / (1000/g_big_shots_per_sec), true);
 		ctx.lineWidth = 1;
-		ctx.strokeStyle = "red"; // line color
+		ctx.strokeStyle = "red";
 		ctx.stroke();
 	}
   };

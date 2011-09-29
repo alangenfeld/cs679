@@ -10,6 +10,7 @@ var g_update_complexity = 2;
 var g_boid_size = 4;
 var g_player_size = 20;
 var g_shot_size = 35;
+var g_num_sheep_allowed = 10;
 
 var g_player_speed = 4;
 var g_shot_speed = 12;

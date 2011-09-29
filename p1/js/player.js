@@ -104,9 +104,18 @@ function Shot(x, y, v, size) {
 	*/
 
     // move shot
-    if(this.loc.y < -this.size) {
+    if(this.loc.y < -this.size/2) {
       g_shots.splice(g_shots.indexOf(this), 1);
       this.shutdown();
+    } else if(this.loc.y > display.height + this.size/2) {
+      g_shots.splice(g_shots.indexOf(this), 1);
+      this.shutdown();
+    } else if(this.loc.x < -this.size/2) {
+      g_shots.splice(g_shots.indexOf(this), 1);
+	  this.shutdown();
+	} else if(this.loc.x > display.width + this.size/2) {
+      g_shots.splice(g_shots.indexOf(this), 1);
+	  this.shutdown();
     } else {
       this.loc.move(this.dir);
     }

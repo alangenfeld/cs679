@@ -2,6 +2,7 @@
   border: solid black 1px;
   width: 480px;
   height: 640px;
+  cursor: crosshair;
 }
 
 .centered {
@@ -18,5 +19,14 @@
   text-align: center;
   width: inherit;
   top: 320px;
+  z-index: -1;
+}
+
+#msg2 {
+  position: absolute;
+  font-size: xx-large;
+  text-align: center;
+  width: inherit;
+  top: 350px;
   z-index: -1;
 }

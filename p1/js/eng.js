@@ -78,13 +78,30 @@ var objectManager = new ObjectManager;
 var GameLoop = function() {
   loopStart = Date.now();
 
-  // update each game object
-  objectManager.updateAll();
-  updateFinish = Date.now();
+  if(gameInfo.gameOver) {
+    // wait for spacebar to restart game
+	if(keyboard.space) {
+      gameInfo.gameOver = false;
 
-  // clear screen and redraw objects
-  ctx.clearRect(0, 0, display.width, display.height);
-  objectManager.drawAll();
+	  // reset everything
+	  gameInfo.sheepPassed = 0;
+	  gameInfo.score = 0;
+	  wave.num = 0;
+      $("msg").innerHTML = "";
+      for (idx in g_boids) {
+		g_boids[idx].leave();
+	  }
+	}
+  } else {
+    // update each game object
+    objectManager.updateAll();
+    updateFinish = Date.now();
+
+    // clear screen and redraw objects
+    ctx.clearRect(0, 0, display.width, display.height);
+    objectManager.drawAll();
+  }
+
   renderFinish = Date.now();
 
   var sleep = updateStats();
@@ -102,7 +119,6 @@ function Mouse() {
 
   function press(e) {
     if(e.which == 1) {
-      console.log("press");
       this.leftPressed = true;
 	} else if(e.which == 3) {
       this.rightPressed = true;
@@ -112,7 +128,6 @@ function Mouse() {
 
   function unpress(e) {
     if(e.which == 1) {
-      console.log("unpress");
       this.leftPressed = false;
 	} else if(e.which == 3) {
       this.rightPressed = false;
@@ -126,11 +141,13 @@ function Mouse() {
   };
   display.onmousemove = move.bind(this);
 
+  /*
   function leave(e) {
     this.leftPressed = false;
     this.rightPressed = false;
   };
   display.onmouseout = leave.bind(this);
+  */
 
   // disable context menu
   function disableContextMenu(e) {

@@ -20,12 +20,11 @@ function BasicSheep(x, y) {
       this.dir.x = -1;
     }
 
-    if (this.loc.y > display.height - wall.height) {
-	  if (wall.health > 0) {
-        wall.health -= 10;
-	  } else if (this.loc.y - this.size/2 > display.height) {
-        gameInfo.sheepSuccess();
-	  }
+    if (this.loc.y > display.height - wall.height - this.size/2 && wall.health > 0) {
+      wall.health -= 10;
+      this.leave();
+    } else if (this.loc.y > display.height + this.size/2) {
+      gameInfo.sheepSuccess();
       this.leave();
     }
   };

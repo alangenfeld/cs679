@@ -112,8 +112,6 @@ function BucketManager(width, height) {
   }
 
   this.add = function(objs) {
-    //console.log("add()");
-    //console.log(objs);
     for (idx in objs) {
       var index = getBucketIndex(objs[idx].loc);
 
