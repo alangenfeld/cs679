@@ -8,20 +8,21 @@ function Wizard() {
   this.stunTime = 0;
 
   this.update = function() {
+    this.tick++;
     if (this.stunTime > 0) {
       this.stunTime--;
     } else {
-      if (mouse.leftPressed && (Date.now() - this.lastShot) > 
-	  1000/g_shots_per_sec) {
+      if (mouse.leftPressed && (this.tick - this.lastShot) > 
+	  33/g_shots_per_sec) {
 	var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_shot_speed);
 	this.shoot(v);
-	this.lastShot = Date.now();
+	this.lastShot = this.tick;
       }
-      else if (mouse.rightPressed && (Date.now() - this.lastBigShot) >
-	       1000/g_big_shots_per_sec) {
+      else if (mouse.rightPressed && (this.tick - this.lastBigShot) >
+	       33/g_big_shots_per_sec) {
 	var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_big_shot_speed);
 	this.shootBig(v);
-	this.lastBigShot = Date.now();
+	this.lastBigShot = this.tick;
       }
     }
   };
@@ -39,8 +40,8 @@ function Wizard() {
   this.draw = function() {
     if (this.stunTime % 4 > 1) {
       // stun flash, draw nothing
-    } else if((Date.now() - this.lastShot) < 200 ||
-	      (Date.now() - this.lastBigShot) < 300) {
+    } else if((this.tick - this.lastShot) < 6 ||
+	      (this.tick - this.lastBigShot) < 18) {
       ctx.drawImage(resourceManager.getImage("wizard_act"),
 		    this.loc.x, this.loc.y);
     } else {
@@ -48,10 +49,13 @@ function Wizard() {
 		    this.loc.x, this.loc.y);
     }
 
-    if ((Date.now() - this.lastBigShot) < 1000/g_big_shots_per_sec) {
+    if ((this.tick - this.lastBigShot) < 33/g_big_shots_per_sec) {
       ctx.beginPath();
       ctx.arc(this.loc.x + 15, this.loc.y + 10,
-	      g_player_size, 0, Math.PI*2*(Date.now() - this.lastBigShot) / (1000/g_big_shots_per_sec), true);
+	      g_player_size, 0, 
+	      Math.PI*2*(this.tick - this.lastBigShot) / (33/g_big_shots_per_sec),
+	      true);
+
       ctx.lineWidth = 3;
       ctx.strokeStyle = "red"; // line color
       ctx.stroke();

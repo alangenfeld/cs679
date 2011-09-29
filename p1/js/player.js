@@ -5,10 +5,12 @@ function Player(x, y) {
   this.loc = new Point(x, y);
   this.dir = new Vector(0, 0, g_player_speed);
   this.lastShot = 0;
+  this.tick = 0;
 
   this.init();
 
   this.update = function() {
+    this.tick++;
     var kbd = 0;
     if (keyboard.left) {
       kbd -= 1;
