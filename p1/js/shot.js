@@ -74,11 +74,17 @@ function FireShot(x, y, v) {
 
   this.draw = function() {
 
+    
+    ctx.save();
+	var angle = this.dir.angle() + 90;
+    ctx.translate(this.loc.x, this.loc.y);
+    ctx.rotate(angle/180*Math.PI);
     ctx.drawImage(resourceManager.getImage("fireball"),
 		  (Math.floor(this.tick/2)%3)*128, 0,
 		  128, 113,
-		  this.loc.x - this.size/2, this.loc.y - this.size/2,
+		  -this.size/2, -this.size/2,
 		  128, 113);
+    ctx.restore();
 
   };
 }

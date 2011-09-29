@@ -94,7 +94,6 @@ function ResourceManager() {
   };
 }
 var resourceManager = new ResourceManager;
-resourceManager.addImage("grass", "img/grass.png");
 
 /**
  * The heart of the beast
