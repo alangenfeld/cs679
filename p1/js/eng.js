@@ -203,10 +203,10 @@ function Mouse() {
   function disableContextMenu(e) {
     return false;
   };
-  display.oncontextmenu = disableContextMenu.bind(this);
+  document.oncontextmenu = disableContextMenu.bind(this);
 
   // prevent double click from highlighting text 
-  display.onselectstart = function () {
+  document.onselectstart = function () {
     return false;
   };
 }
