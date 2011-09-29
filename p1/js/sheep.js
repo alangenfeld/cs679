@@ -16,9 +16,9 @@ function BasicSheep(x, y) {
   
   this.avoidEdges = function() { 
     if (this.loc.x - this.size/2 < 1 + this.bubble) {
-      this.dir.x = 1;
+      this.dir.x = 4*Math.random();
     } else if (this.loc.x + this.size/2 > display.width - 1 - this.bubble) {
-      this.dir.x = -1;
+      this.dir.x = -4*Math.random();
     }
 
     if (this.loc.y > display.height - wall.height - this.size/2 && wall.health > 0) {

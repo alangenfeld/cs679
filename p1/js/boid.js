@@ -105,7 +105,7 @@ function Boid(x, y) {
 	  this.leave();
 	  gameInfo.addToScore(100);
 	  if(wall.health < 1000 && wall.health != 0) {
-	    wall.health++;
+	    wall.add(1);
 	  }
         }
         var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);

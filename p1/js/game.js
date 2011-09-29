@@ -70,11 +70,12 @@ resourceManager.addImage("wizard_act", "img/wizard_act.png");
 resourceManager.addImage("fireball", "img/fireball.png");
 resourceManager.addImage("rock", "img/rock.png");
 resourceManager.addImage("grass", "img/grass.png");
+resourceManager.addImage("fence", "img/fence.png");
 
 var player, farms, gameInfo, wall, wave;
 function gameSetup() {
   gameInfo = new GameInfo;
-  wall = new Wall(display.width, g_player_size/2);
+  wall = new Wall(display.width, 16);
   wave = new Wave();
 
   player = new Wizard();
