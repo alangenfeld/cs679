@@ -68,6 +68,7 @@ resourceManager.addImage("sheep_b", "img/sheep_b.png");
 resourceManager.addImage("wizard", "img/wizard.png");
 resourceManager.addImage("wizard_act", "img/wizard_act.png");
 resourceManager.addImage("fireball", "img/fireball.png");
+resourceManager.addImage("rock", "img/rock.png");
 
 var player, farms, gameInfo, wall, wave;
 function gameSetup() {

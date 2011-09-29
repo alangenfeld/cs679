@@ -48,11 +48,16 @@ Shot.prototype = new GameObject;
 function RockShot(x, y, v) {
   this.loc = new Point(x, y);
   this.dir = v;
-  this.size =  g_shot_size;
-  this.bubble =  g_shot_size * 3;
+  this.size = 56;
+  this.bubble = 56 * 3;
   this.init();
-  this.draw = function() {
 
+  this.draw = function() {
+    ctx.drawImage(resourceManager.getImage("rock"),
+		  (Math.floor(this.tick/3)%4)*56, 0,
+		  56, 57,
+		  this.loc.x - this.size/2, this.loc.y - this.size/2,
+		  56, 57);
   };
 }
 RockShot.prototype = new Shot;
