@@ -96,11 +96,10 @@ function Boid(x, y) {
   };
 
   this.avoidShots = function() {
+    var ret = new Vector(0,0);
     for (idx in g_shots) {
       var dist = this.loc.distance(g_shots[idx].loc);
-
       if (dist < this.size/2 + g_shots[idx].size/2 + g_shots[idx].bubble) {
-
         // remove boid if its hit
         if (dist < this.size/2 + g_shots[idx].size/2) {
 	  this.leave();
@@ -109,13 +108,12 @@ function Boid(x, y) {
 	    wall.health++;
 	  }
         }
-
         var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
         temp.inverse();
-	return temp;
+	ret = temp;
       }
     }
-    return new Vector(0,0);
+    return ret;
   };
 
   this.leave = function() {

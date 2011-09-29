@@ -9,6 +9,7 @@ function BasicSheep(x, y) {
   this.zone = 22;
   this.speed = 3;
   this.color = "#FFFFFF";
+
   if (x && y) {
     this.init();
   }
@@ -34,6 +35,11 @@ function BasicSheep(x, y) {
   };
 
   this.draw = function() {
+    this.image = resourceManager.getImage("sheep_s");    
+    ctx.drawImage(resourceManager.getImage("sheep_s"),
+		  this.loc.x, this.loc.y);
+  };
+/**
     ctx.fillStyle = this.color;
 
     // body
@@ -57,6 +63,8 @@ function BasicSheep(x, y) {
     ctx.stroke();
     ctx.fill();
   };
+*/
+
 }
 BasicSheep.prototype = new Boid;
 
@@ -66,6 +74,7 @@ function BigSheep(x, y) {
   this.bubble = 30;
   this.speed = 2;
   this.color = "#F0F0F0";
+
   if (x && y) {
     this.init();
   }
@@ -76,6 +85,7 @@ function BlackSheep(x, y) {
   this.loc = DisplacedPoint(x,y);
   this.bubble = 50;
   this.color = "#000000";
+
   if (x && y) {
     this.init();
   }

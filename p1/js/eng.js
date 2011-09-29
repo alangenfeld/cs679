@@ -76,6 +76,30 @@ function ObjectManager() {
 var objectManager = new ObjectManager;
 
 /**
+ * Ye Olde Manager of Objects
+ */
+function ResourceManager() {
+  this.images = {"null":null};
+  
+  this.addImage = function(name, src) {
+    console.log(this.images);
+    var newImg = new Image;
+    console.log(this.images);
+    newImg.src = src;
+    console.log(this.images);
+    this.images[name] = newImg;
+    console.log(this.images);
+  };
+  this.getImage = function(name) {
+    if(this.images[name])
+      return this.images[name];
+    else
+      debugger
+  };
+}
+var resourceManager = new ResourceManager;
+
+/**
  * The heart of the beast
  */
 var Game = function() {

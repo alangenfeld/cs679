@@ -11,12 +11,14 @@ function Wizard() {
     if (this.stunTime > 0) {
       this.stunTime--;
     } else {
-      if (mouse.leftPressed && (Date.now() - this.lastShot) > 1000/g_shots_per_sec) {
+      if (mouse.leftPressed && (Date.now() - this.lastShot) > 
+	  1000/g_shots_per_sec) {
 	var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_shot_speed);
 	this.shoot(v);
 	this.lastShot = Date.now();
       }
-      else if (mouse.rightPressed && (Date.now() - this.lastBigShot) > 1000/g_big_shots_per_sec) {
+      else if (mouse.rightPressed && (Date.now() - this.lastBigShot) >
+	       1000/g_big_shots_per_sec) {
 	var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_big_shot_speed);
 	this.shootBig(v);
 	this.lastBigShot = Date.now();

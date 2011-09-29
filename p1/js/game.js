@@ -61,6 +61,7 @@ GameInfo.prototype = new GameObject;
 /**
  * Runtime
  */
+resourceManager.addImage("sheep_s", "img/sheep_s.png");
 var player, farms, gameInfo, wall, wave;
 function gameSetup() {
   gameInfo = new GameInfo;
@@ -68,9 +69,9 @@ function gameSetup() {
   wave = new Wave();
 
   player = new Wizard();
-  farms = new Array(new Farm(display.width/4, -30));
-  farms.push(new Farm(3*display.width/4, -30));
-  farms.push(new Farm(display.width/2, -30));
+  farms = new Array(new Farm(display.width/4, 30));
+  farms.push(new Farm(3*display.width/4, 50));
+  farms.push(new Farm(display.width/2, 80));
 }  
 
 gameSetup();

@@ -30,7 +30,10 @@ function Player(x, y) {
 
   this.draw = function() {
     ctx.fillStyle="#000000";
-    ctx.fillRect(this.loc.x - g_player_size/2, this.loc.y - g_player_size/2, g_player_size, g_player_size);
+    ctx.fillRect(this.loc.x - g_player_size/2,
+		 this.loc.y - g_player_size/2, 
+		 g_player_size, 
+		 g_player_size);
   };
 
   this.shoot = function() {
@@ -68,7 +71,6 @@ function Shot(x, y, v, size, bubble) {
   };
   
   this.update = function() {
-
     // move shot
     if(this.loc.y < -this.size/2) {
       g_shots.splice(g_shots.indexOf(this), 1);
@@ -78,10 +80,10 @@ function Shot(x, y, v, size, bubble) {
       this.shutdown();
     } else if(this.loc.x < -this.size/2) {
       g_shots.splice(g_shots.indexOf(this), 1);
-	  this.shutdown();
-	} else if(this.loc.x > display.width + this.size/2) {
+      this.shutdown();
+    } else if(this.loc.x > display.width + this.size/2) {
       g_shots.splice(g_shots.indexOf(this), 1);
-	  this.shutdown();
+      this.shutdown();
     } else {
       this.loc.move(this.dir);
     }
