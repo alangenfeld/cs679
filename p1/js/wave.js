@@ -18,20 +18,24 @@ function Wave() {
       this.spawn = true;  
       this.lastSpawn = now;
       this.num++;
-      ctx.font = "24pt Courier";
-      ctx.fillStyle = "rgba(0,0,0,1)";
-      ctx.strokeText("Wave " + this.num, 0, 220, 240);
+      ctx.font = "bold 24pt Courier";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "black";
+      ctx.fillText("Wave " + this.num, display.width/2, display.height/2, 480);
       this.displayOpacity = 1.0;
       if(this.num > 1) {
         gameInfo.addToScore(1000*this.num);
       }
     } else {
-      ctx.font = "24pt Courier";
-      ctx.fillStyle = 'rgba(0,0,0,' + this.displayOpacity + ')';
-      ctx.strokeText("Wave " + this.num, 0, 350, 240);
+      ctx.font = "bold 24pt Courier";
+      ctx.fillStyle = "black";
+      ctx.textAlign = "center";
+      var temp = ctx.globalAlpha;
+      ctx.globalAlpha = this.displayOpacity;
+      ctx.fillText("Wave " + this.num, display.width/2, display.height/2, 480);
+      ctx.globalAlpha = temp;
       this.displayOpacity *= .95;
-      console.log(this.displayOpacity);
-      this.spawn = false; 
+      this.spawn = false;
     }
   };
 }
