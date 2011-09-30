@@ -6,7 +6,6 @@ function Wave() {
   this.lastSpawn = 0;
   this.num = 0;
   this.init();
-  this.displayOpacity = 0;
 
   this.update = function() {
 
@@ -22,19 +21,17 @@ function Wave() {
       ctx.textAlign = "center";
       ctx.fillStyle = "black";
       ctx.fillText("Wave " + this.num, display.width/2, display.height/2, 480);
-      this.displayOpacity = 1.0;
       if(this.num > 1) {
         gameInfo.addToScore(1000*this.num);
       }
-    } else {
+    } else if((now - this.lastSpawn) < 5000) {
       ctx.font = "bold 24pt Courier";
       ctx.fillStyle = "black";
       ctx.textAlign = "center";
       var temp = ctx.globalAlpha;
-      ctx.globalAlpha = this.displayOpacity;
+      ctx.globalAlpha = 1.0 - (now - this.lastSpawn)/5000;
       ctx.fillText("Wave " + this.num, display.width/2, display.height/2, 480);
       ctx.globalAlpha = temp;
-      this.displayOpacity *= .95;
       this.spawn = false;
     }
   };

@@ -49,13 +49,6 @@ function GameInfo() {
       ctx.globalAlpha = temp;
     }
     if(this.sheepPassed >= g_num_sheep_allowed) {
-      //$("msg").innerHTML = "Game Over, Press Space to Continue";
-      //$("msg").style.opacity = 1.0;
-      ctx.font = "bold 24pt Courier";
-      ctx.fillStyle = "black";
-      ctx.textAlign = "center";
-      ctx.fillText("Game Over!", display.width/2, display.height/2, 480);
-      ctx.fillText("Press Space to Continue.", display.width/2, display.height/2 + 30, 480);
       game.over(
 	function() {
 	  gameInfo.sheepPassed = 0;

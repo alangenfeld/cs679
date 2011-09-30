@@ -102,6 +102,10 @@ function Boid(x, y) {
       if (dist < this.size/2 + g_shots[idx].size/2 + g_shots[idx].bubble) {
         // remove boid if its hit
         if (dist < this.size/2 + g_shots[idx].size/2) {
+          // ugly hack to make sure shot is in objectManager.objects (make sure it displays and moves)
+	  if(objectManager.objects.indexOf(g_shots[idx]) == -1) {
+            g_shots.splice(g_shots.indexOf(g_shots[idx]), 1);
+	  }
 	  this.leave();
 	  gameInfo.addToScore(100);
         }
