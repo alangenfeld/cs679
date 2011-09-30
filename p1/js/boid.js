@@ -105,7 +105,7 @@ function Boid(x, y) {
 	  this.leave();
 	  gameInfo.addToScore(100);
         }
-        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed);
+        var temp = this.loc.vectorTo(g_shots[idx].loc, this.speed*1.25);
         temp.inverse();
 	ret = temp;
       }

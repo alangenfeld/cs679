@@ -31,7 +31,7 @@ function BasicSheep(x, y) {
   };
   
   this.wind = function() {
-    return new Vector(0, 1);
+    return new Vector(0, 1, this.speed);
   };
 
   this.draw = function() {
