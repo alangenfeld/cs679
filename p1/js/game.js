@@ -34,19 +34,19 @@ function GameInfo() {
 
   this.update = function() {
     if ((Date.now() - this.lastSheepPassed) < 5000) {
-      $("msg2").innerHTML = this.sheepPassed + "/" + g_num_sheep_allowed;
-      $("msg2").style.opacity = 1 - (Date.now() - this.lastSheepPassed)/5000;
+      //$("msg2").innerHTML = this.sheepPassed + "/" + g_num_sheep_allowed;
+      //$("msg2").style.opacity = 1 - (Date.now() - this.lastSheepPassed)/5000;
     }
     if(this.sheepPassed >= g_num_sheep_allowed) {
-      $("msg").innerHTML = "Game Over, Press Space to Continue";
-      $("msg").style.opacity = 1.0;
+      //$("msg").innerHTML = "Game Over, Press Space to Continue";
+      //$("msg").style.opacity = 1.0;
       game.over(
 	function() {
 	  gameInfo.sheepPassed = 0;
 	  gameInfo.score = 0;
 	  wave.num = 0;
-	  $("msg").innerHTML = "";
-	  $("msg2").innerHTML = "";
+	  //$("msg").innerHTML = "";
+	  //$("msg2").innerHTML = "";
 	  objectManager.clear();
 	  g_boids = new Array();
 	  gameSetup();
@@ -84,12 +84,19 @@ function gameSetup() {
 
 gameSetup();
 
-$("msg").innerHTML = "Sheep are coming! Defend the town. Left click: boulder. Right click: fireball. Press space to start.";
+ctx.font = "bold 24pt Courier";
+ctx.fillText("Instructions", 0, 220, 480);
+ctx.font = "24pt Courier";
+ctx.fillText("Sheep are coming!", 0, 250, 480);
+ctx.fillText("Defend the town.", 0, 280, 480);
+ctx.fillText("Left click: boulder.", 0, 310, 480);
+ctx.fillText("Right click: fireball.", 0, 340, 480);
+ctx.fillText("Press space to start.", 0, 370, 480);
 
 function start() {
   if (keyboard.space) {
-    $("msg").innerHTML = "";
-    $("msg2").innerHTML = "";
+    //$("msg").innerHTML = "";
+    //$("msg2").innerHTML = "";
     game.start();
   } else {
     this.p = setTimeout(start,30);

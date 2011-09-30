@@ -6,6 +6,7 @@ function Wave() {
   this.lastSpawn = 0;
   this.num = 0;
   this.init();
+  this.displayOpacity = 0;
   //$("waveNum").innerHTML = this.num;
 
   this.update = function() {
@@ -15,15 +16,21 @@ function Wave() {
       this.lastSpawn = now;
       this.num++;
       //$("waveNum").innerHTML = this.num;
-      $("msg").innerHTML = "Wave " + this.num;
-      $("msg").style.opacity = 1.0;
+      ctx.font = "24pt Courier";
+      ctx.fillStyle = "rgba(0,0,0,1)";
+      ctx.fillText("Wave " + this.num, 0, 350, 480);
+      //$("msg").innerHTML = "Wave " + this.num;
+      //$("msg").style.opacity = 1.0;
 
       if(this.num > 1) {
         gameInfo.addToScore(1000*this.num);
       }
     } else {
-      var opacity = parseFloat($("msg").style.opacity);
-      $("msg").style.opacity = opacity * .95;
+      this.displayOpacity = 1;
+      ctx.font = "24pt Courier";
+      ctx.fillStyle = "rgba(0,0,0," + this.displayOpacity + ")";
+      ctx.fillText("Wave " + this.num, 0, 350, 480);
+      this.displayOpacity *= .95;
       this.spawn = false; 
     }
   };
