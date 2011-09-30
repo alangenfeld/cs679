@@ -26,20 +26,11 @@
   right: 0;
 }
 
-#msg {
+.messages {
   position: absolute;
   font-size: xx-large;
   text-align: center;
   width: inherit;
   top: 320px;
-  z-index: 0;
-}
-
-#msg2 {
-  position: absolute;
-  font-size: xx-large;
-  text-align: center;
-  width: inherit;
-  top: 350px;
   z-index: 0;
 }

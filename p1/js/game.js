@@ -85,4 +85,18 @@ function gameSetup() {
 }  
 
 gameSetup();
-game.start();
+
+$("msg").innerHTML = "Sheep are coming! Defend the town. Left click: boulder. Right click: fireball. Press space to start.";
+
+function start() {
+  if (keyboard.space) {
+    $("msg").innerHTML = "";
+    $("msg2").innerHTML = "";
+    game.start();
+  } else {
+    this.p = setTimeout(start,30);
+  }
+}
+start();
+
+
