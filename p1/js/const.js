@@ -15,5 +15,5 @@ var g_num_sheep_allowed = 10;
 var g_player_speed = 4;
 var g_shot_speed = 8;
 var g_big_shot_speed = 10;
-var g_shots_per_sec = 2;
+var g_shots_per_sec = 1.75;
 var g_big_shots_per_sec = .2;
