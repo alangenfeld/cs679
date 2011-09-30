@@ -16,12 +16,10 @@ function GameInfo() {
   this.gameOver = false;
 
   this.sheepPassed = 0;
-  //$("sheepPassed").innerHTML = this.sheepPassed;
 
   this.sheepSuccess = function() {
     this.sheepPassed++;
     this.lastSheepPassed = Date.now();
-    //$("sheepPassed").innerHTML = this.sheepPassed;
   };
 
   this.score = 0;
