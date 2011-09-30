@@ -169,18 +169,18 @@ function Mouse() {
   function press(e) {
     if(e.which == 1) {
       this.leftPressed = true;
-	} else if(e.which == 3) {
+    } else if(e.which == 3) {
       this.rightPressed = true;
-	}
+    }
   };
   display.onmousedown = press.bind(this);
-
+  
   function unpress(e) {
     if(e.which == 1) {
       this.leftPressed = false;
-	} else if(e.which == 3) {
+    } else if(e.which == 3) {
       this.rightPressed = false;
-	}
+    }
   };
   display.onmouseup = unpress.bind(this);
 
@@ -189,14 +189,6 @@ function Mouse() {
     this.y = e.offsetY? e.offsetY: e.layerY;
   };
   display.onmousemove = move.bind(this);
-
-  /*
-  function leave(e) {
-    this.leftPressed = false;
-    this.rightPressed = false;
-  };
-  display.onmouseout = leave.bind(this);
-  */
 
   // disable context menu
   function disableContextMenu(e) {
