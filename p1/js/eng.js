@@ -141,8 +141,8 @@ var Game = function() {
     
     // clear screen and redraw objects
     ctx.clearRect(0, 0, display.width, display.height);
-	var img = resourceManager.getImage("grass");
-	img.style.zindex = -1;
+    var img = resourceManager.getImage("grass");
+    img.zindex = -1;
     ctx.drawImage(img, 0, 0);
     objectManager.drawAll();
     renderFinish = Date.now();
