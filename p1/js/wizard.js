@@ -4,6 +4,7 @@
 function Wizard() {
   this.loc = new Point(display.width/2 - 29/2, display.height - 56);
   this.lastBigShot = 0;
+  this.lastShot = 0;
   this.init();
   this.stunTime = 0;
 
@@ -16,7 +17,7 @@ function Wizard() {
 	  33/g_shots_per_sec) {
 	var v = this.loc.vectorTo(new Point(mouse.x, mouse.y), g_shot_speed);
 	this.shoot(v);
-	this.lastShot = this.tick;
+	lastShot = this.tick;
       }
       else if (mouse.rightPressed && (this.tick - this.lastBigShot) >
 	       33/g_big_shots_per_sec) {
