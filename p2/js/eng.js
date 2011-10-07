@@ -139,7 +139,8 @@ var Game = function() {
     updateFinish = Date.now();
     
     // clear screen and redraw objects
-//    ctx.clearRect(0, 0, display.width, display.height);
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // look in to window.requestAnimFrame
     objectManager.drawAll();
