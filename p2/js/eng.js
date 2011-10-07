@@ -5,16 +5,16 @@
 // drawing context
 var display = $("display");
 var ctx = display.getContext("2d");
-var targetFPS = 30;
+var targetFPS = 60;
 
 // stats
 var lastRender, loopStart, updateFinish, renderFinish;
 var updateStats = function() {
   if(statsOn){
-    $("ut").innerHTML = (updateFinish - loopStart) + " ut";
-    $("rt").innerHTML = (renderFinish - updateFinish) + " rt";
+    $("ut").innerHTML = (updateFinish - loopStart) + " ms";
+    $("rt").innerHTML = (renderFinish - updateFinish) + " ms";
     $("fps").innerHTML = (Math.floor(1000 / (renderFinish - lastRender))) + " fps";
-    $("num_objs").innerHTML = (objectManager.objects.length) + " objs";
+    $("num_objs").innerHTML = (objectManager.objects.length);
   }
   lastRender = renderFinish;
   return (1000/targetFPS) - (renderFinish - loopStart);
