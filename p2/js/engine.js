@@ -4,7 +4,9 @@
 
 // drawing context
 var display = $("display");
+var display2 = $("display2");
 var gl = display.getContext("experimental-webgl");
+var ctx = display2.getContext("2d");
 
 var targetFPS = 60;
 
@@ -69,6 +71,7 @@ var Game = function() {
     // clear screen and redraw objects
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    ctx.clearRect(0, 0, display2.width, display2.height);
 
     // look in to window.requestAnimFrame
     objectManager.drawAll();

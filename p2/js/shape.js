@@ -12,12 +12,16 @@ function Shape() {
   this.init();
 
   this.update = function() {
+
+
     
   };
 
   this.draw = function() {
-    
+//    gl.bindBuffer(gl.ARRAY_BUFFER, trianglePosBuffer);
+  //  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, trianglePosBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
+//    gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 }
 Shape.prototype = new GameObject;
