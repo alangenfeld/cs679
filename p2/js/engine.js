@@ -10,9 +10,28 @@ var ctx = display2.getContext("2d");
 
 gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.enable(gl.DEPTH_TEST);
+var mvMatrix = mat4.create();
+var mvMatrixStack = [];
+var pMatrix = mat4.create();
 
+function mvPushMatrix() {
+  
+  var copy = mat4.create();
+  mat4.set(mvMatrix, copy);
+  mvMatrixStack.push(copy);
+}
 
-var targetFPS = 60;
+function mvPopMatrix() {
+  if (mvMatrixStack.length == 0) {
+    throw "Invalid popMatrix!";
+  }
+  mvMatrix = mvMatrixStack.pop();
+}
+
+function setMatrixUniforms(shader) {
+  gl.uniformMatrix4fv(shader.pMatrixUniform, false, pMatrix);
+  gl.uniformMatrix4fv(shader.mvMatrixUniform, false, mvMatrix);
+}
 
 // stats
 var lastRender, loopStart, updateFinish, renderFinish;
@@ -24,7 +43,6 @@ var updateStats = function() {
     $("num_objs").innerHTML = (objectManager.objects.length);
   }
   lastRender = renderFinish;
-  return (1000/targetFPS) - (renderFinish - loopStart);
 };
 
 /**
@@ -73,19 +91,25 @@ var Game = function() {
     updateFinish = Date.now();
     
     // clear screen and redraw objects
-//    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     ctx.clearRect(0, 0, display2.width, display2.height);
+
+    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 
+		     0.1, 100.0, pMatrix);
+
+    mat4.identity(mvMatrix);
+    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
 
     // look in to window.requestAnimFrame
     objectManager.drawAll();
     renderFinish = Date.now();
     
-    var sleep = updateStats();
+    updateStats();
     if (game.paused) {
-      this.gloop = setTimeout(game.wait, sleep);
+      requestAnimFrame(game.wait, display);
     } else {
-      this.gloop = setTimeout(game.start, sleep);
+      requestAnimFrame(game.start, display);
     }
   };
 };

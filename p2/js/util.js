@@ -4,6 +4,20 @@
 function $() {
   return document.getElementById.apply(document, arguments);
 }
+
+// shim layer with setTimeout fallback
+window.requestAnimFrame = 
+  (function() {
+    return  window.requestAnimationFrame       || 
+      window.webkitRequestAnimationFrame || 
+      window.mozRequestAnimationFrame    || 
+      window.oRequestAnimationFrame      || 
+      window.msRequestAnimationFrame     || 
+      function(/* function */ callback, /* DOMElement */ element){
+	window.setTimeout(callback, 1000 / 60);
+      };
+  })();
+
 function DisplacedPoint(x, y) {
   var rx = Math.random()*60 - 30;
   var ry = Math.random()*60 - 30;

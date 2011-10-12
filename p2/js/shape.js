@@ -19,6 +19,8 @@ function Shape() {
     this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
     gl.enableVertexAttribArray(this.shader.vtxPos);
 
+    setMatrixUniforms(this.shader);
+
     gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
     gl.vertexAttribPointer(this.shader.vtxPos,
 			   3, gl.FLOAT, false, 0, 0);
