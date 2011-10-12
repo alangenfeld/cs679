@@ -2,10 +2,24 @@
   float: left;
 }
 
-.screen {
+canvas {
   border: solid black 1px;
-  width: 480px;
-  height: 640px;
+}
+
+#display {
+  left: 0px;
+}
+
+#display2 {
+  position: absolute;
+  left: 480px;
+  top: 0;
+}
+
+.screen {
+  width: 960px;
+  height: 320px;
+  position: relative;
 }
 
 .centered {

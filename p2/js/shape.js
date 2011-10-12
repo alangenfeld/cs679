@@ -1,7 +1,6 @@
 function Shape() {
-
-  var vertexBuffer = gl.CreateBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  this.vtxBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
   var vertices = [
     0.0,  1.0,  0.0,
     -1.0, -1.0,  0.0,
@@ -9,19 +8,22 @@ function Shape() {
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
+  this.shader = getShader("white");
   this.init();
 
   this.update = function() {
-
-
-    
   };
 
   this.draw = function() {
-//    gl.bindBuffer(gl.ARRAY_BUFFER, trianglePosBuffer);
-  //  gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, trianglePosBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    gl.useProgram(this.shader);
+    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
+    gl.enableVertexAttribArray(this.shader.vtxPos);
 
-//    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
+    gl.vertexAttribPointer(this.shader.vtxPos,
+			   3, gl.FLOAT, false, 0, 0);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
   };
 }
 Shape.prototype = new GameObject;

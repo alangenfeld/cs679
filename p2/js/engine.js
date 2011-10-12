@@ -8,6 +8,10 @@ var display2 = $("display2");
 var gl = display.getContext("experimental-webgl");
 var ctx = display2.getContext("2d");
 
+gl.clearColor(0.0, 0.0, 0.0, 1.0);
+gl.enable(gl.DEPTH_TEST);
+
+
 var targetFPS = 60;
 
 // stats
@@ -69,7 +73,7 @@ var Game = function() {
     updateFinish = Date.now();
     
     // clear screen and redraw objects
-    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+//    gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     ctx.clearRect(0, 0, display2.width, display2.height);
 

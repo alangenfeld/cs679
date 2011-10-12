@@ -19,4 +19,5 @@ var statsOn = true;
 /**
  * Runtime
  */
+var shape = new Shape();
 game.start();
