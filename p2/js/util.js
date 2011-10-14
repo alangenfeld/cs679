@@ -5,18 +5,18 @@ function $() {
   return document.getElementById.apply(document, arguments);
 }
 
-// shim layer with setTimeout fallback
-window.requestAnimFrame = 
-  (function() {
-    return  window.requestAnimationFrame       || 
-      window.webkitRequestAnimationFrame || 
-      window.mozRequestAnimationFrame    || 
-      window.oRequestAnimationFrame      || 
-      window.msRequestAnimationFrame     || 
-      function(/* function */ callback, /* DOMElement */ element){
-	window.setTimeout(callback, 1000 / 60);
-      };
-  })();
+// stats
+var lastRender, loopStart, updateFinish, renderFinish;
+var updateStats = function() {
+  if(statsOn){
+    $("ut").innerHTML = (updateFinish - loopStart) + " ms";
+    $("rt").innerHTML = (renderFinish - updateFinish) + " ms";
+    $("fps").innerHTML = (Math.floor(1000 / (renderFinish - lastRender))) + " fps";
+    $("num_objs").innerHTML = (objectManager.objects.length);
+  }
+  lastRender = renderFinish;
+};
+
 
 function DisplacedPoint(x, y) {
   var rx = Math.random()*60 - 30;
