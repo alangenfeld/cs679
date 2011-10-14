@@ -17,7 +17,7 @@ function Shape() {
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-  this.shader = getShader("tri");
+  this.shader = getShader("triangle");
 
   this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
   gl.enableVertexAttribArray(this.shader.vtxPos);

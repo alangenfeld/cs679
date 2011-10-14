@@ -92,8 +92,8 @@ function getShader(name) {
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
       alert("Could not initialise shaders");
     }
-    shaderProgram.pMatrixUniform = gl.getUniformLocation(this.shader, "uPMatrix");
-    shaderProgram.mvMatrixUniform = gl.getUniformLocation(this.shader, "uMVMatrix");
+    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     shaderMap[name] = shaderProgram;
   }
 

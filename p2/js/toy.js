@@ -20,5 +20,5 @@ var camera = new Camera();
 /**
  * Runtime
  */
-var shape = new Shape();
+var board = new GameBoard();
 game.start();
