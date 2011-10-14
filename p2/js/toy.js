@@ -15,6 +15,7 @@
  * Setup
  */
 var statsOn = true;
+var camera = new Camera();
 
 /**
  * Runtime

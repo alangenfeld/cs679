@@ -13,15 +13,12 @@ function Shape() {
   var colors = [
     1.0, 0.0, 0.0, 1.0,
     0.0, 1.0, 0.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
+    0.0, 0.0, 1.0, 1.0
   ];
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
-  this.shader = getShader("white");
+  this.shader = getShader("tri");
 
-  this.shader.pMatrixUniform = gl.getUniformLocation(this.shader, "uPMatrix");
-  this.shader.mvMatrixUniform = gl.getUniformLocation(this.shader, "uMVMatrix");
-  
   this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
   gl.enableVertexAttribArray(this.shader.vtxPos);
   

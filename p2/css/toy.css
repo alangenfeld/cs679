@@ -7,7 +7,9 @@ canvas {
 }
 
 #display {
-  left: 0px;
+  left: 0;
+  position: absolute;
+  top: 0;
 }
 
 #display2 {

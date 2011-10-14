@@ -60,6 +60,10 @@ function Keyboard() {
       this.left = true;
     } else if (e.keyCode == 39 || e.keyCode == 68) {
       this.right = true;
+    } else if (e.keyCode == 87 || e.keyCode == 119) {
+      this.up = true;
+    } else if (e.keyCode == 83 || e.keyCode == 115) {
+      this.down = true;
     } else if(e.keyCode == 32) {
       this.space = true;
     }
@@ -71,6 +75,10 @@ function Keyboard() {
       this.left = false;
     } else if (e.keyCode == 39 || e.keyCode == 68) {
       this.right = false;
+    } else if (e.keyCode == 87 || e.keyCode == 119) {
+      this.up = false;
+    } else if (e.keyCode == 83 || e.keyCode == 115) {
+      this.down = false;
     } else if(e.keyCode == 32) {
       this.space = false;
     }

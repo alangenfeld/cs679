@@ -2,9 +2,6 @@
  * Core game engine
  *******************************************************************************/
 
-/**
- * The heart of the beast
- */
 var Game = function() {
   this.paused = false;
   this.gloop = null;
@@ -50,13 +47,6 @@ var Game = function() {
     // clear screen and redraw objects
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     ctx.clearRect(0, 0, display2.width, display2.height);
-
-    gl.viewport(0, 0, display.width, display.height);
-    mat4.perspective(45, display.width / display.height, 
-		     0.1, 100.0, pMatrix);
-
-    mat4.identity(mvMatrix);
-    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
 
     // look in to window.requestAnimFrame
     objectManager.drawAll();
