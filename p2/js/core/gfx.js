@@ -28,6 +28,11 @@ function setMatrixUniforms(shader) {
   gl.uniformMatrix4fv(shader.mvMatrixUniform, false, mvMatrix);
 }
 
+
+function degToRad(degrees) {
+  return degrees * Math.PI / 180;
+}
+
 // shim layer with setTimeout fallback
 window.requestAnimFrame = 
   (function() {
