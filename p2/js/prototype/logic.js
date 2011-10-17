@@ -143,4 +143,3 @@ function GameLogic(){
     
 }
 GameLogic.prototype = new GameObject;
-var logic = new GameLogic();

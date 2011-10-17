@@ -6,8 +6,8 @@ varying vec3 vtxPosition;
 
 void main(void) {
   float col = 0.0;
-  if (int(floor(vtxPosition.x) + floor(vtxPosition.y)) / 2 == 1) {
-    float col = 0.8;
+  if(fract(vtxPosition.x) > 0.5 ^^ fract(vtxPosition.y) > 0.5) {
+    col = 0.9;
   }
 
   gl_FragColor = vec4(col, col, col, 1.0);

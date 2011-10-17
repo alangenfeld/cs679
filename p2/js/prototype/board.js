@@ -3,6 +3,20 @@ function GameBoard( width, height, cellSize ){
     this.height = height;
     this.cellSize = cellSize;
     this.orientation = 0;
+  
+    this.vtxBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
+    var vertices = [
+        width/4.0,  height/4.0,  0.0,
+        -width/4.0,  height/4.0,  0.0,
+        width/4.0,  -height/4.0,  0.0,
+        -width/4.0,  -height/4.0,  0.0
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    this.shader = getShader("gameBoard");
+    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
+    gl.enableVertexAttribArray(this.shader.vtxPos);
+
     this.init();
 
     /// Map:
@@ -25,16 +39,16 @@ function GameBoard( width, height, cellSize ){
     this.getCoordinates = function( posX, posY ){
 	var coor = {x:posX * this.cellSize, y:posY * this.cellSize};
 	return coor;
-    }
+    };
 
     this.getCenterCoordinates = function( posX, posY ){
 	var coor = { x:( posX + 0.5 ) * this.cellSize , y:( posY + 0.5 ) * this.cellSize };
 	return coor;
-    }
+    };
 
     this.inBoard = function( posX, posY ){
 	return (posX >= 0 && posX < this.width && posY >= 0 && posY < this.height);
-    }
+    };
     
     this.align = function( u, ort ){
 	v = { x:0, y:0 };
@@ -52,8 +66,14 @@ function GameBoard( width, height, cellSize ){
 	    v.y = -u.y;
 	}
 	return v;
-    }
+    };
+
     this.draw = function(){
+      this.draw2d();
+      this.draw3d();
+    };
+
+    this.draw2d = function(){
 	var i = 0;
 	var j = 0;
 	var x = 0;
@@ -79,8 +99,18 @@ function GameBoard( width, height, cellSize ){
 	    y = y + this.cellSize;
 	}
 	return;
-    }
-    
+    };
+
+
+    this.draw3d = function() {
+      gl.useProgram(this.shader);
+      
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
+      gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
+      
+      setMatrixUniforms(this.shader);
+      
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    };
 }
 GameBoard.prototype = new GameObject;
-var board = new GameBoard( 12, 12, 20 );
