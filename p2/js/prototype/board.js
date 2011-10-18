@@ -103,14 +103,19 @@ function GameBoard( width, height, cellSize ){
 
 
     this.draw3d = function() {
+      mvPushMatrix();
+
       gl.useProgram(this.shader);
       
       gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
       gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
-      
+
+      mat4.translate(mvMatrix, [this.width/4.0, this.height/4.0, 0.0]);
       setMatrixUniforms(this.shader);
       
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+      mvPopMatrix();
     };
 }
 GameBoard.prototype = new GameObject;
