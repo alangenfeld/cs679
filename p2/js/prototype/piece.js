@@ -171,7 +171,34 @@ function Pawn( maxHP, color, posX, posY ){
     this.setMaxHP( maxHP );
     this.sparkCount = 0;
     this.visible = true;
+
+    this.vtxBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
+    var vertices = [
+      1.0, 1.0, 0.0,
+      0.0, 0.0, 3.0,
+      -1.0, 1.0, 0.0,
+
+      -1.0, 1.0, 0.0,
+      0.0, 0.0, 3.0,
+      -1.0, -1.0, 0.0,
+
+      -1.0, -1.0, 0.0,
+      0.0, 0.0, 3.0,
+      1.0, -1.0, 0.0,
+
+      1.0, -1.0, 0.0,
+      0.0, 0.0, 3.0,
+      1.0, 1.0, 0.0
+    ];
+    this.vtxBuffer.size = 12;
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    this.shader = getShader("pawn");
+    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
+    gl.enableVertexAttribArray(this.shader.vtxPos);
+
     this.init();
+
     this.update = function(){
 	if ( this.sparkCount > 0 ){
 	    this.sparkCount--;
@@ -182,8 +209,14 @@ function Pawn( maxHP, color, posX, posY ){
 		this.visible = true;
 	    }
 	}
-    }
+    };
+
     this.draw = function(){
+      this.draw2d();
+      this.draw3d();
+    };
+
+    this.draw2d = function(){
 	if ( this.visible ){
 	    var c = board.getCenterCoordinates( this.posX, this.posY );
 	    ctx.fillStyle = this.color;
@@ -193,6 +226,24 @@ function Pawn( maxHP, color, posX, posY ){
 	    ctx.fill();
 	}
 	this.drawHPBar();
-    }
+    };
+
+    this.draw3d = function() {
+      mvPushMatrix();
+
+      mat4.translate(mvMatrix, [this.posX/2.0, this.posY/2.0, 0.0]);
+      mat4.scale(mvMatrix, [0.25, 0.25, 0.25]);
+      mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
+
+      gl.useProgram(this.shader);
+      
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
+      gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
+      
+      setMatrixUniforms(this.shader);
+      
+      gl.drawArrays(gl.TRIANGLES, 0, this.vtxBuffer.size);
+      mvPopMatrix();
+    };
 }
 Pawn.prototype = new Piece;
