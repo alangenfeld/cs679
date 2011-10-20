@@ -76,26 +76,4 @@ function loadShaders(gl, shaders, callback) {
     return shaders;
 }
 
-function getShader(name) {
 
-  var shaderProgram = shaderMap[name];
-  if (!shaderProgram) {
-    // load the shaders from files
-    var fragmentShader = loadShaders(gl, "shader/"+name+".vs")[0];
-    var vertexShader   = loadShaders(gl, "shader/"+name+".fs")[0];
-    // build the shaderProgram object
-    shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
-    // make sure all is well
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-      alert("Could not initialise shaders");
-    }
-    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    shaderMap[name] = shaderProgram;
-  }
-
-  return shaderProgram;
-}

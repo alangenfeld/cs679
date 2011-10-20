@@ -4,18 +4,27 @@ function GameBoard( width, height, cellSize ){
     this.cellSize = cellSize;
     this.orientation = 0;
   
-    this.vtxBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-    var vertices = [
-        width/4.0,  height/4.0,  0.0,
-        -width/4.0,  height/4.0,  0.0,
-        width/4.0,  -height/4.0,  0.0,
-        -width/4.0,  -height/4.0,  0.0
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     this.shader = getShader("gameBoard");
-    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
-    gl.enableVertexAttribArray(this.shader.vtxPos);
+    setAttribute(this, 
+		 {name: "vtx",
+		  content: [
+		    width/4.0,  height/4.0,  0.0,
+		    -width/4.0,  height/4.0,  0.0,
+		    width/4.0,  -height/4.0,  0.0,
+		    -width/4.0,  -height/4.0,  0.0
+		  ]});
+    setAttribute(this, 
+		 {name: "normal",
+		  content: [
+		    0.0,  0.0,  1.0,
+		    0.0,  0.0,  1.0,
+		    0.0,  0.0,  1.0,
+		    0.0,  0.0,  1.0
+		  ]});
+
+    setUpLights(this.shader);
+    this.attributes = ["vtx", "normal"];
+    this.attributes.num = 4;
 
     this.init();
 
@@ -107,13 +116,13 @@ function GameBoard( width, height, cellSize ){
 
       gl.useProgram(this.shader);
       
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-      gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
+      bindLights(this.shader);
+      bindAttributes(this);
 
       mat4.translate(mvMatrix, [this.width/4.0, this.height/4.0, 0.0]);
       setMatrixUniforms(this.shader);
       
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributes.num);
 
       mvPopMatrix();
     };

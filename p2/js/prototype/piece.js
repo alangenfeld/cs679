@@ -62,35 +62,56 @@ function Character( maxHP, color, posX, posY, ort ){
     this.setMaxHP(maxHP);
     this.setPos( posX, posY );
     this.color = color;
+    this.colorV = [0.0, 0.0, 1.0];
     this.setOrientation( ort );
 
-    this.vtxBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-    var vertices = [
-      1.0, 1.0, 0.0,
-      0.0, 0.0, 3.0,
-      -1.0, 1.0, 0.0,
-
-      -1.0, 1.0, 0.0,
-      0.0, 0.0, 3.0,
-      -1.0, -1.0, 0.0,
-
-      -1.0, -1.0, 0.0,
-      0.0, 0.0, 3.0,
-      1.0, -1.0, 0.0,
-
-      1.0, -1.0, 0.0,
-      0.0, 0.0, 3.0,
-      1.0, 1.0, 0.0
-    ];
-    this.vtxBuffer.size = 12;
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
     this.shader = getShader("hero");
-    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
-    gl.enableVertexAttribArray(this.shader.vtxPos);
+    setAttribute(this, 
+		 {name: "vtx",
+		  content: [
+		    1.0, 1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		      -1.0, 1.0, 0.0,
+		    
+		      -1.0, 1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		      -1.0, -1.0, 0.0,
+		    
+		      -1.0, -1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		    1.0, -1.0, 0.0,
+		    
+		    1.0, -1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		    1.0, 1.0, 0.0
+		  ]});
+
+    setAttribute(this, 
+		 {name: "normal",
+		  content: [
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
+		  ]});
+
+    setUpLights(this.shader);
+    this.shader.color = gl.getUniformLocation(this.shader, "color");
+    this.attributes = ["vtx", "normal"];
+    this.attributes.size = 12;
 
     this.init();
-
 
     this.draw = function(){
       this.draw2d();
@@ -153,12 +174,13 @@ function Character( maxHP, color, posX, posY, ort ){
 
       gl.useProgram(this.shader);
       
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-      gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
+      gl.uniform3fv(this.shader.color, this.colorV);
+      bindLights(this.shader);
+      bindAttributes(this);
       
       setMatrixUniforms(this.shader);
       
-      gl.drawArrays(gl.TRIANGLES, 0, this.vtxBuffer.size);
+      gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
       mvPopMatrix();
     };
 }
@@ -167,35 +189,58 @@ Character.prototype = new Piece;
 function Pawn( maxHP, color, posX, posY ){
     this.type = 3;
     this.color = color;
+    this.colorV = [1.0, 0.0, 0.0];
     this.setPos( posX, posY );
     this.setMaxHP( maxHP );
     this.sparkCount = 0;
     this.visible = true;
 
-    this.vtxBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-    var vertices = [
-      1.0, 1.0, 0.0,
-      0.0, 0.0, 3.0,
-      -1.0, 1.0, 0.0,
+    this.shader = getShader("hero");
+    setAttribute(this, 
+		 {name: "vtx",
+		  content: [
+		    1.0, 1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		      -1.0, 1.0, 0.0,
+		    
+		      -1.0, 1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		      -1.0, -1.0, 0.0,
+		    
+		      -1.0, -1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		    1.0, -1.0, 0.0,
+		    
+		    1.0, -1.0, 0.0,
+		    0.0, 0.0, 2.0,
+		    1.0, 1.0, 0.0
+		  ]});
 
-      -1.0, 1.0, 0.0,
-      0.0, 0.0, 3.0,
-      -1.0, -1.0, 0.0,
 
-      -1.0, -1.0, 0.0,
-      0.0, 0.0, 3.0,
-      1.0, -1.0, 0.0,
+    setAttribute(this, 
+		 {name: "normal",
+		  content: [
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
 
-      1.0, -1.0, 0.0,
-      0.0, 0.0, 3.0,
-      1.0, 1.0, 0.0
-    ];
-    this.vtxBuffer.size = 12;
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    this.shader = getShader("pawn");
-    this.shader.vtxPos = gl.getAttribLocation(this.shader, "aVertexPosition");
-    gl.enableVertexAttribArray(this.shader.vtxPos);
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
+		  ]});
+
+    setUpLights(this.shader);
+   this.shader.color = gl.getUniformLocation(this.shader, "color");
+   this.attributes = ["vtx", "normal"];
+    this.attributes.size = 12;
 
     this.init();
 
@@ -237,12 +282,13 @@ function Pawn( maxHP, color, posX, posY ){
 
       gl.useProgram(this.shader);
       
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vtxBuffer);
-      gl.vertexAttribPointer(this.shader.vtxPos, 3, gl.FLOAT, false, 0, 0);
+      gl.uniform3fv(this.shader.color, this.colorV);
+      bindLights(this.shader);
+      bindAttributes(this);
       
       setMatrixUniforms(this.shader);
       
-      gl.drawArrays(gl.TRIANGLES, 0, this.vtxBuffer.size);
+      gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
       mvPopMatrix();
     };
 }
