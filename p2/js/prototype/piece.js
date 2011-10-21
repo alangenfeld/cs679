@@ -1,6 +1,7 @@
 function Piece(){
     /// The abstract Piece won't get initialized
     /// until instantiated with inheritance calss.
+    this.isPiece = true;
     this.type = -1;
     this.maxHP = 1;
     this.curHP = 1;
@@ -15,11 +16,15 @@ function Piece(){
 	this.curHP = maxHP;
     };
 
+
+    this.leave = function(){
+	board.map[this.posY][this.posX] = 0;
+    }
     this.setPos = function( posX, posY ){
-	if ( board.map[posY][posX] == 0 ){
+	if ( 0 == board.map[posY][posX] ){
 	    this.posX = posX;
 	    this.posY = posY;
-	    board.map[posY][posX] = this.type;
+	    board.map[posY][posX] = this;
 	    return true;
 	}else{
 	    return false;
@@ -27,9 +32,13 @@ function Piece(){
     };
 
     this.move = function( ort ){
-	if ( board.inBoard( this.posX + board.dx[ort], this.posY + board.dy[ort] ) ){
-	    this.posX += board.dx[ort];
-	    this.posY += board.dy[ort];
+	var posX = this.posX + board.dx[ort];
+	var posY = this.posY + board.dy[ort];
+	if ( board.inBoard( posX, posY ) &&
+	     ( 0 == board.map[posY][posX]) ){
+	    this.setOrientation( ort );
+	    this.leave();
+	    this.setPos( posX, posY );
 	    return true;
 	}
 	return false;
@@ -46,7 +55,8 @@ function Piece(){
 	ctx.lineWidth = 2;
 	ctx.beginPath();
 	ctx.moveTo( c.x + 0.05 * cellSize, c.y + 0.9 * cellSize );
-	ctx.lineTo( c.x + 0.95 * cellSize, c.y + 0.9 * cellSize );
+	ctx.lineTo( c.x + 0.05 * cellSize + 0.9 * this.curHP / this.maxHP * cellSize
+		    , c.y + 0.9 * cellSize );
 	ctx.closePath();
 	ctx.stroke();
     };
@@ -238,8 +248,8 @@ function Pawn( maxHP, color, posX, posY ){
 		  ]});
 
     setUpLights(this.shader);
-   this.shader.color = gl.getUniformLocation(this.shader, "color");
-   this.attributes = ["vtx", "normal"];
+    this.shader.color = gl.getUniformLocation(this.shader, "color");
+    this.attributes = ["vtx", "normal"];
     this.attributes.size = 12;
 
     this.init();
@@ -253,6 +263,9 @@ function Pawn( maxHP, color, posX, posY ){
 	    if ( this.sparkCount <= 0 ){
 		this.visible = true;
 	    }
+	}
+	if ( this.curHP <= 0 ){
+	    this.shutdown();
 	}
     };
 

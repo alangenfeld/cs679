@@ -29,10 +29,6 @@ function GameBoard( width, height, cellSize ){
     this.init();
 
     /// Map:
-    /// 0 = Empty
-    /// 1 = hero
-    /// 2 = enemy
-    /// 3 = pawn
     this.map = new Array(this.height);
     for ( var i=0; i<this.height; i++ ){
 	this.map[i] = new Array(this.width);
