@@ -2,11 +2,13 @@
 /**
  * Mouse singleton
  */
-function Mouse() {
+function Mouse( display ) {
   this.x = 0;
   this.y = 0;
   this.leftPressed = false;
+  this.display = display;
   this.rightPressed = false;
+
 
   function press(e) {
     if(e.which == 1) {
@@ -15,7 +17,7 @@ function Mouse() {
       this.rightPressed = true;
     }
   };
-  display.onmousedown = press.bind(this);
+  this.display.onmousedown = press.bind(this);
   
   function unpress(e) {
     if(e.which == 1) {
@@ -24,26 +26,27 @@ function Mouse() {
       this.rightPressed = false;
     }
   };
-  display.onmouseup = unpress.bind(this);
+  this.display.onmouseup = unpress.bind(this);
 
   function move(e) {
     this.x = e.offsetX? e.offsetX: e.layerX;
     this.y = e.offsetY? e.offsetY: e.layerY;
   };
-  display.onmousemove = move.bind(this);
+  this.display.onmousemove = move.bind(this);
 
   // disable context menu
   function disableContextMenu(e) {
     return false;
   };
-  display.oncontextmenu = disableContextMenu.bind(this);
+  this.display.oncontextmenu = disableContextMenu.bind(this);
 
   // prevent double click from highlighting text 
-  display.onselectstart = function () {
+  this.display.onselectstart = function () {
     return false;
   };
 }
-var mouse = new Mouse;
+var mouse = new Mouse( display );
+var mouseCtrl = new Mouse( interactive );
   
 /**
  * Keyboard singleton
@@ -91,3 +94,6 @@ function Keyboard() {
   window.onkeyup = handleKeyUp.bind(this);
 }
 var keyboard = new Keyboard;
+
+
+

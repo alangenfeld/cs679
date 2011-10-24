@@ -47,6 +47,7 @@ var Game = function() {
     // clear screen and redraw objects
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     ctx.clearRect(0, 0, display2.width, display2.height);
+    ctrl.clearRect(0, 0, interactive.width, interactive.height);
 
     // look in to window.requestAnimFrame
     objectManager.drawAll();

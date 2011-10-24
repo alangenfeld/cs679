@@ -18,6 +18,12 @@ canvas {
   top: 0;
 }
 
+#interactive{
+    position: absolute;
+    left: 0px;
+    top: 320px;
+}
+
 .screen {
   width: 960px;
   height: 320px;

@@ -7,7 +7,6 @@ function GameLogic(){
     // For prototype
     // 0 = movements
     // 1 = attack
-    this.decisionStage = 0;
     this.init();
 
     this.arrowNum = 0;
@@ -40,7 +39,7 @@ function GameLogic(){
 	var cellSize = board.cellSize;
 	c = board.getCenterCoordinates( arrow.posX, arrow.posY );
 	
-	ctx.strokeStyle = "#EEEEEE00";
+	ctx.strokeStyle = "#00EE00";
 	ctx.lineWidth = 3;
 	ctx.beginPath();
 	
@@ -150,7 +149,7 @@ function GameLogic(){
 	this.tick ++;
 
 
-	/// MoveMent Mode
+	/// Action Mode
 	if ( this.stage == 1 ){
 	    if ( this.tick - this.lastMoveTick > this.moveInterval ) {
 		this.lastMoveTick = this.tick;
@@ -165,7 +164,8 @@ function GameLogic(){
 		}else{
 		    this.arrowNum = 0;
 		    this.stage = 0;
-		    this.decisionStage = 0;
+		    actions.reset();
+		    streams.reset();
 		}
 	    }
 	    return;
@@ -173,92 +173,36 @@ function GameLogic(){
 	
 
 	/// Decision Mode
-	if ( this.decisionStage == 0){
-	    if ( keyboard.up && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[0];
-		var posY = this.curPosY + board.dy[0];
-		if ( board.inBoard( posX, posY ) && board.map[posY][posX] == 0 ){
-		    this.addArrow( posX, posY, 0 );
-		    this.curPosY = posY;
-		    this.curPosX = posX;
-		    this.lastKeyTick = this.tick;
+	if ( actions.len > 0 ){
+	    var posX = hero.posX;
+	    var posY = hero.posY;
+	    var posX0 = 0;
+	    var posY0 = 0;
+	    this.arrowNum = 0;
+	    for ( var i=0; i<actions.len-1; i++ ){
+		posX0 = posX + board.dx[actions.actions[i].code];
+		posY0 = posY + board.dy[actions.actions[i].code];
+		if ( board.inBoard( posX0, posY0 ) &&
+		     0 == board.map[posY0][posX0] ){
+		    posX = posX0;
+		    posY = posY0;
+		    this.addArrow( posX, posY, actions.actions[i].code );
 		}
-	    }else if ( keyboard.left && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[1];
-		var posY = this.curPosY + board.dy[1];
-		if ( board.inBoard( posX, posY ) && board.map[posY][posX] == 0 ){
-		    this.addArrow( posX, posY, 1 );
-		    this.curPosY = posY;
-		    this.curPosX = posX;
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.right && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[2];
-		var posY = this.curPosY + board.dy[2];
-		if ( board.inBoard( posX, posY ) && board.map[posY][posX] == 0 ){
-		    this.addArrow( posX, posY, 2 );
-		    this.curPosY = posY;
-		    this.curPosX = posX;
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.down && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[3];
-		var posY = this.curPosY + board.dy[3];
-		if ( board.inBoard( posX, posY ) && board.map[posY][posX] == 0 ){
-		    this.addArrow( posX, posY, 3 );
-		    this.curPosY = posY;
-		    this.curPosX = posX;
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		this.decisionStage = 1;
-		this.lastKeyTick = this.tick;
 	    }
-	}else if ( this.decisionStage == 1 ){
-	    if ( keyboard.up && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[0];
-		var posY = this.curPosY + board.dy[0];
-		this.attackOrientation = 0;
-		if ( board.inBoard( posX, posY ) ){
-		    this.clearBoxes();
-		    this.addBox( posX, posY );
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.left && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[1];
-		var posY = this.curPosY + board.dy[1];
-		this.attackOrientation = 1;
-		if ( board.inBoard( posX, posY ) ){
-		    this.clearBoxes();
-		    this.addBox( posX, posY );
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.right && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[2];
-		var posY = this.curPosY + board.dy[2];
-		this.attackOrientation = 2;
-		if ( board.inBoard( posX, posY ) ){
-		    this.clearBoxes();
-		    this.addBox( posX, posY );
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.down && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		var posX = this.curPosX + board.dx[3];
-		var posY = this.curPosY + board.dy[3];
-		this.attackOrientation = 3;
-		if ( board.inBoard( posX, posY ) ){
-		    this.clearBoxes();
-		    this.addBox( posX, posY );
-		    this.lastKeyTick = this.tick;
-		}
-	    }else if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		/// To movements stage
-		this.stage = 1;
-		this.lastKeyTick = this.tick;
-		this.lastMoveTick = this.tick;
-		this.arrowPointer = 0;
-	    }
+	    this.clearBoxes();
+	    this.attackOrientation = actions.actions[actions.len-1].param;
+	    this.addBox( posX + board.dx[actions.actions[actions.len-1].param],
+			 posY + board.dy[actions.actions[actions.len-1].param] );
 	}
+
+	if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
+	    /// To movements stage
+	    this.stage = 1;
+	    this.lastKeyTick = this.tick;
+	    this.lastMoveTick = this.tick;
+	    this.arrowPointer = 0;
+	}
+    
     }
 	
 }

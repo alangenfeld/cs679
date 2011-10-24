@@ -1,8 +1,11 @@
 // drawing context
 var display = $("display");
 var display2 = $("display2");
+var interactive = $("interactive");
 var gl = display.getContext("experimental-webgl");
 var ctx = display2.getContext("2d");
+var ctrl = interactive.getContext( "2d" );
+
 
 gl.clearColor(1.0, 1.0, 1.0, 1.0);
 gl.enable(gl.DEPTH_TEST);

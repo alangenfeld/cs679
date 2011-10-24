@@ -15,10 +15,12 @@ function Attack(){
     }
     this.doDamage = function(){
 	for ( var i=0; i<this.targetNum; i++ ){
-	    var obj = board.map[this.targets[i].posY][this.targets[i].posX];
-	    if ( obj.isPiece ){
-		console.log( obj );
-		obj.curHP -= this.damage;
+	    if ( board.inBoard( this.targets[i].posX, this.targets[i].posY ) ){
+		var obj = board.map[this.targets[i].posY][this.targets[i].posX];
+		if ( obj.isPiece ){
+		    console.log( obj );
+		    obj.curHP -= this.damage;
+		}
 	    }
 	}
     }
