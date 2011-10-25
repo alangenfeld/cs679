@@ -141,7 +141,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 			 this.y + this.height * this.cellSize );
 	}
 
-	for ( var i=0; i<=this.height; i++ ){
+	for ( var i=0; i<=this.height+1; i++ ){
 	    ctrl.moveTo( this.x,
 			 this.y + i * this.cellSize );
 	    ctrl.lineTo( this.x + this.width * this.cellSize,
