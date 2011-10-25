@@ -149,6 +149,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	}
 	
 	ctrl.closePath();
+	
 	ctrl.stroke();
 
 
@@ -177,7 +178,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 		if ( pos.posX >= 0 ){
 		    this.status.click++;
 		    this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
-		    for ( var i=this.showFrom; i<=this.status.id0; i++ ){
+		    for ( var i=this.showFrom; i<this.status.id0; i++ ){
 			this.property[i].enabled = false;
 		    }
 		    var showTo = this.showFrom + this.width * this.height;
