@@ -1,5 +1,5 @@
 function Camera() {
-  this.loc = vec3.create([-3.0, -8.0, -5.0]);
+  this.loc = vec3.create([-3.0, -7.0, -5.25]);
 
   gl.viewport(0, 0, display.width, display.height);
 
@@ -7,7 +7,7 @@ function Camera() {
 
   this.init();
   this.yaw = 0.0;
-  this.pitch = 320.0;
+  this.pitch = 327.0;
   this.speed = 0.05;
   this.roll = 0.3;
   this.mouseX = 0;

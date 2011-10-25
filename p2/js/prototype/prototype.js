@@ -12,7 +12,7 @@ for ( var i=0; i<7; i++ ){
 	var px = Math.floor( Math.random() * board.width );
 	var py = Math.floor( Math.random() * board.height );
 	if ( px < board.width && py < board.height && board.map[py][px] == 0 ){
-	    pawns[i] = new Pawn( 4, "#FF0000", px, py );
+	    pawns[i] = new Pawn( 2, "#FF0000", px, py );
 	    break;
 	}
     }
@@ -22,9 +22,7 @@ var streams = new MovementStream( 20, 20, 30, 16, 5 );
 streams.generate( 80 );
 var actions = new ActionQueue( 10, 550, 40, 30 );
 
-
 var logic = new GameLogic();
-
 
 /**
  * Start

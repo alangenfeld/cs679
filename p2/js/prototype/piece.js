@@ -18,8 +18,9 @@ function Piece(){
 
 
     this.leave = function(){
-	board.map[this.posY][this.posX] = 0;
-    }
+      board.map[this.posY][this.posX] = 0;
+    };
+
     this.setPos = function( posX, posY ){
 	if ( 0 == board.map[posY][posX] ){
 	    this.posX = posX;
@@ -205,7 +206,7 @@ function Pawn( maxHP, color, posX, posY ){
     this.sparkCount = 0;
     this.visible = true;
 
-    this.shader = getShader("hero");
+    this.shader = getShader("pawn");
     setAttribute(this, 
 		 {name: "vtx",
 		  content: [
@@ -249,6 +250,8 @@ function Pawn( maxHP, color, posX, posY ){
 
     setUpLights(this.shader);
     this.shader.color = gl.getUniformLocation(this.shader, "color");
+    this.shader.hp = gl.getUniformLocation(this.shader, "hp");
+
     this.attributes = ["vtx", "normal"];
     this.attributes.size = 12;
 
@@ -296,6 +299,7 @@ function Pawn( maxHP, color, posX, posY ){
       gl.useProgram(this.shader);
       
       gl.uniform3fv(this.shader.color, this.colorV);
+      gl.uniform1f(this.shader.hp, this.curHP/this.maxHP);
       bindLights(this.shader);
       bindAttributes(this);
       

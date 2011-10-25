@@ -101,10 +101,9 @@ function setUpLights(shader) {
 }
 
 function bindLights(shader) {
-  var t = Date.now()/800;
+  var t = Date.now()/2000;
   var light = {
-//    pos : [0.0, 0.0, 4.0],
-    pos : [2*Math.cos(t), 2*Math.sin(t), 4.0],
+    pos : [Math.cos(t), Math.sin(t), 6.0],
     col : [1.0, 1.0, 1.0],
     ambient : [0.0, 0.0, 0.0]
   };
