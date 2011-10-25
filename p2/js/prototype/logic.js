@@ -12,80 +12,29 @@ function GameLogic(){
     this.arrows = new Array();
     this.arrowPointer = 0;
 
-    this.boxes = new Array( board.width * board.height );
-    this.boxNum = 0;
-    for ( var i=0; i< board.width * board.height; i++ ){
-	this.boxes[i] = { posX:0, posY:0, visible:false };
-    }
+    this.boxes = new Array();
 
     this.curPosX = hero.posX;
     this.curPosY = hero.posY;
+
+  this.futureX = this.curPosX;
+  this.futureY = this.curPosY;
+
     this.tick = 0;
     this.lastKeyTick = 0;
     this.lastMoveTick = 0;
     this.moveInterval = 20;
     this.keyInterval = 10;
 
-
-
     /// Temp:
     this.attackOrientation = 0;
 
-    this.drawBox = function( box ){
-	var cellSize = board.cellSize;
-	c = board.getCenterCoordinates( box.posX, box.posY );
-	
-	ctx.strokeStyle = "#AA0000";
-	ctx.lineWidth = 2;
-	ctx.beginPath();
-	
-	var v0 = {x:0,y:0};
-	var v1 = {x:0,y:0};
-	var v2 = {x:0,y:0};
-	var v3 = {x:0,y:0};
-
-    
-	v0.x = - cellSize * 0.48 + c.x;
-	v0.y = - cellSize * 0.48 + c.y;
-	v1.x = cellSize * 0.48 + c.x;
-	v1.y = - cellSize * 0.48 + c.y;
-	v2.x = cellSize * 0.48 + c.x;
-	v2.y = cellSize * 0.48 + c.y;
-	v3.x = - cellSize * 0.48 + c.x;
-	v3.y = cellSize * 0.48 + c.y;
-
-	ctx.moveTo( v0.x, v0.y );
-	ctx.lineTo( v1.x, v1.y );
-	ctx.lineTo( v2.x, v2.y );
-	ctx.lineTo( v3.x, v3.y );
-	ctx.lineTo( v0.x, v0.y );
-	ctx.moveTo( v0.x, v0.y );
-	ctx.lineTo( v2.x, v2.y );
-	ctx.moveTo( v1.x, v1.y );
-	ctx.lineTo( v3.x, v3.y );
-
-	ctx.closePath();
-	ctx.stroke();
-    };
-
-    this.addBox = function( posX, posY ){
-	this.boxes[this.boxNum].posX = posX;
-	this.boxes[this.boxNum].posY = posY;
-	this.boxes[this.boxNum].visible = true;
-	this.boxNum ++;
-    };
-
-    this.clearBoxes = function(){
-	this.boxNum = 0;
-    };
-
-    this.draw = function(){
-	for ( var i=0; i<this.boxNum; i++ ){
-	    if ( this.boxes[i].visible ){
-		this.drawBox( this.boxes[i] );
-	    }
-	}
-    };
+  this.clearBoxes = function() {
+    for (var i in this.boxes) {
+      this.boxes[i].shutdown();
+      this.boxes.splice(i, 1);
+    }
+  };
 
     this.update = function(){
 	this.tick ++;
@@ -98,7 +47,7 @@ function GameLogic(){
 		    hero.move(this.arrows[this.arrowPointer].orientation );
 		    this.arrows[this.arrowPointer].shutdown();
 		    this.arrowPointer++;
-		}else if ( this.boxNum > 0 ){
+		}else if (this.boxes.length > 0 ){
 		    this.clearBoxes();
 		    hero.setOrientation( this.attackOrientation );
 		    attack = new MeleeAttack( hero );
@@ -113,7 +62,8 @@ function GameLogic(){
 	}
 	
 	/// Decision Mode
-	if ( actions.len > 0 && this.arrows.length < 1){
+      
+	if (actions.len > 0 && this.arrows.length < 1){
 	    var posX = hero.posX;
 	    var posY = hero.posY;
 	    var posX0 = 0;
@@ -128,12 +78,18 @@ function GameLogic(){
 		    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
 		}
 	    }
-	    this.clearBoxes();
-	    this.attackOrientation = actions.actions[actions.len-1].param;
-	    this.addBox( posX + board.dx[actions.actions[actions.len-1].param],
-			 posY + board.dy[actions.actions[actions.len-1].param] );
+	  this.futureX = posX;
+	  this.futureY = posY;
 	}
-
+      if (actions.len > 0){
+	this.clearBoxes();
+	this.attackOrientation = actions.actions[actions.len-1].param;
+	this.boxes.push(new TargetBox(
+			  this.futureX + board.dx[actions.actions[actions.len-1].param],
+			  this.futureY + board.dy[actions.actions[actions.len-1].param]));
+	
+      }
+      
 	if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 	    this.stage = 1;
 	    this.lastKeyTick = this.tick;

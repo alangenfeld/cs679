@@ -50,7 +50,8 @@ function MeleeAttack( caster ){
 	    this.doDamage();
 	    this.shutdown();
 	}
-    }
+    };
+
     this.draw2d = function(){
 	var cellSize = board.cellSize;
 	for ( var i=0; i<this.targetNum; i++ ){
@@ -62,9 +63,10 @@ function MeleeAttack( caster ){
 	    ctx.closePath();
 	    ctx.stroke();
 	}
-    }
+    };
+
     this.draw = function(){
 	this.draw2d();
-    }
+    };
 }
 MeleeAttack.prototype = new Attack;

@@ -268,6 +268,7 @@ function Pawn( maxHP, color, posX, posY ){
 	    }
 	}
 	if ( this.curHP <= 0 ){
+	  this.leave();
 	    this.shutdown();
 	}
     };
