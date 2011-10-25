@@ -149,7 +149,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	}
 	
 	ctrl.closePath();
-	strokeRect(this.height, 0 , this.cellsize, this.cellsize); 
+	
 	ctrl.stroke();
 
 
