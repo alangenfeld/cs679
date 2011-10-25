@@ -205,7 +205,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 			if ( this.property[id].enabled ){
 			    this.status.click++;
 			    this.status.id1 = id;
-			    for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
+			    for ( var i=this.status.id0; i<=this.status.id1; i++ ){
 				this.property[i].enabled = false;
 				this.property[i].marked = true;
 			    }
