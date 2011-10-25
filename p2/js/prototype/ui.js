@@ -134,7 +134,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	ctrl.lineWidth = 1;
 	ctrl.beginPath();
 	
-	for ( var i=0; i<=this.width+1; i++ ){
+	for ( var i=0; i<=this.width; i++ ){
 	    ctrl.moveTo( this.x + i * this.cellSize,
 			 this.y );
 	    ctrl.lineTo( this.x + i * this.cellSize,
@@ -149,6 +149,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	}
 	
 	ctrl.closePath();
+	strokeRect(this.height, 0 , this.cellsize, this.cellsize); 
 	ctrl.stroke();
 
 
