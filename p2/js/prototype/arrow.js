@@ -2,7 +2,7 @@ function Arrow(x, y, ort) {
   this.posX = x;
   this.posY = y;
   this.orientation = ort;
- this.colorV = [0.0, 1.0, 0.0];
+  this.colorV = [0.0, 1.0, 0.0];
 
   this.shader = getShader("shape");
   setAttribute(this, 
