@@ -54,7 +54,6 @@ window.requestAnimFrame =
       };
    })();
 function getShader(name) {
-
   var shaderProgram = shaderMap[name];
   if (!shaderProgram) {
     // load the shaders from files

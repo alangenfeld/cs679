@@ -1,8 +1,8 @@
 function MovementStream( x, y, cellSize, w, h ) {
     
-    this.stream = new Array(500);
+    this.streams = new Array(500);
     for ( var i=0; i<500; i++ ){
-	this.stream[i] = 0;
+	this.streams[i] = 0;
     }
     this.property = new Array(500);
     for ( var i=0; i<500; i++ ){
@@ -35,7 +35,7 @@ function MovementStream( x, y, cellSize, w, h ) {
     /// Randomly generate movement streams
     this.generate = function( n ) {
 	for ( var i=0; i<n ;i++ ){
-	    this.stream[i] = Math.floor( Math.random() * 4 );
+	    this.streams[i] = Math.floor( Math.random() * 4 );
 	}
 	this.len = n;
     }
@@ -162,7 +162,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 
 	
 	for ( var i=this.showFrom; i<showTo; i++ ){
-	    this.drawArrow( posX, posY, this.stream[i], this.property[i] );
+	    this.drawArrow( posX, posY, this.streams[i], this.property[i] );
 	    posX++;
 	    if ( posX == this.width ){
 		posY++;
@@ -211,7 +211,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 				this.property[i].marked = true;
 			    }
 			    this.status.ready = false;
-			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
+			    actions.pushStream( this.streams, this.status.id0, this.status.id1 );
 			    actions.push( 10, 0 );
 			}
 		    }
