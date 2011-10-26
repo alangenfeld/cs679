@@ -181,16 +181,25 @@ function MovementStream( x, y, cellSize, w, h ) {
 	ctrl.fillStyle = '#f00';
 	ctrl.font = 'bold 30px sans-serif';
 	ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
-	
+
+	ctrl.fillStyle = '#f00';
+	ctrl.font = 'bold 30px sans-serif';
+	ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
     }
 
-
+   
     this.update = function(){
-	    
+	pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
+	if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
+	    this.reset();
+	    actions.reset();
+
+	}
+
 
 	if ( 0 == this.status.click ){
 	    if ( this.status.ready && mouseCtrl.leftPressed ){
-		pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
+		
 		if ( pos.posX >= 0&& pos.posY<=4 ){
 		    
 		    this.status.click++;
@@ -208,23 +217,25 @@ function MovementStream( x, y, cellSize, w, h ) {
 		    this.property[this.status.id0].marked = true;
 		    this.status.ready = false;
 		}
+		else if(pos.posX>= 4 && pos.posX <= 8&& pos.posY >= 4&& !attack){
+		    
+		    this.status.click ++;
+		    actions.push(10,0);
+		    attack = true;
+		    this.status.click--;
+		}
+
+
 	    }
 	}else if ( 1 == this.status.click ){
 	    if ( ! this.status.ready ){
 		if ( ! mouseCtrl.leftPressed ){
 		    this.status.ready = true;
 		}
-	    }		      
-
-		  
-		    else
-
-
-		{
+	    }	
+	    else{
 		if ( mouseCtrl.leftPressed ){
-		    pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
 		    if ( pos.posX >= 0 ){
-			if(pos.posX < 4 && pos.posY>4){return this.reset()}
 			var id = this.showFrom + pos.posY * this.width + pos.posX;
 			if ( this.property[id].enabled ){
 			    			    
@@ -238,8 +249,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 			    this.status.ready = false;
 			    	
 			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
-			    
-			     actions.push( 10, 0 );
+			    // actions.push( 10, 0 );
 			}
 		    }
 		}
@@ -250,6 +260,7 @@ function MovementStream( x, y, cellSize, w, h ) {
     this.reset = function(){
 	this.status.click = 0;
 	this.status.ready = true;
+	attack = false;
 	for ( var i=0; i<this.len; i++ ){
 	    this.property[i].enabled = true;
 	    this.property[i].marked = false;
@@ -257,7 +268,7 @@ function MovementStream( x, y, cellSize, w, h ) {
     }
 }
 MovementStream.prototype = new GameObject;
-
+var attack = false;
 
 function ActionQueue( maxLen, x, y, cellSize ) {
     
@@ -304,16 +315,32 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 
     this.pushStream = function( a, start, end ) {
 	this.len = end - start + 1;
-	for ( var i=0; i<this.len; i++ ){
-	    this.actions[i].code = a[start+i];
-	}
+	//	var i; 
+	if(attack)
+	    { this.len = end -start +2;   
+	for (var  i= 0; i<this.len; i++ ){
+	    this.actions[i+1].code = a[start+i];
+	}}else
+	    for(var i = 0; i < this.len; i++){
+
+		this.actions[i].code = a[start+i];
+	    }
+
     }
     this.push = function( code, param ){
+	if(attack){
 	if ( this.len < this.maxLen - 1 ){
+	    this.actions[(this.len +1)-this.len].code = code;
+	    this.actions[(this.len +1)-this.len].param = param;
+	    this.len++;
+	}}
+	else if(this.len < this.maxLen -1){
 	    this.actions[this.len].code = code;
 	    this.actions[this.len].param = param;
 	    this.len++;
+	    
 	}
+
     }
     
     this.align = function( u, ort ){

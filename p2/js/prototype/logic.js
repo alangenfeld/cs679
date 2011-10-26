@@ -57,10 +57,10 @@ function GameLogic(){
 	  hero.move(this.arrows[this.arrowPointer].orientation );
 	  this.arrows[this.arrowPointer].shutdown();
 	  this.arrowPointer++;
-	}else if (this.boxes.length > 0 ){
+	}else if (this.boxes.length > 0  ){
 	  this.clearBoxes();
 	  hero.setOrientation( this.attackOrientation );
-	  attack = new MeleeAttack( hero );
+	   attack = new MeleeAttack( hero );
 	}else{
 	  this.arrows = new Array();
 	  this.stage = 0;
@@ -75,7 +75,7 @@ function GameLogic(){
      *  Decision Mode
      */ 
     } else {
-      if (actions.len > 0 && this.arrows.length < 1){
+	if (actions.len > 0){
 	var posX = hero.posX;
 	var posY = hero.posY;
 	var posX0 = 0;
@@ -83,24 +83,26 @@ function GameLogic(){
 	for ( var i=0; i<actions.len; i++ ){
 	  posX0 = posX + board.dx[actions.actions[i].code];
 	  posY0 = posY + board.dy[actions.actions[i].code];
-	  if ( board.inBoard( posX0, posY0 ) &&
-	       0 == board.map[posY0][posX0] ){
-		 posX = posX0;
-		 posY = posY0;
-		 this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
-	       }
+	  if (actions.actions[i].code == 10) {
+	      this.clearBoxes();
+	      this.attackOrientation = actions.actions[i].param;
+	      this.boxes.push(new TargetBox(
+					    posX + board.dx[actions.actions[i].param],
+					    posY + board.dy[actions.actions[i].param]));
+	      
+
+	  }
+	  else if(board.inBoard( posX0, posY0 ) &&
+		  0 == board.map[posY0][posX0] ) {
+	      posX = posX0;
+	      posY = posY0;
+	      this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
+	  }
 	}
 	this.futureX = posX;
 	this.futureY = posY;
-      }
-       if (actions.len > 0){
-	this.clearBoxes();
-	this.attackOrientation = actions.actions[actions.len-1].param;
-	this.boxes.push(new TargetBox(
-			  this.futureX + board.dx[actions.actions[actions.len-1].param],
-			  this.futureY + board.dy[actions.actions[actions.len-1].param]));
+	}
 	
-			  }
       if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 	this.stage = 1;
 	this.lastKeyTick = this.tick;
@@ -113,7 +115,7 @@ function GameLogic(){
 	this.lastMoveTick = this.tick;
 	this.stage = 1;
       }
-    }
+	}
   };
 
   this.draw = function() {
