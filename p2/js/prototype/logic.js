@@ -18,7 +18,7 @@ function GameLogic(){
   this.init();
 
   this.arrows = new Array();
-  this.arrowPointer = 0;
+  this.actionPointer = 0;
 
   this.boxes = new Array();
 
@@ -37,11 +37,16 @@ function GameLogic(){
   /// Temp:
   this.attackOrientation = 0;
 
-  this.clearBoxes = function() {
-    for (var i in this.boxes) {
-      this.boxes[i].shutdown();
-      this.boxes.splice(i, 1);
+  this.boxes.clear = this.arrows.clear = function() {
+    for (var i=0; i<this.length; i++) {
+      this[i].shutdown();
+      this.splice(i, 1);
     }
+  };
+
+  this.arrows.dequeue = function() {
+    this[0].shutdown();
+    this.splice(0, 1);
   };
 
   this.update = function(){
@@ -53,16 +58,20 @@ function GameLogic(){
     if ( this.stage == 1 ){
       if ( this.tick - this.lastMoveTick > this.moveInterval ) {
 	this.lastMoveTick = this.tick;
-	if ( this.arrowPointer < this.arrows.length){
-	  hero.move(this.arrows[this.arrowPointer].orientation );
-	  this.arrows[this.arrowPointer].shutdown();
-	  this.arrowPointer++;
-	}else if (this.boxes.length > 0  ){
-	  this.clearBoxes();
-	  hero.setOrientation( this.attackOrientation );
-	   attack = new MeleeAttack( hero );
-	}else{
-	  this.arrows = new Array();
+	if (this.actionPointer < actions.len) {
+	  if (actions.actions[this.actionPointer].code == 10) {
+	    this.boxes.clear();
+	    hero.setOrientation( this.attackOrientation );
+	    /**
+	     * THIS NEEDS TO CHANGE
+	     */
+	    attack = new MeleeAttack( hero );
+	  } else {
+	    this.arrows.dequeue();
+	    hero.move(actions.actions[this.actionPointer].code);
+	  }
+	  this.actionPointer++;
+	} else {
 	  this.stage = 0;
 	  this.turn++;
 	  this.turnStart = Date.now();
@@ -71,11 +80,14 @@ function GameLogic(){
 	}
       }
       return;
+    }  
     /**
      *  Decision Mode
      */ 
-    } else {
-	if (actions.len > 0){
+    else {
+      this.arrows.clear();
+      this.boxes.clear();
+      if (actions.len > 0){
 	var posX = hero.posX;
 	var posY = hero.posY;
 	var posX0 = 0;
@@ -84,38 +96,37 @@ function GameLogic(){
 	  posX0 = posX + board.dx[actions.actions[i].code];
 	  posY0 = posY + board.dy[actions.actions[i].code];
 	  if (actions.actions[i].code == 10) {
-	      this.clearBoxes();
-	      this.attackOrientation = actions.actions[i].param;
-	      this.boxes.push(new TargetBox(
-					    posX + board.dx[actions.actions[i].param],
-					    posY + board.dy[actions.actions[i].param]));
-	      
-
+	    this.attackOrientation = actions.actions[i].param;
+	    this.boxes.push(
+	      new TargetBox(
+		posX + board.dx[actions.actions[i].param],
+		posY + board.dy[actions.actions[i].param]
+	      ));
 	  }
 	  else if(board.inBoard( posX0, posY0 ) &&
 		  0 == board.map[posY0][posX0] ) {
-	      posX = posX0;
-	      posY = posY0;
-	      this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
-	  }
+		    posX = posX0;
+		    posY = posY0;
+		    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
+		  }
 	}
 	this.futureX = posX;
 	this.futureY = posY;
-	}
-	
+      }
+      
       if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 	this.stage = 1;
 	this.lastKeyTick = this.tick;
 	this.lastMoveTick = this.tick;
-	this.arrowPointer = 0;
+	this.actionPointer = 0;
       }
       if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
-	this.arrowPointer = 0;
+	this.actionPointer = 0;
 	this.lastKeyTick = this.tick;
 	this.lastMoveTick = this.tick;
 	this.stage = 1;
       }
-	}
+    }
   };
 
   this.draw = function() {
