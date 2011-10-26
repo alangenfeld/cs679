@@ -37,16 +37,26 @@ function GameLogic(){
   /// Temp:
   this.attackOrientation = 0;
 
-  this.boxes.clear = this.arrows.clear = function() {
+  this.boxes.clear =  
+  this.arrows.clear = function() {
     for (var i=0; i<this.length; i++) {
       this[i].shutdown();
-      this.splice(i, 1);
     }
+    this.splice(0, this.length);
   };
 
   this.arrows.dequeue = function() {
     this[0].shutdown();
-    this.splice(0, 1);
+    return this.splice(0, 1)[0];
+  };
+      
+  this.go = function(){
+    if ( this.tick - this.lastKeyTick > this.keyInterval ){
+      this.stage = 1;
+      this.lastKeyTick = this.tick;
+      this.lastMoveTick = this.tick;
+      this.actionPointer = 0;
+    }
   };
 
   this.update = function(){
@@ -66,9 +76,8 @@ function GameLogic(){
 	     * THIS NEEDS TO CHANGE
 	     */
 	    attack = new MeleeAttack( hero );
-	  } else {
-	    this.arrows.dequeue();
-	    hero.move(actions.actions[this.actionPointer].code);
+	  } else if (this.arrows.length > 0) {
+	    hero.move(this.arrows.dequeue().orientation);
 	  }
 	  this.actionPointer++;
 	} else {
@@ -103,25 +112,15 @@ function GameLogic(){
 		posY + board.dy[actions.actions[i].param]
 	      ));
 	  }
-	  else if(board.inBoard( posX0, posY0 ) &&
-		  0 == board.map[posY0][posX0] ) {
-		    posX = posX0;
-		    posY = posY0;
-		    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
-		  }
+	  else if(board.inBoard( posX0, posY0 ) && 0 == board.map[posY0][posX0] ) {
+	    posX = posX0;
+	    posY = posY0;
+	    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
+	  }
 	}
 	this.futureX = posX;
 	this.futureY = posY;
       }
-      
-      this.go = function(){
-	if ( this.tick - this.lastKeyTick > this.keyInterval ){
-	  this.stage = 1;
-	  this.lastKeyTick = this.tick;
-	  this.lastMoveTick = this.tick;
-	  this.arrowPointer = 0;
-	}
-      };
       
       if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
 	this.actionPointer = 0;
