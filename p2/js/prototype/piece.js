@@ -268,8 +268,17 @@ function Pawn( maxHP, color, posX, posY ){
 	    }
 	}
 	if ( this.curHP <= 0 ){
+
+	  /**
+	   * MOVE ME WITH BETTER LOGIC
+	   */
+	  logic.playerKP++;
+	  /**
+	   * IM SUPER SRSLY
+	   */
+
 	  this.leave();
-	    this.shutdown();
+	  this.shutdown();
 	}
     };
 
