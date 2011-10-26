@@ -60,7 +60,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 
     this.inBoard = function( x, y ){
 	if ( x > this.x && x < this.x + this.width * this.cellSize &&
-	     y > this.y && y < this.y + this.height * this.cellSize ){
+	     y > this.y && y < this.y + (this.height+1) * this.cellSize){
 	    return true;
 	}
 	return false;
@@ -148,9 +148,18 @@ function MovementStream( x, y, cellSize, w, h ) {
 			 this.y + i * this.cellSize );
 	}
 	
-	ctrl.closePath();
 	
+
+	for(var i = 0; i<=this.width; i = i +4){
+
+	    ctrl.moveTo(this.x + i * this.cellSize, this.y);
+	    ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
+	
+
+
+	ctrl.closePath();
 	ctrl.stroke();
+	
 
 
 	var posX = 0;
@@ -169,13 +178,21 @@ function MovementStream( x, y, cellSize, w, h ) {
 		posX = 0;
 	    }
 	}
+	ctrl.fillStyle = '#f00';
+	ctrl.font = 'bold 30px sans-serif';
+	ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
+	
     }
 
+
     this.update = function(){
+	    
+
 	if ( 0 == this.status.click ){
 	    if ( this.status.ready && mouseCtrl.leftPressed ){
 		pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
-		if ( pos.posX >= 0 ){
+		if ( pos.posX >= 0&& pos.posY<=4 ){
+		    
 		    this.status.click++;
 		    this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
 		    for ( var i=this.showFrom; i<this.status.id0; i++ ){
@@ -197,22 +214,32 @@ function MovementStream( x, y, cellSize, w, h ) {
 		if ( ! mouseCtrl.leftPressed ){
 		    this.status.ready = true;
 		}
-	    }else{
+	    }		      
+
+		  
+		    else
+
+
+		{
 		if ( mouseCtrl.leftPressed ){
 		    pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
 		    if ( pos.posX >= 0 ){
-
+			if(pos.posX < 4 && pos.posY>4){return this.reset()}
 			var id = this.showFrom + pos.posY * this.width + pos.posX;
 			if ( this.property[id].enabled ){
+			    			    
 			    this.status.click++;
 			    this.status.id1 = id;
 			    for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
 				this.property[i].enabled = false;
 				this.property[i].marked = true;
 			    }
+			    
 			    this.status.ready = false;
+			    	
 			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
-			    actions.push( 10, 0 );
+			    
+			    //actions.push( 10, 0 );
 			}
 		    }
 		}
