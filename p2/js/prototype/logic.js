@@ -103,19 +103,20 @@ function GameLogic(){
 	this.futureY = posY;
 	}
 	
-      if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
-	this.stage = 1;
-	this.lastKeyTick = this.tick;
-	this.lastMoveTick = this.tick;
-	this.arrowPointer = 0;
-      }
+	this.go = function(){
+	   if ( this.tick - this.lastKeyTick > this.keyInterval ){
+	    this.stage = 1;
+	    this.lastKeyTick = this.tick;
+	    this.lastMoveTick = this.tick;
+	    this.arrowPointer = 0;
+	   }
       if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
 	this.arrowPointer = 0;
 	this.lastKeyTick = this.tick;
 	this.lastMoveTick = this.tick;
 	this.stage = 1;
       }
-	}
+	}}
   };
 
   this.draw = function() {
