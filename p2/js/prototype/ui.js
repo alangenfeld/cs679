@@ -185,6 +185,11 @@ function MovementStream( x, y, cellSize, w, h ) {
 	ctrl.fillStyle = '#f00';
 	ctrl.font = 'bold 30px sans-serif';
 	ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
+
+	ctrl.fillStyle = '#00ff00'; 
+	ctrl.font= 'bold 30px sans-serif';
+	ctrl.fillText('GO!', this.x +(13 * this.cellSize), (this.height +1.5)*this.cellSize);
+
     }
 
    
@@ -195,8 +200,18 @@ function MovementStream( x, y, cellSize, w, h ) {
 	    actions.reset();
 
 	}
+         if(pos.posX>= 4 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+		    
+	    	     
+		    actions.push(10,0);
+		    attack = true;
+		 
+		}
+	if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
 
+	    logic.go();
 
+	}
 	if ( 0 == this.status.click ){
 	    if ( this.status.ready && mouseCtrl.leftPressed ){
 		
@@ -217,13 +232,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 		    this.property[this.status.id0].marked = true;
 		    this.status.ready = false;
 		}
-		else if(pos.posX>= 4 && pos.posX <= 8&& pos.posY >= 4&& !attack){
-		    
-		    this.status.click ++;
-		    actions.push(10,0);
-		    attack = true;
-		    this.status.click--;
-		}
+		
 
 
 	    }
@@ -247,16 +256,16 @@ function MovementStream( x, y, cellSize, w, h ) {
 			    }
 			    
 			    this.status.ready = false;
-			    	
+			    
 			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
-			    // actions.push( 10, 0 );
+			    
 			}
 		    }
 		}
 	    }
 	}
     }
-
+    
     this.reset = function(){
 	this.status.click = 0;
 	this.status.ready = true;
@@ -287,16 +296,16 @@ function ActionQueue( maxLen, x, y, cellSize ) {
     this.x = x;
     this.y = y;
     this.cellSize = cellSize;
-
+    
     this.status = { reeady: true };
     
     this.init();
+    
 
 
 
 
-
-
+    
     this.inBoard = function( x, y ){
 	if ( x > this.x && x < this.x + this.maxLen * this.cellSize &&
 	     y > this.y && y < this.y + this.cellSize ){
@@ -315,7 +324,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 
     this.pushStream = function( a, start, end ) {
 	this.len = end - start + 1;
-	//	var i; 
+	
 	if(attack)
 	    { this.len = end -start +2;   
 	for (var  i= 0; i<this.len; i++ ){
