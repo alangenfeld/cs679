@@ -155,8 +155,10 @@ function MovementStream( x, y, cellSize, w, h ) {
 	    ctrl.moveTo(this.x + i * this.cellSize, this.y);
 	    ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
 	
-
-
+	ctrl.moveTo(this.x +10*this.cellSize, this.y);
+	ctrl.lineTo(this.x +10*this.cellSize, this.y + 6*this.cellSize);
+	ctrl.moveTo(this.x +6*this.cellSize, this.y);
+	ctrl.lineTo(this.x +6*this.cellSize, this.y + 6*this.cellSize);
 	ctrl.closePath();
 	ctrl.stroke();
 	
@@ -183,8 +185,21 @@ function MovementStream( x, y, cellSize, w, h ) {
 	ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
 
 	ctrl.fillStyle = '#f00';
-	ctrl.font = 'bold 30px sans-serif';
+	ctrl.font = 'bold 14px sans-serif';
 	ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
+	
+	ctrl.fillStyle = '#f00';
+	ctrl.font = 'bold 14px sans-serif';
+	ctrl.fillText('special1', this.x +6*this.cellSize, (this.height +1.5)*this.cellSize);
+	
+	ctrl.fillStyle = '#f00';
+	ctrl.font = 'bold 14px sans-serif';
+	ctrl.fillText('special2', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
+	
+	ctrl.fillStyle = '#f00';
+	ctrl.font = 'bold 14px sans-serif';
+	ctrl.fillText('special3', this.x +10*this.cellSize, (this.height +1.5)*this.cellSize);
+	
 
 	ctrl.fillStyle = '#00ff00'; 
 	ctrl.font= 'bold 30px sans-serif';
@@ -200,13 +215,40 @@ function MovementStream( x, y, cellSize, w, h ) {
 	    actions.reset();
 
 	}
-         if(pos.posX>= 4 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+         if(pos.posX>= 4 && pos.posX <= 6&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
 		    
 	    	     
 		    actions.push(10,0);
 		    attack = true;
 		 
 		}
+
+	//Special attacks. right now all pushing code 10 for regular attack
+
+
+         if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+		    
+	    	     
+		    actions.push(10,0);
+		    attack = true;
+		 
+		}
+	if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+		    
+	    	     
+		    actions.push(10,0);
+		    attack = true;
+		 
+		}
+         if(pos.posX>= 10 && pos.posX <= 12 && pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+		    
+	    	     
+		    actions.push(10,0);
+		    attack = true;
+		 
+		}
+	//end special attacks
+	//go button
 	if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
 
 	    logic.go();
