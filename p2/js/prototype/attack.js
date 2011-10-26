@@ -12,7 +12,8 @@ function Attack(){
 	this.caster = caster;
 	this.posX = caster.posX;
 	this.posY = caster.posY;
-    }
+    };
+
     this.doDamage = function(){
 	for ( var i=0; i<this.targetNum; i++ ){
 	    if ( board.inBoard( this.targets[i].posX, this.targets[i].posY ) ){
@@ -23,7 +24,7 @@ function Attack(){
 		}
 	    }
 	}
-    }
+    };
 }
 Attack.prototype = new GameObject;
 
@@ -40,6 +41,10 @@ function MeleeAttack( caster ){
     for ( var i=0; i<this.targetNum; i++ ){
 	this.targets[i] = { posX: caster.posX + board.dx[caster.orientation], 
 			    posY: caster.posY + board.dy[caster.orientation] };
+      this.targets[i].emit = 
+	new ParticleEmitter(this.targets[i].posX, 
+			    this.targets[i].posY,
+			    300, 10, 0.4);
     }
 
     this.update = function(){
