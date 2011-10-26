@@ -239,7 +239,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 			    	
 			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
 			    
-			    //actions.push( 10, 0 );
+			     actions.push( 10, 0 );
 			}
 		    }
 		}

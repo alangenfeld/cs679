@@ -71,14 +71,14 @@ function GameLogic(){
       return;
     /**
      *  Decision Mode
-     */
+     */ 
     } else {
       if (actions.len > 0 && this.arrows.length < 1){
 	var posX = hero.posX;
 	var posY = hero.posY;
 	var posX0 = 0;
 	var posY0 = 0;
-	for ( var i=0; i<actions.len-1; i++ ){
+	for ( var i=0; i<actions.len; i++ ){
 	  posX0 = posX + board.dx[actions.actions[i].code];
 	  posY0 = posY + board.dy[actions.actions[i].code];
 	  if ( board.inBoard( posX0, posY0 ) &&
@@ -91,14 +91,14 @@ function GameLogic(){
 	this.futureX = posX;
 	this.futureY = posY;
       }
-      if (actions.len > 0){
+       if (actions.len > 0){
 	this.clearBoxes();
 	this.attackOrientation = actions.actions[actions.len-1].param;
 	this.boxes.push(new TargetBox(
 			  this.futureX + board.dx[actions.actions[actions.len-1].param],
 			  this.futureY + board.dy[actions.actions[actions.len-1].param]));
 	
-      }
+			  }
       if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 	this.stage = 1;
 	this.lastKeyTick = this.tick;
