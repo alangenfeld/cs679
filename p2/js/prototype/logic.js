@@ -8,10 +8,12 @@ function GameLogic(){
   // 0 = movements
   // 1 = attack
 
-  this.level = 0;
-  this.turn = 0;
+  this.level = 1;
+  this.turn = 1;
   this.timePerTurn = 100;
   this.turnStart = Date.now();
+  this.playerKP = 0;
+  this.AIKP = 0;
 
   this.init();
 
@@ -112,6 +114,36 @@ function GameLogic(){
 	this.stage = 1;
       }
     }
+  };
+
+  this.draw = function() {
+    var y = 30;
+    ctx.font = "18pt sans-serif";
+    ctx.fillStyle = "black";
+
+    ctx.fillText("Level: " + this.level, 250, y);    
+    y += 30;
+
+    ctx.fillText("Turn: " + this.turn, 250, y);    
+    y += 30;
+
+
+    var time = Math.floor(this.timePerTurn - (Date.now() - this.turnStart)/1000);
+    ctx.fillText("Time Remaining: " + time, 250, y);    
+    y += 30;
+
+    ctx.fillText("Player KP: " + this.playerKP, 250, y);    
+    y += 30;
+
+    ctx.fillText("AI KP: " + this.AIKP, 250, y);    
+    y += 30;
+
+
+    var phase =  (this.stage == 1) ? "Action Phase" : "Decesion Phase";
+    y += 30;
+    ctx.font = "bold 20pt sans-serif";
+    ctx.fillText(phase, 250, y);    
+    y += 30;
   };
 }
 GameLogic.prototype = new GameObject;
