@@ -105,7 +105,8 @@ function GameLogic(){
 		if ( this.actionPointer < actions.len ){
 		    if ( actions.actions[this.actionPointer].code == 10 ){
 			hero.setOrientation( this.attackOrientation );
-			attack = new MeleeAttack( hero );
+			attack = new Attack( hero );
+			attack.doStyle( atkStyles[0] );
 		    }else if ( this.arrows.length > 0 ){
 			hero.move( this.arrows.dequeue().orientation );
 		    }
@@ -119,7 +120,8 @@ function GameLogic(){
 		    act = actionsAI.actions[this.AIPointer];
 		    if ( act.code == 10 ){
 			enemy.setOrientation( act.param );
-			attack = new MeleeAttack( enemy );
+			attack = new Attack( enemy );
+			attack.doStyle( atkStyles[0] );
 		    }else if ( 0 <= act.code && 4 > act.code ){
 			enemy.move( act.code );
 		    }

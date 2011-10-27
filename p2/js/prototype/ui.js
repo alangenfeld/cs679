@@ -16,7 +16,7 @@ function MovementStream( x, y, cellSize, w, h ) {
     this.cellSize = cellSize;
     
     this.showFrom = 0;
-
+    
     
     this.tick = 0;
     this.lastClickTick = 0;
@@ -329,19 +329,21 @@ function ActionQueue( maxLen, x, y, cellSize ) {
     /// 0, 1, 2, 3 = movement
     /// 10 = Melee Attack
     
-
+    
+    /// Model:
     this.maxLen = maxLen;
     this.actions = new Array( this.maxLen );
     for ( var i=0; i<this.maxLen; i++ ){
 	this.actions[i] = {code:0, param: 0};
     }
     this.len = 0;
+
+
+    /// View:
     this.x = x;
     this.y = y;
     this.cellSize = cellSize;
-    
     this.status = { reeady: true };
-    
     this.init();
     
 
@@ -356,7 +358,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 	}
 	return false;
     }
-    this.getID = function( x, y ){
+    this.getIDByPosition = function( x, y ){
 	if ( this.inBoard( x, y ) ){
 	    return Math.floor( ( x - this.x ) / this.cellSize );
 	}
@@ -552,10 +554,11 @@ function ActionQueue( maxLen, x, y, cellSize ) {
     }
 
     this.update = function(){
+	/*
 	if ( this.status.ready ){
 	    if ( mouseCtrl.leftPressed ){
 		this.status.ready = false;
-		var id = this.getID( mouseCtrl.x, mouseCtrl.y );
+		var id = this.getIDByPostion( mouseCtrl.x, mouseCtrl.y );
 		if ( id >= 0 && this.actions[id].code == 10 ){
 		    this.actions[id].param = ( this.actions[id].param + 1 ) % 4;
 		}
@@ -565,6 +568,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 		this.status.ready = true;
 	    }
 	}
+	*/
     }
 
     this.reset = function(){

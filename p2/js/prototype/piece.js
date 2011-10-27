@@ -1,17 +1,29 @@
 function Piece(){
     /// The abstract Piece won't get initialized
     /// until instantiated with inheritance calss.
-    this.isPiece = true;
-    this.type = -1;
+    
+    this.isPiece = true; /// indicate an instance of Piece
+
+    /// Health Points
     this.maxHP = 1;
     this.curHP = 1;
+    
+    /// Positions on Board
     this.posX = 0;
     this.posY = 0;
+
+    
     /// Orientation: 
     /// 0=North, 1=West, 2=East, 3=South
     this.orientation = 0;
+
+    /// Color
     this.color = "#FFFFFF";
+    
+    /// Shader
     this.shader = null;
+    
+    
     this.setMaxHP = function( maxHP ){
 	this.maxHP = maxHP;
 	this.curHP = maxHP;
