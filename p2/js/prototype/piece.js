@@ -407,29 +407,6 @@ function Enemy( maxHP, color, posX, posY, ort ){
 			decision.score = score;
 		    }
 		}
-		/*
-		for ( var ort=0; ort<4; ort++ ){
-		    score = 0;
-		    newPosX = curPosX + board.dx[ort];
-		    newPosY = curPosY + board.dy[ort];
-		    if ( board.inBoard( newPosX, newPosY ) ){
-			var obj = board.map[newPosY][newPosX];
-			if ( obj.isPiece && obj != this ){
-			    if ( obj.curHP > 1 ){
-				score = 1;
-			    }else{
-				score = 10;
-			    }
-			}
-		    }
-		    if ( score > decision.score ){
-			decision.p0 = p0;
-			decision.p1 = p1;
-			decision.ort = ort;
-			decision.score = score;
-		    }
-		}
-		*/
 	    }
 	}
 	
