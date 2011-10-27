@@ -213,55 +213,38 @@ function MovementStream( x, y, cellSize, w, h ) {
     pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
     if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
       this.reset();
-      actions.reset();
-
-    }
+      logic.dispatchEvent( { name: "Clear" } );
+    } else
     if(pos.posX>= 4 && pos.posX <= 6&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
-      
-      
       actions.push(10,0);
       attack = true;
-      
-    }
-
+    } else
     //Special attacks. right now all pushing code 10 for regular attack
-
-
     if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
-      
-      
       actions.push(11,0);
       attack = true;
-      
-    }
+    } else
     if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
-      
-      
       actions.push(12,0);
       attack = true;
-      
-    }
+    } else
     if(pos.posX>= 10 && pos.posX <= 12 && pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
-      
-      
       actions.push(10,0);
       attack = true;
-      
-    }
+    } else
     //end special attacks
     //go button
     if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
-
       logic.dispatchEvent( { name: "To Action Mode" } );
-
-    }
-    if ( 0 == this.status.click ){
+    } else if ( 0 == this.status.click ){
       if ( this.status.ready && mouseCtrl.leftPressed ){
 	
 	if ( pos.posX >= 0&& pos.posY<=4 ){
 	  
 	  this.status.click++;
 	  this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
+	  this.status.id1 = this.status.id0;
+	  actions.pushStream( this.streams, this.status.id0, this.status.id1 );
 	  for ( var i=this.showFrom; i<this.status.id0; i++ ){
 	    this.property[i].enabled = false;
 	  }
@@ -275,9 +258,6 @@ function MovementStream( x, y, cellSize, w, h ) {
 	  this.property[this.status.id0].marked = true;
 	  this.status.ready = false;
 	}
-	
-
-
       }
     }else if ( 1 == this.status.click ){
       if ( ! this.status.ready ){
@@ -290,25 +270,22 @@ function MovementStream( x, y, cellSize, w, h ) {
 	  if ( pos.posX >= 0 ){
 	    var id = this.showFrom + pos.posY * this.width + pos.posX;
 	    if ( this.property[id].enabled ){
-	      
 	      this.status.click++;
 	      this.status.id1 = id;
 	      for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
 		this.property[i].enabled = false;
 		this.property[i].marked = true;
 	      }
-	      
+
 	      this.status.ready = false;
 
 	      actions.pushStream( this.streams, this.status.id0, this.status.id1 );
-	      
-
 	    }
 	  }
 	}
       }
     }
-  }
+  };
   
   this.reset = function(){
     this.status.click = 0;
@@ -318,7 +295,7 @@ function MovementStream( x, y, cellSize, w, h ) {
       this.property[i].enabled = true;
       this.property[i].marked = false;
     }
-  }
+  };
 }
 MovementStream.prototype = new GameObject;
 var attack = false;
@@ -346,27 +323,21 @@ function ActionQueue( maxLen, x, y, cellSize ) {
   this.cellSize = cellSize;
   this.status = { reeady: true };
   this.init();
-  
-
-
-
-
-  
+    
   this.inBoard = function( x, y ){
     if ( x > this.x && x < this.x + this.maxLen * this.cellSize &&
 	 y > this.y && y < this.y + this.cellSize ){
 	   return true;
 	 }
     return false;
-  }
+  };
+
   this.getIDByPosition = function( x, y ){
     if ( this.inBoard( x, y ) ){
       return Math.floor( ( x - this.x ) / this.cellSize );
     }
     return -1;
-  }
-
-
+  };
 
   this.pushStream = function( a, start, end ) {
     this.len = end - start + 1;
@@ -381,8 +352,8 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 	this.actions[i].code = a[start+i];
       }
     logic.dispatchEvent( {name: "Actions Update"} );
-    
-  }
+  };
+
   this.push = function( code, param ){
     if(attack){
       if ( this.len < this.maxLen - 1 ){
@@ -522,7 +493,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 
     ctrl.closePath();
     ctrl.stroke();
-  }
+  };
 
   this.draw = function(){
     ctrl.strokeStyle = "#000000";
@@ -553,7 +524,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 	this.drawAttackIcon( i, this.actions[i].param );
       }
     }
-  }
+  };
 
   this.update = function(){
     /*
@@ -571,12 +542,12 @@ function ActionQueue( maxLen, x, y, cellSize ) {
      }
      }
      */
-  }
+  };
 
   this.reset = function(){
     this.len = 0;
     this.status.ready = true;
-  }
+  };
   
 }
 ActionQueue.prototype = new GameObject;
