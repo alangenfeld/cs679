@@ -214,33 +214,19 @@ function MovementStream( x, y, cellSize, w, h ) {
     if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
       this.reset();
       logic.dispatchEvent( { name: "Clear" } );
-    } else
-    if(pos.posX>= 4 && pos.posX <= 6&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+    } else if(pos.posX>= 4 && pos.posX <= 6&& pos.posY > 4&& mouseCtrl.leftPressed){
       actions.push(10,0);
-      attack = true;
-    } else
-    //Special attacks. right now all pushing code 10 for regular attack
-    if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+    } else if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& mouseCtrl.leftPressed){
       actions.push(11,0);
-      attack = true;
-    } else
-    if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+    } else if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4 && mouseCtrl.leftPressed){
       actions.push(12,0);
-      attack = true;
-    } else
-    if(pos.posX>= 10 && pos.posX <= 12 && pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
+    } else if(pos.posX>= 10 && pos.posX <= 12 && pos.posY > 4 && mouseCtrl.leftPressed){
       actions.push(10,0);
-      attack = true;
-    } else
-    //end special attacks
-    //go button
-    if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
+    } else if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
       logic.dispatchEvent( { name: "To Action Mode" } );
     } else if ( 0 == this.status.click ){
       if ( this.status.ready && mouseCtrl.leftPressed ){
-	
 	if ( pos.posX >= 0&& pos.posY<=4 ){
-	  
 	  this.status.click++;
 	  this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
 	  this.status.id1 = this.status.id0;
@@ -264,23 +250,24 @@ function MovementStream( x, y, cellSize, w, h ) {
 	if ( ! mouseCtrl.leftPressed ){
 	  this.status.ready = true;
 	}
-      }	
-      else{
-	if ( mouseCtrl.leftPressed ){
-	  if ( pos.posX >= 0 ){
-	    var id = this.showFrom + pos.posY * this.width + pos.posX;
-	    if ( this.property[id].enabled ){
-	      this.status.click++;
-	      this.status.id1 = id;
-	      for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
-		this.property[i].enabled = false;
-		this.property[i].marked = true;
-	      }
-
-	      this.status.ready = false;
-
-	      actions.pushStream( this.streams, this.status.id0, this.status.id1 );
+      }	else if ( mouseCtrl.leftPressed ){
+	if ( pos.posX >= 0 ){
+	  var id = this.showFrom + pos.posY * this.width + pos.posX;
+	  if ( this.property[id].enabled ){
+	    if (actions.attackSet && actions.attackLoc > 0) {
+	      actions.attackSet = false;
 	    }
+	    for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
+	      this.property[i].marked = false;
+	    }
+	    this.status.id1 = id;
+	    for ( var i=this.status.id0+1; i<=this.status.id1; i++ ){
+	      this.property[i].marked = true;
+	    }
+
+	    this.status.ready = false;
+
+	    actions.pushStream( this.streams, this.status.id0, this.status.id1 );
 	  }
 	}
       }
@@ -290,7 +277,6 @@ function MovementStream( x, y, cellSize, w, h ) {
   this.reset = function(){
     this.status.click = 0;
     this.status.ready = true;
-    attack = false;
     for ( var i=0; i<this.len; i++ ){
       this.property[i].enabled = true;
       this.property[i].marked = false;
@@ -298,8 +284,6 @@ function MovementStream( x, y, cellSize, w, h ) {
   };
 }
 MovementStream.prototype = new GameObject;
-var attack = false;
-
 function ActionQueue( maxLen, x, y, cellSize ) {
   
   /// Action Code:
@@ -316,12 +300,13 @@ function ActionQueue( maxLen, x, y, cellSize ) {
   }
   this.len = 0;
 
-
   /// View:
   this.x = x;
   this.y = y;
   this.cellSize = cellSize;
-  this.status = { reeady: true };
+  this.status = { ready: true };
+  this.attackSet = false;
+  this.attackLoc = 0;
   this.init();
     
   this.inBoard = function( x, y ){
@@ -341,31 +326,22 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 
   this.pushStream = function( a, start, end ) {
     this.len = end - start + 1;
-    
-    if (attack) { 
-      this.len = end -start +2;   
-      for (var  i= 0; i<this.len; i++ ){
-	this.actions[i+1].code = a[start+i];
-      }
-    }else
-      for(var i = 0; i < this.len; i++){
-	this.actions[i].code = a[start+i];
-      }
+    for(var i = 0; i < this.len; i++){
+      this.actions[i].code = a[start+i];
+    }
     logic.dispatchEvent( {name: "Actions Update"} );
   };
 
   this.push = function( code, param ){
-    if(attack){
-      if ( this.len < this.maxLen - 1 ){
-	this.actions[(this.len +1)-this.len].code = code;
-	this.actions[(this.len +1)-this.len].param = param;
-	this.len++;
-      }
-    }else if(this.len < this.maxLen -1){
+    if (!this.attackSet) {
       this.actions[this.len].code = code;
       this.actions[this.len].param = param;
+      this.attackSet = true;
+      this.attackLoc = this.len;
       this.len++;
-      
+    } else {
+      this.actions[this.attackLoc].code = code;
+      this.actions[this.attackLoc].param = param;
     }
     logic.dispatchEvent( { name: "Actions Update" } );
   };
@@ -546,6 +522,7 @@ function ActionQueue( maxLen, x, y, cellSize ) {
 
   this.reset = function(){
     this.len = 0;
+    this.attackSet = false;
     this.status.ready = true;
   };
   
