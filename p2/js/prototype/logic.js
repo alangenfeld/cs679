@@ -85,7 +85,11 @@ function GameLogic(){
 	// Event Process
 	while ( this.eventStack.length > 0 ){
 	    e = this.eventStack.pop();
-	    if ( "To Decision Mode" == e.name ){
+	    if ( "Player Kill" == e.name ){
+	      this.playerKP++;
+	    } else if ( "AI Kill" == e.name ){
+	      this.AIKP++;
+	    } else if ( "To Decision Mode" == e.name ){
 		this.stage = 0;
 		this.turn ++; 
 		this.turnStart = Date.now();

@@ -494,15 +494,8 @@ function Pawn( maxHP, color, posX, posY ){
 	    }
 	}
 	if ( this.curHP <= 0 ){
-
-	  /**
-	   * MOVE ME WITH BETTER LOGIC
-	   */
-	  logic.playerKP++;
-	  /**
-	   * IM SUPER SRSLY
-	   */
-
+	  var killString = (this.hitBy == 1) ? "Player Kill" : "AI Kill";
+	  logic.dispatchEvent({name:killString});
 	  this.leave();
 	  this.shutdown();
 	}

@@ -16,7 +16,8 @@ function Attack( caster ){
 	    if ( board.inBoard( this.targets[i].posX, this.targets[i].posY ) ){
 		var obj = board.map[this.targets[i].posY][this.targets[i].posX];
 		if ( obj.isPiece ){
-		    obj.curHP -= this.damage;
+		  obj.curHP -= this.damage;
+		  obj.hitBy = this.caster.type;
 		}
 	    }
 	}
