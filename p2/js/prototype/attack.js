@@ -57,8 +57,6 @@ function Attack( caster ){
 		}
 	    }
 	}
-	console.log( doneNum + "," + this.targets.length );
-	console.log( "++" );
 	
 
 	if ( doneNum == this.targets.length ) {

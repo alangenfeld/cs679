@@ -229,14 +229,14 @@ function MovementStream( x, y, cellSize, w, h ) {
          if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
 		    
 	    	     
-		    actions.push(10,0);
+		    actions.push(11,0);
 		    attack = true;
 		 
 		}
 	if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4&& !attack&& mouseCtrl.leftPressed){
 		    
 	    	     
-		    actions.push(10,0);
+		    actions.push(12,0);
 		    attack = true;
 		 
 		}
@@ -370,31 +370,32 @@ function ActionQueue( maxLen, x, y, cellSize ) {
     this.pushStream = function( a, start, end ) {
 	this.len = end - start + 1;
 	
-	if(attack)
-	    { this.len = end -start +2;   
-	for (var  i= 0; i<this.len; i++ ){
-	    this.actions[i+1].code = a[start+i];
-	}}else
+	if (attack) { 
+	    this.len = end -start +2;   
+	    for (var  i= 0; i<this.len; i++ ){
+		this.actions[i+1].code = a[start+i];
+	    }
+	}else
 	    for(var i = 0; i < this.len; i++){
-
 		this.actions[i].code = a[start+i];
 	    }
-
+	logic.dispatchEvent( {name: "Actions Update"} );
+	
     }
     this.push = function( code, param ){
 	if(attack){
-	if ( this.len < this.maxLen - 1 ){
-	    this.actions[(this.len +1)-this.len].code = code;
-	    this.actions[(this.len +1)-this.len].param = param;
-	    this.len++;
-	}}
-	else if(this.len < this.maxLen -1){
+	    if ( this.len < this.maxLen - 1 ){
+		this.actions[(this.len +1)-this.len].code = code;
+		this.actions[(this.len +1)-this.len].param = param;
+		this.len++;
+	    }
+	}else if(this.len < this.maxLen -1){
 	    this.actions[this.len].code = code;
 	    this.actions[this.len].param = param;
 	    this.len++;
 	    
 	}
-
+	logic.dispatchEvent( { name: "Actions Update" } );
     }
     
     this.align = function( u, ort ){

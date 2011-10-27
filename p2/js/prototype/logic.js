@@ -37,7 +37,7 @@ function GameLogic(){
     this.keyInterval = 10;
 
     /// Temp:
-    this.attackOrientation = 0;
+
 
     this.arrows.clear = function() {
 	for (var i=0; i<this.length; i++) {
@@ -91,6 +91,45 @@ function GameLogic(){
 		actions.reset();
 		actionsAI.reset();
 		streams.reset();
+		this.arrows.clear();
+		this.boxes.clear();
+	    } else if ( "Actions Update" == e.name ) {
+		/// Update Arrows and Boxes
+		console.log( "event!" );
+		if ( this.stage != 0 ) {
+		    continue;
+		}
+		this.arrows.clear();
+		this.boxes.clear();
+		if (actions.len > 0){
+		    var posX = hero.posX;
+		    var posY = hero.posY;
+		    var posX0 = 0;
+		    var posY0 = 0;
+		    for ( var i=0; i<actions.len; i++ ){
+			posX0 = posX + board.dx[actions.actions[i].code];
+			posY0 = posY + board.dy[actions.actions[i].code];
+			if (actions.actions[i].code >= 10) {
+			    var id = actions.actions[i].code - 10;
+			    var caster = { posX: posX, posY: posY };
+			    atkStyles[id].generate( caster );
+			    for ( var j=0; j<atkStyles[id].targets.length; j++ ) {
+				this.boxes.push(
+				    new TargetBox(
+					atkStyles[id].targets[j].posX,
+					atkStyles[id].targets[j].posY
+				    ));
+			    }
+			}
+			else if(board.inBoard( posX0, posY0 ) && 0 == board.map[posY0][posX0] ) {
+			    posX = posX0;
+			    posY = posY0;
+			    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
+			}
+		    }
+		    this.futureX = posX;
+		    this.futureY = posY;
+		}
 	    }
 	}
 
@@ -103,10 +142,11 @@ function GameLogic(){
 		/// For Hero
 		this.lastMoveTick = this.tick;
 		if ( this.actionPointer < actions.len ){
-		    if ( actions.actions[this.actionPointer].code == 10 ){
-			hero.setOrientation( this.attackOrientation );
+		    var act = actions.actions[this.actionPointer];
+		    if ( act.code >= 10 ){
+			this.boxes.clear();
 			attack = new Attack( hero );
-			attack.doStyle( atkStyles[0] );
+			attack.doStyle( atkStyles[act.code - 10] );
 		    }else if ( this.arrows.length > 0 ){
 			hero.move( this.arrows.dequeue().orientation );
 		    }
@@ -114,14 +154,14 @@ function GameLogic(){
 		}else{
 		    doneCount++;
 		}
-
+		
 		/// For Enemy
 		if ( this.AIPointer < actionsAI.len ){
-		    act = actionsAI.actions[this.AIPointer];
-		    if ( act.code == 10 ){
+		    var act = actionsAI.actions[this.AIPointer];
+		    if ( act.code >= 10 ){
 			enemy.setOrientation( act.param );
 			attack = new Attack( enemy );
-			attack.doStyle( atkStyles[0] );
+			attack.doStyle( atkStyles[act.code-10] );
 		    }else if ( 0 <= act.code && 4 > act.code ){
 			enemy.move( act.code );
 		    }
@@ -138,35 +178,6 @@ function GameLogic(){
 	     *  Decision Mode
 	     */
 	} else {
-	    this.arrows.clear();
-	    this.boxes.clear();
-	    
-	    if (actions.len > 0){
-		var posX = hero.posX;
-		var posY = hero.posY;
-		var posX0 = 0;
-		var posY0 = 0;
-		for ( var i=0; i<actions.len; i++ ){
-		    posX0 = posX + board.dx[actions.actions[i].code];
-		    posY0 = posY + board.dy[actions.actions[i].code];
-		    if (actions.actions[i].code == 10) {
-			this.attackOrientation = actions.actions[i].param;
-			this.boxes.push(
-			    new TargetBox(
-				posX + board.dx[actions.actions[i].param],
-				posY + board.dy[actions.actions[i].param]
-			    ));
-		    }
-		    else if(board.inBoard( posX0, posY0 ) && 0 == board.map[posY0][posX0] ) {
-			posX = posX0;
-			posY = posY0;
-			this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
-		    }
-		}
-		this.futureX = posX;
-		this.futureY = posY;
-	    }
-
 	    if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 		this.stage = 1;
 		this.lastKeyTick = this.tick;
