@@ -5,35 +5,21 @@
   <link href="css/toy.css" title="compact" rel="stylesheet" type="text/css">
 </head>
 <body>
-  <div class="title centered">
-   3d | 2d
-  </div>
   <script>
-    var statsOn = true;
+    var statsOn = false;
   </script>
-  <div class="util">
-    <span>
-      Update Time:
-    </span>
-    <span id="ut"></span>
-    <br/>
-    <span>
-      Render Time:
-    </span>
-    <span id="rt"></span>
-    <br/>
-    <span>
-      FPS:
-    </span>
-    <span id="fps"></span>
-    <br/>
-    <span>
-      Objects:
-    </span>
-    <span id="num_objs"></span>
-    <br/>
+  <div class="title centered">
+    Pyramid
   </div>
-  <div class="screen centered">
+  <div id="instr" class="screen centered show">
+    <div class="centered">
+      <br/>
+      THIS IS WHERE INSTRUCTIONS GO
+      <br/>
+      <span id="loading">LOADING...</span>
+    </div>
+  </div>
+  <div id="game" class="screen centered hidden">
     <canvas id="display" height="320" width="480" ></canvas>
     <canvas id="display2" height="320" width="480" ></canvas>
     <canvas id="interactive" height="200" width="960" ></canvas>
@@ -58,6 +44,5 @@
   <script type="text/javascript" src="js/prototype/attack.js"></script>
   <script type="text/javascript" src="js/prototype/logic.js"></script>
   <script type="text/javascript" src="js/prototype/ui.js"></script>
-  <script type="text/javascript" src="js/prototype/prototype.js"></script>
-
+  <script type="text/javascript" src="js/prototype/game.js"></script>
 <html>
