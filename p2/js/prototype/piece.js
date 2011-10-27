@@ -7,6 +7,12 @@ function Piece(){
     /// Health Points
     this.maxHP = 1;
     this.curHP = 1;
+
+    /// Attack Cool Down
+    this.coolDown = new Array(10);
+    for ( var i=0; i<10; i++ ){
+	this.coolDown[i] = 0;
+    }
     
     /// Positions on Board
     this.posX = 0;
@@ -74,6 +80,15 @@ function Piece(){
 	ctx.closePath();
 	ctx.stroke();
     };
+
+
+    this.updateCoolDown = function() {
+	for ( var i=0; i<10; i++ ){
+	    if ( this.coolDown[i] > 0 ) {
+		this.coolDown[i] -- ;
+	    }
+	}
+    }
 
     this.setOrientation( 0 );
 }

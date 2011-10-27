@@ -36,6 +36,7 @@ function GameLogic(){
     this.moveInterval = 20;
     this.keyInterval = 10;
 
+
     /// Temp:
 
 
@@ -93,6 +94,8 @@ function GameLogic(){
 		streams.reset();
 		this.arrows.clear();
 		this.boxes.clear();
+		hero.updateCoolDown();
+		enemy.updateCoolDown();
 	    } else if ( "Actions Update" == e.name ) {
 		/// Update Arrows and Boxes
 		console.log( "event!" );
@@ -147,6 +150,7 @@ function GameLogic(){
 			this.boxes.clear();
 			attack = new Attack( hero );
 			attack.doStyle( atkStyles[act.code - 10] );
+			hero.coolDown[act.code-10] = atkStyles[act.code-10].cooldown;
 		    }else if ( this.arrows.length > 0 ){
 			hero.move( this.arrows.dequeue().orientation );
 		    }
@@ -162,6 +166,7 @@ function GameLogic(){
 			enemy.setOrientation( act.param );
 			attack = new Attack( enemy );
 			attack.doStyle( atkStyles[act.code-10] );
+			enemy.coolDown[act.code-10] = atkStyles[act.code-10].cooldown;
 		    }else if ( 0 <= act.code && 4 > act.code ){
 			enemy.move( act.code );
 		    }
