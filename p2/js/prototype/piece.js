@@ -363,7 +363,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
     }
     
     this.think = function() {
-	var decision = {p0:0,p1:0, ort:0, score:0};
+	var decision = {p0:0, p1:0, atk:0, score:0};
 	var maxLen = actionsAI.maxLen - 1;
 	var score = 0;
 	for ( var p0=0; p0<this.streams.length; p0++ ){
@@ -381,6 +381,33 @@ function Enemy( maxHP, color, posX, posY, ort ){
 		    curPosX = newPosX;
 		    curPosY = newPosY;
 		}
+		
+		for ( var i=0; i<atkStyles.length; i++ ) {
+		    if ( this.coolDown[i] > 0 ) {
+			continue;
+		    }
+		    score = -atkStyles[i].cooldown;
+		    var caster = { posX: curPosX, posY: curPosY };
+		    atkStyles[i].generate( caster );
+		    for ( var j=0; j<atkStyles[i].targets.length; j++ ) {
+			var obj = board.map[atkStyles[i].targets[j].posY][atkStyles[i].targets[j].posX];
+			if ( obj.isPiece && obj != this ) {
+			    if ( obj.curHP > 1 ) {
+				score += 1;
+			    }else{
+				score += 10;
+			    }
+			}
+		    }
+		    
+		    if ( score > decision.score ){
+			decision.p0 = p0;
+			decision.p1 = p1;
+			decision.atk = i;
+			decision.score = score;
+		    }
+		}
+		/*
 		for ( var ort=0; ort<4; ort++ ){
 		    score = 0;
 		    newPosX = curPosX + board.dx[ort];
@@ -402,6 +429,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
 			decision.score = score;
 		    }
 		}
+		*/
 	    }
 	}
 	
@@ -410,7 +438,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
 	for ( var i=decision.p0; i<=decision.p1; i++ ){
 	    actionsAI.push( this.streams[i], 0 );
 	}
-	actionsAI.push( 10, decision.ort );
+	actionsAI.push( 10 + decision.atk, 0 );
 
 	/// Remove selected movements from streams;
 	this.streams.splice( decision.p0, decision.p1 - decision.p0 + 1 );
