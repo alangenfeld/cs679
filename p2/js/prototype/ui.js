@@ -29,7 +29,9 @@ function MovementStream( x, y, cellSize, w, h ) {
   
   
 
-  
+  resourceManager.addImage("basic", "img/basic.png");
+  resourceManager.addImage("special1", "img/special1.png");
+  resourceManager.addImage("special2", "img/special2.png");
   this.init();
   
   /// Randomly generate movement streams
@@ -59,8 +61,9 @@ function MovementStream( x, y, cellSize, w, h ) {
   };
 
   this.inBoard = function( x, y ){
-    if ( x > this.x && x < this.x + this.width * this.cellSize &&
-	 y > this.y && y < this.y + (this.height+1) * this.cellSize){
+      if ( x > this.x && x < this.x + this.width * this.cellSize &&
+	    y > this.y && y < this.y + (this.height+1) * this.cellSize ){
+	 
       return true;
     }
     return false;
@@ -150,21 +153,37 @@ function MovementStream( x, y, cellSize, w, h ) {
 		   this.y + i * this.cellSize );
     }
     
-    
+    // attacks and clear
 
     for(var i = 0; i<=this.width; i = i +4){
 
       ctrl.moveTo(this.x + i * this.cellSize, this.y);
       ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
     
-    ctrl.moveTo(this.x +10*this.cellSize, this.y);
-    ctrl.lineTo(this.x +10*this.cellSize, this.y + 6*this.cellSize);
-    ctrl.moveTo(this.x +6*this.cellSize, this.y);
-    ctrl.lineTo(this.x +6*this.cellSize, this.y + 6*this.cellSize);
     ctrl.closePath();
     ctrl.stroke();
+
+
+    //go button
+    ctrl.beginPath();
+    
+    ctrl.moveTo(550 + 11* this.cellSize, 40);
+    ctrl.lineTo(550 + 11* this.cellSize, 40 + this.cellSize);
+    
+    ctrl.moveTo(550 + 13* this.cellSize, 40);
+    ctrl.lineTo(550 +13* this.cellSize, 40+this.cellSize);
+    
+    for ( var i=0; i<=1; i++ ){
+	    ctrl.moveTo( 550+ 11*this.cellSize ,
+			 40 + i * this.cellSize );
+	    ctrl.lineTo( 550 + 13 * this.cellSize,
+			 40 + i * this.cellSize );
+    }
     
 
+
+    ctrl.closePath();
+    ctrl.stroke();
 
     var posX = 0;
     var posY = 0;
@@ -192,38 +211,49 @@ function MovementStream( x, y, cellSize, w, h ) {
     
     ctrl.fillStyle = '#f00';
     ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('special1', this.x +6*this.cellSize, (this.height +1.5)*this.cellSize);
+    ctrl.fillText('special1', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
     
     ctrl.fillStyle = '#f00';
     ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('special2', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
-    
-    ctrl.fillStyle = '#f00';
-    ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('special3', this.x +10*this.cellSize, (this.height +1.5)*this.cellSize);
-    
+    ctrl.fillText('special2', this.x +12*this.cellSize, (this.height +1.5)*this.cellSize);
+         
 
     ctrl.fillStyle = '#00ff00'; 
     ctrl.font= 'bold 30px sans-serif';
-    ctrl.fillText('GO!', this.x +(13 * this.cellSize), (this.height +1.5)*this.cellSize);
+    ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
+
+
+
+
+    //attack images
+
+    ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
+    ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
+    ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
+
+
+
+
+
   };
 
   
   this.update = function(){
     pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
     if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
-      this.reset();
+	this.reset();
       logic.dispatchEvent( { name: "Clear" } );
-    } else if(pos.posX>= 4 && pos.posX <= 6&& pos.posY > 4&& mouseCtrl.leftPressed){
-      actions.push(10,0);
-    } else if(pos.posX>= 6 && pos.posX <= 8&& pos.posY > 4&& mouseCtrl.leftPressed){
-      actions.push(11,0);
-    } else if(pos.posX>= 8 && pos.posX <= 10&& pos.posY > 4 && mouseCtrl.leftPressed){
+    } else if(pos.posX>= 4 && pos.posX <= 8&& pos.posY > 4&& mouseCtrl.leftPressed){
+	actions.push(10,0);
+    } else if(pos.posX>= 8 && pos.posX <= 12&& pos.posY > 4&& mouseCtrl.leftPressed){
+	actions.push(11,0);
+    } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
       actions.push(12,0);
-    } else if(pos.posX>= 10 && pos.posX <= 12 && pos.posY > 4 && mouseCtrl.leftPressed){
-      actions.push(10,0);
-    } else if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
-      logic.dispatchEvent( { name: "To Action Mode" } );
+
+
+      // go does not work
+    } else if(pos.posX>= 770 && pos.posX<=810 && pos.posY >= 40 && pos.posY <= 60 && mouseCtrl.leftPressed){
+	logic.dispatchEvent( { name: "To Action Mode" } );
     } else if ( 0 == this.status.click ){
       if ( this.status.ready && mouseCtrl.leftPressed ){
 	if ( pos.posX >= 0&& pos.posY<=4 ){
