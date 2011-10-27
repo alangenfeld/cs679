@@ -251,7 +251,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	//go button
 	if(pos.posX>= 12 && pos.posX<=16 && pos.posY > 4 && mouseCtrl.leftPressed){
 
-	    logic.go();
+	    logic.dispatchEvent( { name: "To Action Mode" } );
 
 	}
 	if ( 0 == this.status.click ){

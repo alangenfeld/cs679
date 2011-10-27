@@ -98,7 +98,6 @@ function GameLogic(){
 		enemy.updateCoolDown();
 	    } else if ( "Actions Update" == e.name ) {
 		/// Update Arrows and Boxes
-		console.log( "event!" );
 		if ( this.stage != 0 ) {
 		    continue;
 		}
@@ -133,6 +132,13 @@ function GameLogic(){
 		    this.futureX = posX;
 		    this.futureY = posY;
 		}
+	    } else if ( "To Action Mode" == e.name ) {
+		this.stage = 1;
+		this.lastKeyTick = this.tick;
+		this.lastMoveTick = this.tick;
+		this.actionPointer = 0;
+		this.AIPointer = 0;
+		enemy.think();
 	    }
 	}
 
@@ -184,20 +190,10 @@ function GameLogic(){
 	     */
 	} else {
 	    if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
-		this.stage = 1;
-		this.lastKeyTick = this.tick;
-		this.lastMoveTick = this.tick;
-		this.actionPointer = 0;
-		this.AIPointer = 0;
-		enemy.think();
+		logic.dispatchEvent( { name: "To Action Mode" } );
 	    }
 	    if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
-		this.actionPointer = 0;
-		this.AIPointer = 0;
-		this.lastKeyTick = this.tick;
-		this.lastMoveTick = this.tick;
-		this.stage = 1;
-		enemy.think();
+		logic.dispatchEvent( { name: "To Action Mode" } );
 	    }
 	}
     };
