@@ -298,14 +298,10 @@ function MovementStream( x, y, cellSize, w, h ) {
 			    }
 			    
 			    this.status.ready = false;
-<<<<<<< HEAD
+
 			    actions.pushStream( this.streams, this.status.id0, this.status.id1 );
-			    actions.push( 10, 0 );
-=======
 			    
-			    actions.pushStream( this.stream, this.status.id0, this.status.id1 );
-			    
->>>>>>> 1153a51326405b5050df124f461a41e7ec2c05cb
+
 			}
 		    }
 		}

@@ -17,14 +17,10 @@ function GameLogic(){
 
     this.init();
 
-<<<<<<< HEAD
+
     this.arrows = new Array();
-    this.arrowPointer = 0;
+    this.actionPointer = 0;
     this.AIPointer = 0;
-=======
-  this.arrows = new Array();
-  this.actionPointer = 0;
->>>>>>> 1153a51326405b5050df124f461a41e7ec2c05cb
 
     this.boxes = new Array();
 
@@ -43,11 +39,34 @@ function GameLogic(){
     /// Temp:
     this.attackOrientation = 0;
 
-<<<<<<< HEAD
-    this.clearBoxes = function() {
-	for (var i in this.boxes) {
-	    this.boxes[i].shutdown();
-	    this.boxes.splice(i, 1);
+    this.arrows.clear = function() {
+	for (var i=0; i<this.length; i++) {
+	    this[i].shutdown();
+	}
+	this.splice(0, this.length);
+    };
+
+
+    
+    this.boxes.clear = function() {
+	for (var i=0; i<this.length; i++ ){
+	    this[i].shutdown();
+	}
+	this.splice( 0, this.length );
+    };
+
+    
+    this.arrows.dequeue = function() {
+	this[0].shutdown();
+	return this.splice(0, 1)[0];
+    };
+    
+    this.go = function(){
+	if ( this.tick - this.lastKeyTick > this.keyInterval ){
+	    this.stage = 1;
+	    this.lastKeyTick = this.tick;
+	    this.lastMoveTick = this.tick;
+	    this.actionPointer = 0;
 	}
     };
 
@@ -66,7 +85,6 @@ function GameLogic(){
 	while ( this.eventStack.length > 0 ){
 	    e = this.eventStack.pop();
 	    if ( "To Decision Mode" == e.name ){
-		this.arrows = new Array();
 		this.stage = 0;
 		this.turn ++; 
 		this.turnStart = Date.now();
@@ -81,24 +99,23 @@ function GameLogic(){
 	 */
 	if ( this.stage == 1 ){
 	    if ( this.tick - this.lastMoveTick > this.moveInterval ) {
-		var moveCount = 1;
+		var doneCount = 0;
 		/// For Hero
 		this.lastMoveTick = this.tick;
-		if ( this.arrowPointer < this.arrows.length){
-		    hero.move(this.arrows[this.arrowPointer].orientation );
-		    this.arrows[this.arrowPointer].shutdown();
-		    this.arrowPointer++;
-		}else if (this.boxes.length > 0 ){
-		    this.clearBoxes();
-		    hero.setOrientation( this.attackOrientation );
-		    attack = new MeleeAttack( hero );
+		if ( this.actionPointer < actions.len ){
+		    if ( actions.actions[this.actionPointer].code == 10 ){
+			hero.setOrientation( this.attackOrientation );
+			attack = new MeleeAttack( hero );
+		    }else if ( this.arrows.length > 0 ){
+			hero.move( this.arrows.dequeue().orientation );
+		    }
+		    this.actionPointer++;
 		}else{
-		    moveCount = 0;
+		    doneCount++;
 		}
 
 		/// For Enemy
 		if ( this.AIPointer < actionsAI.len ){
-		    moveCount++;
 		    act = actionsAI.actions[this.AIPointer];
 		    if ( act.code == 10 ){
 			enemy.setOrientation( act.param );
@@ -107,25 +124,38 @@ function GameLogic(){
 			enemy.move( act.code );
 		    }
 		    this.AIPointer ++;
+		}else{
+		    doneCount++;
 		}
-		if ( 0 == moveCount ){
+		if ( 2 == doneCount ){
 		    this.dispatchEvent( {name:"To Decision Mode"} );
 		}
 	    }
+
 	    /**
 	     *  Decision Mode
 	     */
 	} else {
-	    if (actions.len > 0 && this.arrows.length < 1){
+	    this.arrows.clear();
+	    this.boxes.clear();
+	    
+	    if (actions.len > 0){
 		var posX = hero.posX;
 		var posY = hero.posY;
 		var posX0 = 0;
 		var posY0 = 0;
-		for ( var i=0; i<actions.len-1; i++ ){
+		for ( var i=0; i<actions.len; i++ ){
 		    posX0 = posX + board.dx[actions.actions[i].code];
 		    posY0 = posY + board.dy[actions.actions[i].code];
-		    if ( board.inBoard( posX0, posY0 ) &&
-			 0 == board.map[posY0][posX0] ){
+		    if (actions.actions[i].code == 10) {
+			this.attackOrientation = actions.actions[i].param;
+			this.boxes.push(
+			    new TargetBox(
+				posX + board.dx[actions.actions[i].param],
+				posY + board.dy[actions.actions[i].param]
+			    ));
+		    }
+		    else if(board.inBoard( posX0, posY0 ) && 0 == board.map[posY0][posX0] ) {
 			posX = posX0;
 			posY = posY0;
 			this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
@@ -134,24 +164,17 @@ function GameLogic(){
 		this.futureX = posX;
 		this.futureY = posY;
 	    }
-	    if (actions.len > 0){
-		this.clearBoxes();
-		this.attackOrientation = actions.actions[actions.len-1].param;
-		this.boxes.push(new TargetBox(
-		    this.futureX + board.dx[actions.actions[actions.len-1].param],
-		    this.futureY + board.dy[actions.actions[actions.len-1].param]));
-		
-	    }
+
 	    if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 		this.stage = 1;
 		this.lastKeyTick = this.tick;
 		this.lastMoveTick = this.tick;
-		this.arrowPointer = 0;
+		this.actionPointer = 0;
 		this.AIPointer = 0;
 		enemy.think();
 	    }
 	    if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
-		this.arrowPointer = 0;
+		this.actionPointer = 0;
 		this.AIPointer = 0;
 		this.lastKeyTick = this.tick;
 		this.lastMoveTick = this.tick;
@@ -160,101 +183,6 @@ function GameLogic(){
 	    }
 	}
     };
-=======
-  this.boxes.clear =  
-  this.arrows.clear = function() {
-    for (var i=0; i<this.length; i++) {
-      this[i].shutdown();
-    }
-    this.splice(0, this.length);
-  };
-
-  this.arrows.dequeue = function() {
-    this[0].shutdown();
-    return this.splice(0, 1)[0];
-  };
-      
-  this.go = function(){
-    if ( this.tick - this.lastKeyTick > this.keyInterval ){
-      this.stage = 1;
-      this.lastKeyTick = this.tick;
-      this.lastMoveTick = this.tick;
-      this.actionPointer = 0;
-    }
-  };
-
-  this.update = function(){
-    this.tick ++;
-
-    /**
-     *  Action Mode
-     */
-    if ( this.stage == 1 ){
-      if ( this.tick - this.lastMoveTick > this.moveInterval ) {
-	this.lastMoveTick = this.tick;
-	if (this.actionPointer < actions.len) {
-	  if (actions.actions[this.actionPointer].code == 10) {
-	    this.boxes.clear();
-	    hero.setOrientation( this.attackOrientation );
-	    /**
-	     * THIS NEEDS TO CHANGE
-	     */
-	    attack = new MeleeAttack( hero );
-	  } else if (this.arrows.length > 0) {
-	    hero.move(this.arrows.dequeue().orientation);
-	  }
-	  this.actionPointer++;
-	} else {
-	  this.stage = 0;
-	  this.turn++;
-	  this.turnStart = Date.now();
-	  actions.reset();
-	  streams.reset();
-	}
-      }
-      return;
-    }  
-    /**
-     *  Decision Mode
-     */ 
-    else {
-      this.arrows.clear();
-      this.boxes.clear();
-      if (actions.len > 0){
-	var posX = hero.posX;
-	var posY = hero.posY;
-	var posX0 = 0;
-	var posY0 = 0;
-	for ( var i=0; i<actions.len; i++ ){
-	  posX0 = posX + board.dx[actions.actions[i].code];
-	  posY0 = posY + board.dy[actions.actions[i].code];
-	  if (actions.actions[i].code == 10) {
-	    this.attackOrientation = actions.actions[i].param;
-	    this.boxes.push(
-	      new TargetBox(
-		posX + board.dx[actions.actions[i].param],
-		posY + board.dy[actions.actions[i].param]
-	      ));
-	  }
-	  else if(board.inBoard( posX0, posY0 ) && 0 == board.map[posY0][posX0] ) {
-	    posX = posX0;
-	    posY = posY0;
-	    this.arrows.push(new Arrow(posX, posY, actions.actions[i].code));
-	  }
-	}
-	this.futureX = posX;
-	this.futureY = posY;
-      }
-      
-      if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
-	this.actionPointer = 0;
-	this.lastKeyTick = this.tick;
-	this.lastMoveTick = this.tick;
-	this.stage = 1;
-      }
-    }
-  };
->>>>>>> 1153a51326405b5050df124f461a41e7ec2c05cb
 
     this.draw = function() {
 	var y = 30;
