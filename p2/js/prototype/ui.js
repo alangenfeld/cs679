@@ -344,9 +344,10 @@ function ActionQueue( maxLen, x, y, cellSize ) {
   };
 
   this.pushStream = function( a, start, end ) {
-    this.len = end - start + 1;
+    var beginning = (this.attackSet && this.attackLoc == 0) ? 1 : 0;
+    this.len = end - start + 1 + beginning;
     for(var i = 0; i < this.len; i++){
-      this.actions[i].code = a[start+i];
+      this.actions[i+beginning].code = a[start+i];
     }
     logic.dispatchEvent( {name: "Actions Update"} );
   };
