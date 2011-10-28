@@ -229,7 +229,6 @@ function MovementStream( x, y, cellSize, w, h ) {
   
   
   this.update = function(){
-      console.log( mouseCtrl.x, mouseCtrl.y );
       pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
       if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
 	this.reset();
@@ -241,7 +240,9 @@ function MovementStream( x, y, cellSize, w, h ) {
       } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
       } else if(mouseCtrl.x>= 880 && mouseCtrl.x<=940 && mouseCtrl.y >= 40 && mouseCtrl.y <=70 && mouseCtrl.leftPressed){
-	logic.dispatchEvent( { name: "To Action Mode" } );
+	if (logic.stage == 0) {
+	  logic.dispatchEvent( { name: "To Action Mode" } );
+	}
       } else if ( 0 == this.status.click ){
 	if ( this.status.ready && mouseCtrl.leftPressed ){
 	  if ( pos.posX >= 0&& pos.posY<=4 ){

@@ -79,20 +79,18 @@ function GameLogic(){
     this.boxes.clear();
   };
 
-  this.eventStack = new Array(0);
+  this.eventStack = new Array();
 
-
-  this.dispatchEvent = function( e ){
+  this.dispatchEvent = function(e){
     this.eventStack.push(e);
   };
 
   this.update = function(){
     this.tick ++;
 
-
     // Event Process
     while ( this.eventStack.length > 0 ){
-      e = this.eventStack.pop();
+      var e = this.eventStack.pop();
       if ( "Player Kill" == e.name ){
 	this.playerKP++;
       } else if ( "AI Kill" == e.name ){
@@ -201,8 +199,7 @@ function GameLogic(){
     } else {
       if ( keyboard.space && ( this.tick - this.lastKeyTick > this.keyInterval )){
 	logic.dispatchEvent( { name: "To Action Mode" } );
-      }
-      if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
+      } else if ((Date.now() - this.turnStart)/1000 > this.timePerTurn) {
 	logic.dispatchEvent( { name: "To Action Mode" } );
       }
     }
