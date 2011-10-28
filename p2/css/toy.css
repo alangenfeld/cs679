@@ -24,6 +24,10 @@ canvas {
   top: 320px;
 }
 
+.text {
+  font-size: 24px;
+}
+
 .screen {
   width: 960px;
   height: 520px;

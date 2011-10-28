@@ -221,42 +221,30 @@ function MovementStream( x, y, cellSize, w, h ) {
       ctrl.font= 'bold 30px sans-serif';
       ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
       
-      
-      
-      
       //attack images
-      
       ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
       ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
       ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
-      
-      
-      
-      
-      
   };
   
   
   this.update = function(){
+      console.log( mouseCtrl.x, mouseCtrl.y );
       pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
       if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
-	  this.reset();
-      logic.dispatchEvent( { name: "Clear" } );
+	this.reset();
+	logic.dispatchEvent( { name: "Clear" } );
       } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 4&& mouseCtrl.leftPressed){
 	  actions.push(10,0);
       } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 4&& mouseCtrl.leftPressed){
 	  actions.push(11,0);
       } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
-	  
-	  
-      // go does not work
-    } else if(pos.posX>= 37 && pos.posX<=39 && pos.posY >= 1&& pos.posY <=3 && mouseCtrl.leftPressed){
-       
+      } else if(mouseCtrl.x>= 880 && mouseCtrl.x<=940 && mouseCtrl.y >= 40 && mouseCtrl.y <=70 && mouseCtrl.leftPressed){
 	logic.dispatchEvent( { name: "To Action Mode" } );
-    } else if ( 0 == this.status.click ){
-      if ( this.status.ready && mouseCtrl.leftPressed ){
-	if ( pos.posX >= 0&& pos.posY<=4 ){
+      } else if ( 0 == this.status.click ){
+	if ( this.status.ready && mouseCtrl.leftPressed ){
+	  if ( pos.posX >= 0&& pos.posY<=4 ){
 	  this.status.click++;
 	  this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
 	  this.status.id1 = this.status.id0;

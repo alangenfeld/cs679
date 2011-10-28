@@ -231,7 +231,7 @@ function GameLogic(){
     y += 30;
 
 
-    var phase =  (this.stage == 1) ? "Action Phase" : "Decesion Phase";
+    var phase =  (this.stage == 1) ? "Action Phase" : "Decision Phase";
     y += 30;
     ctx.font = "bold 20pt sans-serif";
     ctx.fillText(phase, 250, y);    
