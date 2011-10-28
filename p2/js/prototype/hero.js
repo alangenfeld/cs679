@@ -5,7 +5,8 @@ function Character( maxHP, color, posX, posY, ort ){
     this.color = color;
     this.colorV = [0.0, 0.0, 1.0];
     this.setOrientation( ort );
-
+    this.onAnimation = 0;
+    this.animations = new Array();
     this.shader = getShader("hero");
     setAttribute(this, 
 		 {name: "vtx",
@@ -55,8 +56,12 @@ function Character( maxHP, color, posX, posY, ort ){
     this.init();
 
     this.draw = function(){
-      this.draw2d();
-      this.draw3d();
+	if ( this.onAnimation > 0 ) {
+	    this.drawAnimations();
+	} else {
+	    this.draw2d();
+	    this.draw3d();
+	}
     };
 
     this.draw2d = function(){
@@ -124,5 +129,37 @@ function Character( maxHP, color, posX, posY, ort ){
       gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
       mvPopMatrix();
     };
+
+    this.bindAnimations = function() {
+	/// Shake: for underattack
+	this.animations.push( new Animation( this, "shake", 20 ) );
+	this.animations[0].draw = function() {
+	    if ( this.tick % 4 < 2 ){
+		this.obj.draw2d();
+		this.obj.draw3d();
+	    }
+	};
+    }
+    
+    this.update = function(){
+	if ( this.death && this.onAnimation == 0 ) {
+	    this.leave();
+	    this.shutdown();
+	}
+	this.updateAnimations();
+    };
+
+
+
+    this.underAttack = function( damage, caster ) {
+	this.curHP -= damage;
+	this.animations[0].init();
+	if ( this.curHP <= 0 ) {
+	    logic.dispatchEvent( { name: "Hero Dead" } );
+	    this.death = true;
+	}
+    }
+    this.bindAnimations();
+
 }
 Character.prototype = new Piece;

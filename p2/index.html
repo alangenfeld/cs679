@@ -11,12 +11,27 @@
   <div class="title centered">
     Pyramid
   </div>
-  <div id="instr" class="screen centered show">
-    <div class="centered">
+  <div id="landing" class="screen centered show">
+    <div id="instr" class="centered text">
       <br/>
-      THIS IS WHERE INSTRUCTIONS GO
+      Welcome to "Pyramid"
+      <br/>      <br/>
+      The goal of the game is to kill more pawns than your AI opponent.
+      <br/>      <br/>
+      Each turn consists of a move and an attack. 
+      <br/>      <br/>
+      Movement: you can select a range of moves out of the random movement pool.
+      <br/>      <br/>
+      Attack: you can choose one attack per turn.
+      <br/>      <br/>
+      * Blue - you
+      <br/>   
+      * Orange - AI
+      <br/>    
+      * Red - pawn
+      <br/>      <br/>
+      <span id="loading" class="text">LOADING...</span>
       <br/>
-      <span id="loading">LOADING...</span>
     </div>
   </div>
   <div id="game" class="screen centered hidden">
@@ -24,6 +39,7 @@
     <canvas id="display2" height="320" width="480" ></canvas>
     <canvas id="interactive" height="200" width="960" ></canvas>
   </div>
+    <audio id="pawn0" src="sound/pawn0.wav" preload="auto" autobuffer />
 </body>
   <script type="text/javascript" src="js/core/util.js"></script>
   <script type="text/javascript" src="js/core/matrix.js"></script>
@@ -33,7 +49,8 @@
   <script type="text/javascript" src="js/core/object.js"></script>
   <script type="text/javascript" src="js/core/input.js"></script>
   <script type="text/javascript" src="js/prototype/camera.js"></script>  
-  <script type="text/javascript" src="js/prototype/board.js"></script>  
+  <script type="text/javascript" src="js/prototype/board.js"></script>
+  <script type="text/javascript" src="js/prototype/animation.js"></script>  
   <script type="text/javascript" src="js/prototype/piece.js"></script>
   <script type="text/javascript" src="js/prototype/hero.js"></script>
   <script type="text/javascript" src="js/prototype/enemy.js"></script>
@@ -45,4 +62,5 @@
   <script type="text/javascript" src="js/prototype/logic.js"></script>
   <script type="text/javascript" src="js/prototype/ui.js"></script>
   <script type="text/javascript" src="js/prototype/game.js"></script>
+  <script type="text/javascript" src="js/prototype/sound.js"></script>
 <html>

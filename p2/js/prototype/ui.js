@@ -221,10 +221,8 @@ function MovementStream( x, y, cellSize, w, h ) {
       ctrl.font= 'bold 30px sans-serif';
       ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
       
-      
-      
-      
       //attack images
+<<<<<<< HEAD
       
       ctrl.drawImage(resourceManager.getImage("basic"), this.x +6.5* this.cellSize, (this.height+.7)*this.cellSize);
       ctrl.drawImage(resourceManager.getImage("special1"), this.x +10.5 * this.cellSize, (this.height+.7)* this.cellSize);
@@ -234,29 +232,32 @@ function MovementStream( x, y, cellSize, w, h ) {
       
       
       
+=======
+      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
+>>>>>>> 1ab9bef97a6251125d635ccf27ecab8cdce6f568
   };
   
   
   this.update = function(){
       pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
       if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
-	  this.reset();
-      logic.dispatchEvent( { name: "Clear" } );
+	this.reset();
+	logic.dispatchEvent( { name: "Clear" } );
       } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 4&& mouseCtrl.leftPressed){
 	  actions.push(10,0);
       } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 4&& mouseCtrl.leftPressed){
 	  actions.push(11,0);
       } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
-	  
-	  
-      // go does not work
-    } else if(pos.posX>= 37 && pos.posX<=39 && pos.posY >= 1&& pos.posY <=3 && mouseCtrl.leftPressed){
-       
-	logic.dispatchEvent( { name: "To Action Mode" } );
-    } else if ( 0 == this.status.click ){
-      if ( this.status.ready && mouseCtrl.leftPressed ){
-	if ( pos.posX >= 0&& pos.posY<=4 ){
+      } else if(mouseCtrl.x>= 880 && mouseCtrl.x<=940 && mouseCtrl.y >= 40 && mouseCtrl.y <=70 && mouseCtrl.leftPressed){
+	if (logic.stage == 0) {
+	  logic.dispatchEvent( { name: "To Action Mode" } );
+	}
+      } else if ( 0 == this.status.click ){
+	if ( this.status.ready && mouseCtrl.leftPressed ){
+	  if ( pos.posX >= 0&& pos.posY<=4 ){
 	  this.status.click++;
 	  this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
 	  this.status.id1 = this.status.id0;
@@ -355,9 +356,10 @@ function ActionQueue( maxLen, x, y, cellSize ) {
   };
 
   this.pushStream = function( a, start, end ) {
-    this.len = end - start + 1;
+    var beginning = (this.attackSet && this.attackLoc == 0) ? 1 : 0;
+    this.len = end - start + 1 + beginning;
     for(var i = 0; i < this.len; i++){
-      this.actions[i].code = a[start+i];
+      this.actions[i+beginning].code = a[start+i];
     }
     logic.dispatchEvent( {name: "Actions Update"} );
   };

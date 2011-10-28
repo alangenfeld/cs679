@@ -6,7 +6,7 @@ var board = new GameBoard( 12, 12, 20 );
 var hero = new Character( 12, "#0000FF", 1, 1, 3 );
 var enemy = new Enemy( 12, "#EEEE00", 7, 7, 3 );
 var pawns = new Array(7);
-for ( var i=0; i<7; i++ ){
+for ( var i=0; i<14; i++ ){
     while ( true ){
 	var px = Math.floor( Math.random() * board.width );
 	var py = Math.floor( Math.random() * board.height );
@@ -30,8 +30,8 @@ var logic = new GameLogic();
  */
 $("loading").innerHTML = "GAME LOADED";
 $("instr").innerHTML += "Click to play!";
-$("instr").onclick = function() {
-  $("instr").style.display = "none";
+$("landing").onclick = function() {
+  $("landing").style.display = "none";
   $("game").style.display = "block";
   game.start();
 };

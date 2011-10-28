@@ -3,9 +3,9 @@
  */
 var camera = new Camera();
 var board = new GameBoard( 12, 12, 20 );
-var hero = new Character( 12, "#0000FF", 1, 1, 3 );
-var enemy = new Enemy( 12, "#EEEE00", 7, 7, 3 );
-var pawns = new Array(7);
+var hero = new Character( 6, "#0000FF", 1, 1, 3 );
+var enemy = new Enemy( 6, "#EEEE00", 7, 7, 3 );
+var pawns = new Array(2);
 for ( var i=0; i<7; i++ ){
     while ( true ){
 	var px = Math.floor( Math.random() * board.width );

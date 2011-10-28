@@ -5,7 +5,8 @@ function Enemy( maxHP, color, posX, posY, ort ){
     this.color = color;
     this.colorV = [1.0, 0.8, 0.0];
     this.setOrientation( ort );
-
+    this.onAnimation = 0;
+    this.animations = new Array();
     this.streams = null;
     
     this.shader = getShader( "enemy" );
@@ -13,39 +14,39 @@ function Enemy( maxHP, color, posX, posY, ort ){
 		  {name: "vtx",
 		   content: [
 		       1.0, 1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		      -1.0, 1.0, 0.0,
-		    
-		      -1.0, 1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		      -1.0, -1.0, 0.0,
-		    
-		      -1.0, -1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		    1.0, -1.0, 0.0,
-		    
-		    1.0, -1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		    1.0, 1.0, 0.0
+		       0.0, 0.0, 2.0,
+			   -1.0, 1.0, 0.0,
+		       
+			   -1.0, 1.0, 0.0,
+		       0.0, 0.0, 2.0,
+			   -1.0, -1.0, 0.0,
+		       
+			   -1.0, -1.0, 0.0,
+		       0.0, 0.0, 2.0,
+		       1.0, -1.0, 0.0,
+		       
+		       1.0, -1.0, 0.0,
+		       0.0, 0.0, 2.0,
+		       1.0, 1.0, 0.0
 		   ]});
     setAttribute( this,
 		  {name: "normal",
 		   content: [
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
 
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			   -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			   -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			   -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
 
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		       0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
 
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
+		       1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		       1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		       1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
 		   ]});
 
     setUpLights( this.shader );
@@ -57,9 +58,13 @@ function Enemy( maxHP, color, posX, posY, ort ){
     this.init();
 
     this.draw = function(){
-	this.draw2d();
-	this.draw3d();
-    }
+	if ( this.onAnimation > 0 ) {
+	    this.drawAnimations();
+	} else {
+	    this.draw2d();
+	    this.draw3d();
+	}
+    };
 
     this.draw2d = function(){
 	var cellSize = board.cellSize;
@@ -109,22 +114,22 @@ function Enemy( maxHP, color, posX, posY, ort ){
     }
     
     this.draw3d = function() {
-      mvPushMatrix();
+	mvPushMatrix();
 
-      mat4.translate(mvMatrix, [this.posX/2.0, this.posY/2.0, 0.0]);
-      mat4.scale(mvMatrix, [0.25, 0.25, 0.25]);
-      mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
+	mat4.translate(mvMatrix, [this.posX/2.0, this.posY/2.0, 0.0]);
+	mat4.scale(mvMatrix, [0.25, 0.25, 0.25]);
+	mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
 
-      gl.useProgram(this.shader);
-      
-      gl.uniform3fv(this.shader.color, this.colorV);
-      bindLights(this.shader);
-      bindAttributes(this);
-      
-      setMatrixUniforms(this.shader);
-      
-      gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
-      mvPopMatrix();
+	gl.useProgram(this.shader);
+	
+	gl.uniform3fv(this.shader.color, this.colorV);
+	bindLights(this.shader);
+	bindAttributes(this);
+	
+	setMatrixUniforms(this.shader);
+	
+	gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
+	mvPopMatrix();
     };
 
     this.setStreams = function( s ){
@@ -132,10 +137,10 @@ function Enemy( maxHP, color, posX, posY, ort ){
 	for ( var i=0; i<this.streams.length; i ++ ){
 	    this.streams[i] = s[i];
 	}
-    }
+    };
     
     this.think = function() {
-	var decision = {p0:0, p1:0, atk:0, score:0};
+	var decision = {p0:0, p1:0, atk:0, score:-3};
 	var maxLen = actionsAI.maxLen - 1;
 	var score = 0;
 	for ( var p0=0; p0<this.streams.length; p0++ ){
@@ -171,7 +176,6 @@ function Enemy( maxHP, color, posX, posY, ort ){
 			    }
 			}
 		    }
-		    
 		    if ( score > decision.score ){
 			decision.p0 = p0;
 			decision.p1 = p1;
@@ -181,16 +185,48 @@ function Enemy( maxHP, color, posX, posY, ort ){
 		}
 	    }
 	}
+
+
 	
 	
 	/// Updates actionsAI
-	for ( var i=decision.p0; i<=decision.p1; i++ ){
-	    actionsAI.push( this.streams[i], 0 );
-	}
+	actionsAI.pushStream(this.streams, decision.p0, decision.p1);      
 	actionsAI.push( 10 + decision.atk, 0 );
 
 	/// Remove selected movements from streams;
 	this.streams.splice( decision.p0, decision.p1 - decision.p0 + 1 );
     };
+
+
+    this.bindAnimations = function() {
+	/// Shake: for underattack
+	this.animations.push( new Animation( this, "shake", 20 ) );
+	this.animations[0].draw = function() {
+	    if ( this.tick % 4 < 2 ){
+		this.obj.draw2d();
+		this.obj.draw3d();
+	    }
+	};
+    }
+    
+    this.update = function(){
+	if ( this.death && this.onAnimation == 0 ) {
+	    this.leave();
+	    this.shutdown();
+	}
+	this.updateAnimations();
+    };
+
+
+
+    this.underAttack = function( damage, caster ) {
+	this.curHP -= damage;
+	this.animations[0].init();
+	if ( this.curHP <= 0 ) {
+	    logic.dispatchEvent( { name: "AI Dead" } );
+	    this.death = true;
+	}
+    }
+    this.bindAnimations();
 }
 Enemy.prototype = new Piece;
