@@ -220,6 +220,9 @@ function Enemy( maxHP, color, posX, posY, ort ){
 
 
     this.underAttack = function( damage, caster ) {
+	if ( this.death ) {
+	    return ;
+	}
 	this.curHP -= damage;
 	this.animations[0].init();
 	if ( this.curHP <= 0 ) {
