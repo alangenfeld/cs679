@@ -363,6 +363,9 @@ function ActionQueue( maxLen, x, y, cellSize ) {
   };
 
   this.push = function( code, param ){
+    if (this.len >= this.maxLen) {
+      return;
+    }
     if (!this.attackSet) {
       this.actions[this.len].code = code;
       this.actions[this.len].param = param;

@@ -28,4 +28,11 @@ var logic = new GameLogic();
 /**
  * Start
  */
-game.start();
+$("loading").innerHTML = "GAME LOADED";
+$("instr").innerHTML += "Click to play!";
+$("instr").onclick = function() {
+  $("instr").style.display = "none";
+  $("game").style.display = "block";
+  game.start();
+};
+
