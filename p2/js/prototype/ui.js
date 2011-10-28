@@ -222,21 +222,10 @@ function MovementStream( x, y, cellSize, w, h ) {
       ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
       
       //attack images
-<<<<<<< HEAD
-      
-      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6.5* this.cellSize, (this.height+.7)*this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10.5 * this.cellSize, (this.height+.7)* this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14.5 * this.cellSize, (this.height+.7) * this.cellSize);
-      
-      
-      
-      
-      
-=======
       ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
       ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
       ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
->>>>>>> 1ab9bef97a6251125d635ccf27ecab8cdce6f568
+
   };
   
   
