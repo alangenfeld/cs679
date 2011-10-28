@@ -64,6 +64,7 @@ function Pawn( maxHP, color, posX, posY ){
     this.update = function(){
 	
 	if ( this.death && this.onAnimation == 0 ) {
+	    console.log( "dead!" );
 	    this.leave();
 	    this.shutdown();
 	}
@@ -125,6 +126,9 @@ function Pawn( maxHP, color, posX, posY ){
 
 
     this.underAttack = function( damage, caster ) {
+	if ( this.death) {
+	    return ;
+	}
 	sound.sounds[0].play();
 	this.curHP -= damage;
 	this.animations[0].init();
