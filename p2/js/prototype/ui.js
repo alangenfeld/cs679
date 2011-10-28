@@ -206,25 +206,24 @@ function MovementStream( x, y, cellSize, w, h ) {
 
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('ATTACK', this.x +4.5*this.cellSize, (this.height +1.5)*this.cellSize);
+      ctrl.fillText('Melee', this.x +4.5*this.cellSize, (this.height +1.5)*this.cellSize);
       
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('Special1', this.x +8.5*this.cellSize, (this.height +1.5)*this.cellSize);
+      ctrl.fillText('Sweep', this.x +8.5*this.cellSize, (this.height +1.5)*this.cellSize);
       
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('Special2', this.x +12.5*this.cellSize, (this.height +1.5)*this.cellSize);
-      
-      
+      ctrl.fillText('Range', this.x +12.5*this.cellSize, (this.height +1.5)*this.cellSize);
+            
       ctrl.fillStyle = '#00ff00'; 
       ctrl.font= 'bold 30px sans-serif';
       ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
       
       //attack images
-      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("basic"), this.x + 6.5*this.cellSize, (this.height+.75)*this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special1"), this.x + 10.5*this.cellSize, (this.height+.75)* this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special2"), this.x + 14.5*this.cellSize, (this.height+.75) * this.cellSize);
 
   };
   
