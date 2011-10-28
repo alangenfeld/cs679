@@ -206,15 +206,15 @@ function MovementStream( x, y, cellSize, w, h ) {
 
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
+      ctrl.fillText('ATTACK', this.x +4.5*this.cellSize, (this.height +1.5)*this.cellSize);
       
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('special1', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
+      ctrl.fillText('Special1', this.x +8.5*this.cellSize, (this.height +1.5)*this.cellSize);
       
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
-      ctrl.fillText('special2', this.x +12*this.cellSize, (this.height +1.5)*this.cellSize);
+      ctrl.fillText('Special2', this.x +12.5*this.cellSize, (this.height +1.5)*this.cellSize);
       
       
       ctrl.fillStyle = '#00ff00'; 
@@ -226,9 +226,9 @@ function MovementStream( x, y, cellSize, w, h ) {
       
       //attack images
       
-      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6.5* this.cellSize, (this.height+.7)*this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10.5 * this.cellSize, (this.height+.7)* this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14.5 * this.cellSize, (this.height+.7) * this.cellSize);
       
       
       
