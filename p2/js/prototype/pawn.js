@@ -6,47 +6,50 @@ function Pawn( maxHP, color, posX, posY ){
     this.setMaxHP( maxHP );
     this.sparkCount = 0;
     this.visible = true;
+    this.onAnimation = 0;
+    this.animations = new Array();
+    this.death = false;
 
     this.shader = getShader("pawn");
     setAttribute(this, 
 		 {name: "vtx",
 		  content: [
-		    1.0, 1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		      -1.0, 1.0, 0.0,
-		    
-		      -1.0, 1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		      -1.0, -1.0, 0.0,
-		    
-		      -1.0, -1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		    1.0, -1.0, 0.0,
-		    
-		    1.0, -1.0, 0.0,
-		    0.0, 0.0, 2.0,
-		    1.0, 1.0, 0.0
+		      1.0, 1.0, 0.0,
+		      0.0, 0.0, 2.0,
+			  -1.0, 1.0, 0.0,
+		      
+			  -1.0, 1.0, 0.0,
+		      0.0, 0.0, 2.0,
+			  -1.0, -1.0, 0.0,
+		      
+			  -1.0, -1.0, 0.0,
+		      0.0, 0.0, 2.0,
+		      1.0, -1.0, 0.0,
+		      
+		      1.0, -1.0, 0.0,
+		      0.0, 0.0, 2.0,
+		      1.0, 1.0, 0.0
 		  ]});
 
 
     setAttribute(this, 
 		 {name: "normal",
 		  content: [
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, 1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
 
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			  -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			  -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+			  -1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
 
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
-		    0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
+		      0.0, -1.0/Math.sqrt(2.0), 1.0/Math.sqrt(2.0),
 
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
-		    1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
+		      1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		      1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0),
+		      1.0/Math.sqrt(2.0), 0.0, 1.0/Math.sqrt(2.0)
 		  ]});
 
     setUpLights(this.shader);
@@ -59,26 +62,21 @@ function Pawn( maxHP, color, posX, posY ){
     this.init();
 
     this.update = function(){
-	if ( this.sparkCount > 0 ){
-	    this.sparkCount--;
-	    if ( this.sparkCount % 5 == 0 ){
-		this.visible = !this.visible;
-	    }
-	    if ( this.sparkCount <= 0 ){
-		this.visible = true;
-	    }
+	
+	if ( this.death && this.onAnimation == 0 ) {
+	    this.leave();
+	    this.shutdown();
 	}
-	if ( this.curHP <= 0 ){
-	  var killString = (this.hitBy == 1) ? "Player Kill" : "AI Kill";
-	  logic.dispatchEvent({name:killString});
-	  this.leave();
-	  this.shutdown();
-	}
+	this.updateAnimations();
     };
 
     this.draw = function(){
-      this.draw2d();
-      this.draw3d();
+	if ( this.onAnimation > 0 ) {
+	    this.drawAnimations();
+	} else {
+	    this.draw2d();
+	    this.draw3d();
+	}
     };
 
     this.draw2d = function(){
@@ -94,23 +92,48 @@ function Pawn( maxHP, color, posX, posY ){
     };
 
     this.draw3d = function() {
-      mvPushMatrix();
+	mvPushMatrix();
 
-      mat4.translate(mvMatrix, [this.posX/2.0, this.posY/2.0, 0.0]);
-      mat4.scale(mvMatrix, [0.25, 0.25, 0.25]);
-      mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
+	mat4.translate(mvMatrix, [this.posX/2.0, this.posY/2.0, 0.0]);
+	mat4.scale(mvMatrix, [0.25, 0.25, 0.25]);
+	mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
 
-      gl.useProgram(this.shader);
-      
-      gl.uniform3fv(this.shader.color, this.colorV);
-      gl.uniform1f(this.shader.hp, this.curHP/this.maxHP);
-      bindLights(this.shader);
-      bindAttributes(this);
-      
-      setMatrixUniforms(this.shader);
-      
-      gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
-      mvPopMatrix();
+	gl.useProgram(this.shader);
+	
+	gl.uniform3fv(this.shader.color, this.colorV);
+	gl.uniform1f(this.shader.hp, this.curHP/this.maxHP);
+	bindLights(this.shader);
+	bindAttributes(this);
+	
+	setMatrixUniforms(this.shader);
+	
+	gl.drawArrays(gl.TRIANGLES, 0, this.attributes.size);
+	mvPopMatrix();
     };
+
+    this.bindAnimations = function() {
+	/// Spark: for underattack
+	this.animations.push( new Animation( this, "spark", 20 ) );
+	this.animations[0].draw = function() {
+	    if ( this.tick % 4 < 2 ){
+		this.obj.draw2d();
+		this.obj.draw3d();
+	    }
+	};
+	this.animations[0].init();
+    }
+
+
+    this.underAttack = function( damage, caster ) {
+	this.curHP -= damage;
+	this.animations[0].init();
+	if ( this.curHP <= 0 ) {
+	    eventString = caster.type == 1 ? "Player Kill" : "AI Kill";
+	    logic.dispatchEvent( { name: eventString } );
+	    this.death = true;
+	}
+    }
+
+    this.bindAnimations();
 }
 Pawn.prototype = new Piece;

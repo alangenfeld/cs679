@@ -14,11 +14,8 @@ function Attack( caster ){
     this.doDamage = function(){
 	for ( var i=0; i<this.targets.length; i++ ){
 	    if ( board.inBoard( this.targets[i].posX, this.targets[i].posY ) ){
-		var obj = board.map[this.targets[i].posY][this.targets[i].posX];
-		if ( obj.isPiece ){
-		  obj.curHP -= this.damage;
-		  obj.hitBy = this.caster.type;
-		}
+
+
 	    }
 	}
     };
@@ -48,6 +45,10 @@ function Attack( caster ){
 	var doneNum = 0;
 	for ( var i=0; i<this.targets.length; i++ ){
 	    if ( Math.abs(this.tick - this.targets[i].start) < 0.1 ) {
+		var obj = board.map[this.targets[i].posY][this.targets[i].posX];
+		if ( obj.isPiece ){
+		    obj.underAttack( this.damage, this.caster );
+		}
 		this.initEffects( i, this.parNum, this.spd );
 	    } else if ( this.tick > this.targets[i].start ) {
 		if ( this.tick <= this.targets[i].start + this.targets[i].lifetime ) {
@@ -60,8 +61,7 @@ function Attack( caster ){
 	}
 	
 
-	if ( doneNum == this.targets.length ) {
-	    this.doDamage();
+	if ( doneNum >= this.targets.length ) {
 	    this.shutdown();
 	}
     };
@@ -157,7 +157,7 @@ function PowerAttack() {
 PowerAttack.prototype = new AttackStyle;
 
 function CrossAttack() {
-    this.name = "Power";
+    this.name = "Cross";
     this.parNum = 20;
     this.spd = 0.4;
     this.damage = 1;

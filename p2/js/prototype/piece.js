@@ -7,6 +7,7 @@ function Piece(){
     /// Health Points
     this.maxHP = 1;
     this.curHP = 1;
+    this.death = false;
 
     /// Attack Cool Down
     this.coolDown = new Array(10);
@@ -28,6 +29,10 @@ function Piece(){
     
     /// Shader
     this.shader = null;
+
+    /// Animation
+    this.onAnimation = 0;
+    this.animations = new Array();
     
     
     this.setMaxHP = function( maxHP ){
@@ -90,6 +95,34 @@ function Piece(){
 	}
     };
 
+
+
+    this.updateAnimations = function() {
+	if ( this.onAnimation > 0 ) {
+	    for ( var i=0; i<this.animations.length; i++ ){
+		if ( this.animations[i].active ){
+		    this.animations[i].update();
+		}
+	    }
+	}
+    }
+    this.drawAnimations = function() {
+	for ( var i=0; i<this.animations.length; i++ ){
+	    if ( this.animations[i].active ){
+		this.animations[i].draw();
+	    }
+	}
+    }
+
+    this.bindAnimations = function() {
+	return ;
+    }
+
+    this.underAttack = function( damage, caster ) {
+	return ;
+    }
+    
+    
     this.setOrientation( 0 );
 }
 Piece.prototype = new GameObject;
