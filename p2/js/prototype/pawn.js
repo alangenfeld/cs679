@@ -125,6 +125,7 @@ function Pawn( maxHP, color, posX, posY ){
 
 
     this.underAttack = function( damage, caster ) {
+	sound.sounds[0].play();
 	this.curHP -= damage;
 	this.animations[0].init();
 	if ( this.curHP <= 0 ) {
