@@ -59,200 +59,200 @@ function MovementStream( x, y, cellSize, w, h ) {
     }
     return v;
   };
-
+  
   this.inBoard = function( x, y ){
       if ( x > this.x && x < this.x + this.width * this.cellSize &&
-	    y > this.y && y < this.y + (this.height+1) * this.cellSize ){
-	 
-      return true;
-    }
-    return false;
+	    y > this.y && y < this.y + (this.height+1) * this.cellSize) {
+	  
+	  return true;
+      } return false;
   };
-
+  
   this.getPos = function( x, y ){
     if ( this.inBoard( x, y ) ){
-      return { posX: Math.floor( ( x - this.x ) / this.cellSize ),
-	       posY: Math.floor( ( y - this.y ) / this.cellSize ) };
+	return { posX: Math.floor( ( x - this.x ) / this.cellSize ),
+		 posY: Math.floor( ( y - this.y ) / this.cellSize ) };
     }
     return { posX: -1, posY: -1 };
   };
-
+  
   this.drawArrow = function( posX, posY, ort, prop ){
-    if ( posX < 0 || posX >= this.width || posY < 0 || posY >= this.height ){
-      return;
-    }
-    
-    c = { x: this.x + ( posX + 0.5 ) * this.cellSize, 
-	  y: this.y + ( posY + 0.5 ) * this.cellSize };
-    
-    if ( prop.marked ){
-      ctrl.strokeStyle = "#FF0000";
+      if ( posX < 0 || posX >= this.width || posY < 0 || posY >= this.height ){
+	  return;
+      }
+      
+      c = { x: this.x + ( posX + 0.5 ) * this.cellSize, 
+	    y: this.y + ( posY + 0.5 ) * this.cellSize };
+      
+      if ( prop.marked ){
+	  ctrl.strokeStyle = "#FF0000";
     }else if ( prop.enabled ){
-      ctrl.strokeStyle = "#000000";
-    }else{
-      ctrl.strokeStyle = "#AAAAAA";
-    }
-    ctrl.lineWidth = 2;
-    ctrl.beginPath();
-    
-    var u = {x:0,y:0};
-    var v0 = {x:0,y:0};
-    var v1 = {x:0,y:0};
-    u.y = -cellSize * 0.3;
-    u.x = 0;
-    v0 = this.align( u, ort );
-    v0.x += c.x;
+	  ctrl.strokeStyle = "#000000";
+      }else{
+	  ctrl.strokeStyle = "#AAAAAA";
+      }
+      ctrl.lineWidth = 2;
+      ctrl.beginPath();
+      
+      var u = {x:0,y:0};
+      var v0 = {x:0,y:0};
+      var v1 = {x:0,y:0};
+      u.y = -cellSize * 0.3;
+      u.x = 0;
+      v0 = this.align( u, ort );
+      v0.x += c.x;
     v0.y += c.y;
-
-    
-    u.x = - cellSize * 0.2;
-    u.y = 0;
-    v1 = this.align( u, ort );
-    v1.x += c.x;
-    v1.y += c.y;
-    ctrl.moveTo( v0.x, v0.y );
-    ctrl.lineTo( v1.x, v1.y );
-
-    u.x = cellSize * 0.2;
-    u.y = 0;
-    v1 = this.align( u, ort );
-    v1.x += c.x;
-    v1.y += c.y;
-    ctrl.moveTo( v0.x, v0.y );
-    ctrl.lineTo( v1.x, v1.y );
-
-
-    u.y = cellSize * 0.3;
-    u.x = 0;
-    v1 = this.align( u, ort );
-    v1.x += c.x;
-    v1.y += c.y;
-    ctrl.moveTo( v0.x, v0.y );
-    ctrl.lineTo( v1.x, v1.y );
-
-    ctrl.closePath();
-    ctrl.stroke();
+      
+      
+      u.x = - cellSize * 0.2;
+      u.y = 0;
+      v1 = this.align( u, ort );
+      v1.x += c.x;
+      v1.y += c.y;
+      ctrl.moveTo( v0.x, v0.y );
+      ctrl.lineTo( v1.x, v1.y );
+      
+      u.x = cellSize * 0.2;
+      u.y = 0;
+      v1 = this.align( u, ort );
+      v1.x += c.x;
+      v1.y += c.y;
+      ctrl.moveTo( v0.x, v0.y );
+      ctrl.lineTo( v1.x, v1.y );
+      
+      
+      u.y = cellSize * 0.3;
+      u.x = 0;
+      v1 = this.align( u, ort );
+      v1.x += c.x;
+      v1.y += c.y;
+      ctrl.moveTo( v0.x, v0.y );
+      ctrl.lineTo( v1.x, v1.y );
+      
+      ctrl.closePath();
+      ctrl.stroke();
   };
   
   this.draw = function() {
-    ctrl.strokeStyle = "#000000";
-    ctrl.lineWidth = 1;
-    ctrl.beginPath();
-    
-    for ( var i=0; i<=this.width; i++ ){
-      ctrl.moveTo( this.x + i * this.cellSize,
-		   this.y );
-      ctrl.lineTo( this.x + i * this.cellSize,
-		   this.y + this.height * this.cellSize );
-    }
-
-    for ( var i=0; i<=this.height; i++ ){
-      ctrl.moveTo( this.x,
-		   this.y + i * this.cellSize );
-      ctrl.lineTo( this.x + this.width * this.cellSize,
-		   this.y + i * this.cellSize );
-    }
-    
-    // attacks and clear
-
-    for(var i = 0; i<=this.width; i = i +4){
-
-      ctrl.moveTo(this.x + i * this.cellSize, this.y);
-      ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
-    
-    ctrl.closePath();
-    ctrl.stroke();
-
-
-    //go button
-    ctrl.beginPath();
-    
-    ctrl.moveTo(550 + 11* this.cellSize, 40);
-    ctrl.lineTo(550 + 11* this.cellSize, 40 + this.cellSize);
-    
-    ctrl.moveTo(550 + 13* this.cellSize, 40);
-    ctrl.lineTo(550 +13* this.cellSize, 40+this.cellSize);
-    
-    for ( var i=0; i<=1; i++ ){
-	    ctrl.moveTo( 550+ 11*this.cellSize ,
-			 40 + i * this.cellSize );
-	    ctrl.lineTo( 550 + 13 * this.cellSize,
-			 40 + i * this.cellSize );
-    }
-    
-
-
-    ctrl.closePath();
-    ctrl.stroke();
-
-    var posX = 0;
-    var posY = 0;
-    var showTo = this.showFrom + this.width * this.height;
-    if ( this.len < showTo ){
-      showTo = this.len;
-    }
-
-    
-    for ( var i=this.showFrom; i<showTo; i++ ){
-      this.drawArrow( posX, posY, this.streams[i], this.property[i] );
-      posX++;
-      if ( posX == this.width ){
-	posY++;
-	posX = 0;
+      ctrl.strokeStyle = "#000000";
+      ctrl.lineWidth = 1;
+      ctrl.beginPath();
+      
+      for ( var i=0; i<=this.width; i++ ){
+	  ctrl.moveTo( this.x + i * this.cellSize,
+		       this.y );
+	  ctrl.lineTo( this.x + i * this.cellSize,
+		       this.y + this.height * this.cellSize );
       }
+      
+    for ( var i=0; i<=this.height; i++ ){
+	ctrl.moveTo( this.x,
+		     this.y + i * this.cellSize );
+	ctrl.lineTo( this.x + this.width * this.cellSize,
+		     this.y + i * this.cellSize );
     }
-    ctrl.fillStyle = '#f00';
-    ctrl.font = 'bold 30px sans-serif';
-    ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
+      
+      // attacks and clear
 
-    ctrl.fillStyle = '#f00';
-    ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
+      for(var i = 0; i<=this.width; i = i +4){
+	  
+	  ctrl.moveTo(this.x + i * this.cellSize, this.y);
+	  ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
+      
+      ctrl.closePath();
+      ctrl.stroke();
+      
+      
+      //go button
+      ctrl.beginPath();
+      
+      ctrl.moveTo(550 + 11* this.cellSize, 40);
+      ctrl.lineTo(550 + 11* this.cellSize, 40 + this.cellSize);
+      
+      ctrl.moveTo(550 + 13* this.cellSize, 40);
+      ctrl.lineTo(550 +13* this.cellSize, 40+this.cellSize);
     
-    ctrl.fillStyle = '#f00';
-    ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('special1', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
+      for ( var i=0; i<=1; i++ ){
+	  ctrl.moveTo( 550+ 11*this.cellSize ,
+		       40 + i * this.cellSize );
+	  ctrl.lineTo( 550 + 13 * this.cellSize,
+		       40 + i * this.cellSize );
+    }
+      
+      
+      
+      ctrl.closePath();
+      ctrl.stroke();
+
+      var posX = 0;
+      var posY = 0;
+      var showTo = this.showFrom + this.width * this.height;
+      if ( this.len < showTo ){
+	  showTo = this.len;
+      }
+      
     
-    ctrl.fillStyle = '#f00';
-    ctrl.font = 'bold 14px sans-serif';
-    ctrl.fillText('special2', this.x +12*this.cellSize, (this.height +1.5)*this.cellSize);
-         
+      for ( var i=this.showFrom; i<showTo; i++ ){
+	  this.drawArrow( posX, posY, this.streams[i], this.property[i] );
+	  posX++;
+	  if ( posX == this.width ){
+	      posY++;
+	posX = 0;
+	  }
+      }
+      ctrl.fillStyle = '#f00';
+      ctrl.font = 'bold 30px sans-serif';
+      ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
 
-    ctrl.fillStyle = '#00ff00'; 
-    ctrl.font= 'bold 30px sans-serif';
-    ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
-
-
-
-
-    //attack images
-
-    ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
-    ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
-    ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
-
-
-
-
-
+      ctrl.fillStyle = '#f00';
+      ctrl.font = 'bold 14px sans-serif';
+      ctrl.fillText('ATTACK', this.x +4*this.cellSize, (this.height +1.5)*this.cellSize);
+      
+      ctrl.fillStyle = '#f00';
+      ctrl.font = 'bold 14px sans-serif';
+      ctrl.fillText('special1', this.x +8*this.cellSize, (this.height +1.5)*this.cellSize);
+      
+      ctrl.fillStyle = '#f00';
+      ctrl.font = 'bold 14px sans-serif';
+      ctrl.fillText('special2', this.x +12*this.cellSize, (this.height +1.5)*this.cellSize);
+      
+      
+      ctrl.fillStyle = '#00ff00'; 
+      ctrl.font= 'bold 30px sans-serif';
+      ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
+      
+      
+      
+      
+      //attack images
+      
+      ctrl.drawImage(resourceManager.getImage("basic"), this.x +6* this.cellSize, (this.height+.75)*this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special1"), this.x +10 * this.cellSize, (this.height+.75)* this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special2"), this.x +14 * this.cellSize, (this.height+.75) * this.cellSize);
+      
+      
+      
+      
+      
   };
-
+  
   
   this.update = function(){
-    pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
-    if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
-	this.reset();
+      pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
+      if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
+	  this.reset();
       logic.dispatchEvent( { name: "Clear" } );
-    } else if(pos.posX>= 4 && pos.posX <= 8&& pos.posY > 4&& mouseCtrl.leftPressed){
-	actions.push(10,0);
-    } else if(pos.posX>= 8 && pos.posX <= 12&& pos.posY > 4&& mouseCtrl.leftPressed){
-	actions.push(11,0);
-    } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
-      actions.push(12,0);
-
-
+      } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 4&& mouseCtrl.leftPressed){
+	  actions.push(10,0);
+      } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 4&& mouseCtrl.leftPressed){
+	  actions.push(11,0);
+      } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
+	  actions.push(12,0);
+	  
+	  
       // go does not work
-    } else if(pos.posX>= 770 && pos.posX<=810 && pos.posY >= 40 && pos.posY <= 60 && mouseCtrl.leftPressed){
+    } else if(pos.posX>= 37 && pos.posX<=39 && pos.posY >= 1&& pos.posY <=3 && mouseCtrl.leftPressed){
+       
 	logic.dispatchEvent( { name: "To Action Mode" } );
     } else if ( 0 == this.status.click ){
       if ( this.status.ready && mouseCtrl.leftPressed ){
