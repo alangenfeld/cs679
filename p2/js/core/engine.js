@@ -4,7 +4,6 @@
 
 var Game = function() {
   this.paused = false;
-  this.gloop = null;
   this.reset = null;
 
   this.pause = function () {
@@ -13,7 +12,6 @@ var Game = function() {
       this.start();
     } else {
       this.paused = true;
-      this.gloop = null;
     }
   };
 
@@ -27,7 +25,7 @@ var Game = function() {
       game.start();
     } else {
       // fix for delay of game over message in some browsers
-      this.gloop = setTimeout(game.wait, 30); 
+      this.gloop = setTimeout(game.wait, 30);
     }
   };
 
@@ -55,7 +53,8 @@ var Game = function() {
     
     updateStats();
     if (game.paused) {
-      requestAnimFrame(game.wait, display);
+      //requestAnimFrame(game.wait, display);
+      this.gloop = setTimeout(game.wait, 30);
     } else {
       requestAnimFrame(game.start, display);
     }

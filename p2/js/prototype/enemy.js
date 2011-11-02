@@ -61,7 +61,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
 	if ( this.onAnimation > 0 ) {
 	    this.drawAnimations();
 	} else {
-	    this.draw2d();
+//	    this.draw2d();
 	    this.draw3d();
 	}
     };

@@ -59,7 +59,7 @@ function Character( maxHP, color, posX, posY, ort ){
 	if ( this.onAnimation > 0 ) {
 	    this.drawAnimations();
 	} else {
-	    this.draw2d();
+//	    this.draw2d();
 	    this.draw3d();
 	}
     };
@@ -135,7 +135,7 @@ function Character( maxHP, color, posX, posY, ort ){
 	this.animations.push( new Animation( this, "shake", 20 ) );
 	this.animations[0].draw = function() {
 	    if ( this.tick % 4 < 2 ){
-		this.obj.draw2d();
+//		this.obj.draw2d();
 		this.obj.draw3d();
 	    }
 	};

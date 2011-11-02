@@ -74,7 +74,7 @@ function GameBoard( width, height, cellSize ){
     };
 
     this.draw = function(){
-      this.draw2d();
+//      this.draw2d();
       this.draw3d();
     };
 
