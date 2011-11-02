@@ -245,14 +245,14 @@ function MovementStream( x, y, cellSize, w, h ) {
       
       // if(mouseCtrl.leftPressed) { alert(mouseCtrl.y);}
 
-      if(pos.posX < 4 && pos.posY>1&& mouseCtrl.leftPressed){
+      if(pos.posX < 4 && pos.posY>=1 && pos.posY < 5 && mouseCtrl.leftPressed){
 	this.reset();
 	logic.dispatchEvent( { name: "Clear" } );
-      } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 1&& mouseCtrl.leftPressed){
+      } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY >= 1&&  pos.posY < 5 && mouseCtrl.leftPressed){
 	  actions.push(10,0);
-      } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 1&& mouseCtrl.leftPressed){
+      } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY >= 1&&  pos.posY < 5 && mouseCtrl.leftPressed){
 	  actions.push(11,0);
-      } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 1 && mouseCtrl.leftPressed){
+      } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY >= 1 &&  pos.posY < 5 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
       } else if(mouseCtrl.x>= 867 && mouseCtrl.x<=942 && mouseCtrl.y >= 40 && mouseCtrl.y <=87 && mouseCtrl.leftPressed){
 	if (logic.stage == 0) {
