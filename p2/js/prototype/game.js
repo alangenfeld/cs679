@@ -26,15 +26,16 @@ pawns.remove = function(obj) {
 
 function startLevel(lvlNum) {
   logic.timePerTurn = Math.max(45 - (lvlNum-1) * 3, 10);
+  var numPawns = Math.min(((lvlNum-1) * 3) + 1, 30);
+
   logic.AIKP = 0;
   logic.playerKP = 0;
   logic.level = lvlNum;
   logic.turn = 1;
   hero.setPos(3, 3);
   enemy.setPos(7, 7);
-  
+
   pawns.clear();
-  var numPawns = Math.max(20 - (lvlNum-1) * 2, 5);
   for ( var i=0; i<numPawns; i++ ){
     while ( true ){
       var px = Math.floor( Math.random() * board.width );
