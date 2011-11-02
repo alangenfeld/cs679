@@ -67,7 +67,7 @@ function Attack( caster ){
     };
 
     this.draw = function() {
-	this.drawEffect2d();
+//	this.drawEffect2d();
     }
 
     this.doStyle = function( style ) {

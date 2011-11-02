@@ -12,9 +12,11 @@ function Animation( obj, name, period ) {
     this.setEnvironments = function() {
 	return ;
     }
+
     this.next = function() {
 	return ;
     };
+
     this.draw = function() {
 	return ;
     };
@@ -23,7 +25,7 @@ function Animation( obj, name, period ) {
     this.init = function() {
 	this.tick = 0;
 	this.active = true;
-	this.obj.onAnimation++;
+	//this.obj.onAnimation++;
 	this.setEnvironments();
     }
     

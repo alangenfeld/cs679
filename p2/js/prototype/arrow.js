@@ -27,7 +27,7 @@ function Arrow(x, y, ort) {
   this.init();
 
   this.draw = function() {
-    this.draw2d();
+//    this.draw2d();
     this.draw3d();
   };
 
