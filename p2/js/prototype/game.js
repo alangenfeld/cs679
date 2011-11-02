@@ -17,7 +17,7 @@ for ( var i=0; i<14; i++ ){
     }
 }
 
-var streams = new MovementStream( 20, 20, 30, 16, 5 );
+var streams = new MovementStream( 20, 20, 30, 16, 1 );
 streams.generate( 80 );
 enemy.setStreams( streams.streams );
 var actions = new ActionQueue( 10, 550, 40, 30 );
