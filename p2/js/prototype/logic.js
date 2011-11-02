@@ -186,17 +186,24 @@ function GameLogic(){
        *  Decision Mode
        */
     } else {
-      if (pawns.length < 1) {
-	if (this.playerKP >= this.AIKP) {
-	  startLevel(this.level + 1);
-	} else {
-	  showGameOver();
-	  game.over(
-	    function(){
-	      returnToGame();
-	      startLevel(1);
-	    });
-	}
+      if ((this.playerKP > this.AIKP + pawns.length) ||
+	  (pawns.length < 1 && this.playerKP == this.AIKP) ||
+	  (enemy.death && this.playerKP+pawns.length >= this.enemyKP)) {
+	showVictory();
+	var nextLevel = this.level + 1;
+	game.over(
+	  function(){
+	    returnToGame();
+	    startLevel(nextLevel);
+	  });
+      } else if ((this.AIKP > this.playerKP + pawns.length) ||
+		 (hero.death && this.AIKP + pawns.length >= this.playerKP)) {
+	showGameOver();
+	game.over(
+	  function(){
+	    returnToGame();
+	    startLevel(1);
+	  });
       }
 
       this.timeRemaining = this.timePerTurn - ((this.tick - this.turnStart)/60);

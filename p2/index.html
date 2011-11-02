@@ -15,9 +15,12 @@
     <div id="instr" class="centered text">
       Welcome to "Pyramid"
       <br/>      <br/>
-      The goal of the game is to kill more pawns than your AI opponent.
-      <br/>      <br/>
+      The goal of the game is to kill more pawns than your AI opponent each level.
+      <br/>
+      <br/>
       Each turn consists of a move and an attack. 
+      <br/>
+      You have limited time to choose your actions.
       <br/>      <br/>
       Movement: you can select a range of moves out of the random movement pool.
       <br/>
@@ -47,13 +50,26 @@
   </div>
   <div id="gameOver" class="screen centered hidden text">
     <br/>
-    <br/>
-    <br/>
     <h1>GAME OVER</h1>
+    <br/>
+    <span id="lossText"></span>
+    <br/>
+    <br/>
     <br/>
     Press Space to start over
   </div>
-
+  <div id="win" class="screen centered hidden text">
+    <br/>
+    <br/>
+    <h2>You completed level <span id="levelNum"></span>! Congrats!</h2>
+    <br/>
+    <br/>
+    <span id="winText"></span>
+    <br/>
+    <br/>
+    <br/>
+    Press Space to continue.
+  </div>
     <audio id="pawn0" src="sound/pawn0.wav" preload="auto" autobuffer />
 </body>
   <script type="text/javascript" src="js/core/util.js"></script>
