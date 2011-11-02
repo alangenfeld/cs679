@@ -76,8 +76,6 @@ function GameLogic(){
     // Event Process
     while ( this.eventStack.length > 0 ){
       var e = this.eventStack.pop();
-      console.log(e.name, this.eventStack);
-
       if ( "Player Kill" == e.name ){
 	this.playerKP++;
       } else if ( "AI Kill" == e.name ){

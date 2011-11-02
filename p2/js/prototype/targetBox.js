@@ -22,7 +22,7 @@ function TargetBox(x, y) {
   this.init();
 
   this.draw = function() {
-    this.draw2d();
+//    this.draw2d();
     this.draw3d();
   };
 
