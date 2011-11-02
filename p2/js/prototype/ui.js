@@ -62,7 +62,7 @@ function MovementStream( x, y, cellSize, w, h ) {
   
   this.inBoard = function( x, y ){
       if ( x > this.x && x < this.x + this.width * this.cellSize &&
-	    y > this.y && y < this.y + (this.height+1) * this.cellSize) {
+	   y > this.y && y < this.y + (6 * this.cellSize)) {
 	  
 	  return true;
       } return false;
@@ -101,7 +101,7 @@ function MovementStream( x, y, cellSize, w, h ) {
       u.x = 0;
       v0 = this.align( u, ort );
       v0.x += c.x;
-    v0.y += c.y;
+      v0.y += c.y;
       
       
       u.x = - cellSize * 0.2;
@@ -145,19 +145,27 @@ function MovementStream( x, y, cellSize, w, h ) {
 		       this.y + this.height * this.cellSize );
       }
       
-    for ( var i=0; i<=this.height; i++ ){
-	ctrl.moveTo( this.x,
-		     this.y + i * this.cellSize );
-	ctrl.lineTo( this.x + this.width * this.cellSize,
-		     this.y + i * this.cellSize );
-    }
+      for ( var i=0; i<=this.height; i++ ){
+	  ctrl.moveTo( this.x,
+		       this.y + i * this.cellSize );
+	  ctrl.lineTo( this.x + this.width * this.cellSize,
+		       this.y + i * this.cellSize );
+      }
       
       // attacks and clear
-
+      
       for(var i = 0; i<=this.width; i = i +4){
 	  
 	  ctrl.moveTo(this.x + i * this.cellSize, this.y);
-	  ctrl.lineTo(this.x+ i *this.cellSize, this.y + 6*this.cellSize);} 
+	  ctrl.lineTo(this.x+ i *this.cellSize, this.y + 5*this.cellSize);
+      } 
+     
+      ctrl.moveTo( this.x , this.y +150);
+      ctrl.lineTo( this.x + this. width * this.cellSize, this.y +150);
+
+
+
+     
       
       ctrl.closePath();
       ctrl.stroke();
@@ -166,18 +174,22 @@ function MovementStream( x, y, cellSize, w, h ) {
       //go button
       ctrl.beginPath();
       
-      ctrl.moveTo(550 + 11* this.cellSize, 40);
-      ctrl.lineTo(550 + 11* this.cellSize, 40 + this.cellSize);
+      ctrl.moveTo(550 + 10.5* this.cellSize, 40);
+      ctrl.lineTo(550 + 10.5* this.cellSize, 55 + this.cellSize);
       
       ctrl.moveTo(550 + 13* this.cellSize, 40);
-      ctrl.lineTo(550 +13* this.cellSize, 40+this.cellSize);
-    
-      for ( var i=0; i<=1; i++ ){
-	  ctrl.moveTo( 550+ 11*this.cellSize ,
-		       40 + i * this.cellSize );
-	  ctrl.lineTo( 550 + 13 * this.cellSize,
-		       40 + i * this.cellSize );
-    }
+      ctrl.lineTo(550 +13* this.cellSize, 55+this.cellSize);
+      
+      
+      ctrl.moveTo( 550+ 10.5*this.cellSize ,
+		       40 );
+      ctrl.lineTo( 550 + 13 * this.cellSize,
+		       40 ); 
+      
+      ctrl.moveTo( 550+ 10.5*this.cellSize ,
+	      40 + 1.5 * this.cellSize );
+      ctrl.lineTo( 550 + 13 * this.cellSize,
+		       40 + 1.5 * this.cellSize ); 
       
       
       
@@ -202,8 +214,8 @@ function MovementStream( x, y, cellSize, w, h ) {
       }
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 30px sans-serif';
-      ctrl.fillText('CLEAR', this.x +1.5, (this.height +1.5)*this.cellSize);
-
+      ctrl.fillText('CLEAR', this.x +9, (this.height +3)*this.cellSize);
+      /*
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
       ctrl.fillText('Melee', this.x +4.5*this.cellSize, (this.height +1.5)*this.cellSize);
@@ -215,37 +227,40 @@ function MovementStream( x, y, cellSize, w, h ) {
       ctrl.fillStyle = '#f00';
       ctrl.font = 'bold 14px sans-serif';
       ctrl.fillText('Range', this.x +12.5*this.cellSize, (this.height +1.5)*this.cellSize);
-            
+      */     
       ctrl.fillStyle = '#00ff00'; 
-      ctrl.font= 'bold 30px sans-serif';
-      ctrl.fillText('GO!', 550 +(11 * this.cellSize), 65);
+      ctrl.font= 'bold 40px sans-serif';
+      ctrl.fillText('GO!', 550 +(10.5 * this.cellSize), 75);
       
       //attack images
-      ctrl.drawImage(resourceManager.getImage("basic"), this.x + 6.5*this.cellSize, (this.height+.75)*this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special1"), this.x + 10.5*this.cellSize, (this.height+.75)* this.cellSize);
-      ctrl.drawImage(resourceManager.getImage("special2"), this.x + 14.5*this.cellSize, (this.height+.75) * this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("basic"), this.x + 4.35*this.cellSize, (this.height+1)*this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special1"), this.x + 8.35*this.cellSize, (this.height+1)* this.cellSize);
+      ctrl.drawImage(resourceManager.getImage("special2"), this.x + 12.35*this.cellSize, (this.height+1) * this.cellSize);
 
   };
   
   
   this.update = function(){
       pos = this.getPos( mouseCtrl.x, mouseCtrl.y );
-      if(pos.posX < 4 && pos.posY>4&& mouseCtrl.leftPressed){
+      
+      // if(mouseCtrl.leftPressed) { alert(mouseCtrl.y);}
+
+      if(pos.posX < 4 && pos.posY>1&& mouseCtrl.leftPressed){
 	this.reset();
 	logic.dispatchEvent( { name: "Clear" } );
-      } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 4&& mouseCtrl.leftPressed){
+      } else if(pos.posX>= 4 && pos.posX <=7&& pos.posY > 1&& mouseCtrl.leftPressed){
 	  actions.push(10,0);
-      } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 4&& mouseCtrl.leftPressed){
+      } else if(pos.posX>= 8 && pos.posX <= 11&& pos.posY > 1&& mouseCtrl.leftPressed){
 	  actions.push(11,0);
-      } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 4 && mouseCtrl.leftPressed){
+      } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY > 1 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
-      } else if(mouseCtrl.x>= 880 && mouseCtrl.x<=940 && mouseCtrl.y >= 40 && mouseCtrl.y <=70 && mouseCtrl.leftPressed){
+      } else if(mouseCtrl.x>= 867 && mouseCtrl.x<=942 && mouseCtrl.y >= 40 && mouseCtrl.y <=87 && mouseCtrl.leftPressed){
 	if (logic.stage == 0) {
 	  logic.dispatchEvent( { name: "To Action Mode" } );
 	}
       } else if ( 0 == this.status.click ){
 	if ( this.status.ready && mouseCtrl.leftPressed ){
-	  if ( pos.posX >= 0&& pos.posY<=4 ){
+	  if ( pos.posX >= 0&& pos.posY<=1 ){
 	  this.status.click++;
 	  this.status.id0 = this.showFrom + pos.posY * this.width + pos.posX;
 	  this.status.id1 = this.status.id0;
