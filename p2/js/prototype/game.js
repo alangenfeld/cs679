@@ -35,8 +35,10 @@ function startLevel(lvlNum) {
   logic.turn = 1;
   hero.setPos(3, 3);
   hero.curHP = 9;
+  hero.death = false;
   enemy.setPos(7, 7);
   enemy.curHP = 9;
+  enemy.death = false;
   pawns.clear();
   for ( var i=0; i<numPawns; i++ ){
     while ( true ){
