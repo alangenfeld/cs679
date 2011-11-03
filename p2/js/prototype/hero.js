@@ -7,7 +7,7 @@ function Character( maxHP, color, posX, posY, ort ){
     this.setOrientation( ort );
     this.onAnimation = 0;
     this.animations = new Array();
-    this.shader = getShader("hero");
+    this.shader = getShader("pawn");
     setAttribute(this, 
 		 {name: "vtx",
 		  content: [
@@ -50,6 +50,7 @@ function Character( maxHP, color, posX, posY, ort ){
 
     setUpLights(this.shader);
     this.shader.color = gl.getUniformLocation(this.shader, "color");
+    this.shader.hp = gl.getUniformLocation(this.shader, "hp");
     this.attributes = ["vtx", "normal"];
     this.attributes.size = 12;
 
@@ -119,7 +120,7 @@ function Character( maxHP, color, posX, posY, ort ){
       mat4.translate(mvMatrix, [1.0, 1.0, 0.0]);
 
       gl.useProgram(this.shader);
-      
+      gl.uniform1f(this.shader.hp, this.curHP/this.maxHP);      
       gl.uniform3fv(this.shader.color, this.colorV);
       bindLights(this.shader);
       bindAttributes(this);

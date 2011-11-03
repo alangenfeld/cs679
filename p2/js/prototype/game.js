@@ -3,8 +3,8 @@
  */
 var camera = new Camera();
 var board = new GameBoard( 12, 12, 20 );
-var hero = new Character(12, "#0000FF", 3, 3, 3 );
-var enemy = new Enemy(12, "#EEEE00", 7, 7, 3 );
+var hero = new Character(9, "#0000FF", 3, 3, 3 );
+var enemy = new Enemy(9, "#EEEE00", 7, 7, 3 );
 var pawns = new Array();
 
 
@@ -34,7 +34,9 @@ function startLevel(lvlNum) {
   logic.level = lvlNum;
   logic.turn = 1;
   hero.setPos(3, 3);
+  hero.curHP = 9;
   enemy.setPos(7, 7);
+  enemy.curHP = 9;
   pawns.clear();
   for ( var i=0; i<numPawns; i++ ){
     while ( true ){
@@ -52,10 +54,12 @@ function startLevel(lvlNum) {
 }
 
 function showGameOver() {
+var kp = pawns.length + logic.AIKP;
   $("lossText").innerHTML = (hero.death) ? 
-    "You were killed, allowing the enemy AI to score " + pawns.length + logic.AIKP + 
-    "to your " + logic.playerKP :
-    "You lost with " +  logic.playerKP + " to the enemies " + logic.AIKP + " kills, with " +
+    "You were killed, allowing the enemy AI to score " + kp +
+    " to your " + logic.playerKP :
+    "You lost with " +  logic.playerKP + " to the enemies " + 
+    logic.AIKP + " kills, with " +
     pawns.length + " pawns remaining.";
 
   $("game").style.display = "none";
@@ -64,9 +68,10 @@ function showGameOver() {
 
 function showVictory() {
   $("levelNum").innerHTML = logic.level;
+  var kp = pawns.length + logic.playerKP;
   $("winText").innerHTML = (enemy.death) ?
-    "You killed the enemy, scoring you " + pawns.length + logic.playerKP + 
-    "to your enemies " + logic.AIKP :
+    "You killed the enemy, scoring you " + kp + 
+    " to your enemies " + logic.AIKP :
     (logic.playerKP == logic.AIKP) ? 
     "You won by tieing the enemy AI in kills." : 
     "You won by beating the enemy " +  logic.playerKP + " to " + logic.AIKP + 

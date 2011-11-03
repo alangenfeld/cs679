@@ -9,7 +9,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
     this.animations = new Array();
     this.streams = null;
     
-    this.shader = getShader( "enemy" );
+    this.shader = getShader( "pawn" );
     setAttribute( this, 
 		  {name: "vtx",
 		   content: [
@@ -52,6 +52,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
     setUpLights( this.shader );
 
     this.shader.color = gl.getUniformLocation( this.shader, "color" );
+    this.shader.hp = gl.getUniformLocation(this.shader, "hp");
     this.attributes = ["vtx", "normal"];
     this.attributes.size = 12;
 
@@ -122,6 +123,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
 
 	gl.useProgram(this.shader);
 	
+      gl.uniform1f(this.shader.hp, this.curHP/this.maxHP);      
 	gl.uniform3fv(this.shader.color, this.colorV);
 	bindLights(this.shader);
 	bindAttributes(this);

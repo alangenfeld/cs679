@@ -188,7 +188,7 @@ function GameLogic(){
     } else {
       if ((this.playerKP > this.AIKP + pawns.length) ||
 	  (pawns.length < 1 && this.playerKP == this.AIKP) ||
-	  (enemy.death && this.playerKP+pawns.length >= this.enemyKP)) {
+	  (enemy.death && this.playerKP + pawns.length >= this.enemyKP)) {
 	showVictory();
 	var nextLevel = this.level + 1;
 	game.over(
