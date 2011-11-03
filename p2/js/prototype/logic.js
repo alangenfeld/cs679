@@ -83,6 +83,7 @@ function GameLogic(){
       } else if ( "Clear" == e.name ){
 	this.clear();
       } else if ( "To Decision Mode" == e.name ){
+	streams.generate(80);
 	this.stage = 0;
 	this.turn ++; 
 	this.turnStart = this.tick;

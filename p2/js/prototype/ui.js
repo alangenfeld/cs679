@@ -1,3 +1,31 @@
+function SimpleButton( x, y, width, height, caption, bgcolor, fgcolor, font ) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.caption = caption;
+    this.bgcolor = bgcolor;
+    this.fgcolor = fgcolor;
+    this.font = font
+    this.draw = function() {
+	//go button
+	ctrl.strokeStyle = "#000000";
+	ctrl.fillStyle = this.bgcolor;
+	ctrl.beginPath();
+	ctrl.moveTo( this.x, this.y );
+	ctrl.lineTo( this.x, this.y + this.height );
+	ctrl.lineTo( this.x + this.width, this.y + this.height );
+	ctrl.lineTo( this.x + this.width, this.y ) ;
+	ctrl.lineTo( this.x, this.y );
+	ctrl.closePath();
+	ctrl.stroke();
+	ctrl.fill();
+	
+	ctrl.fillStyle = this.fgcolor;
+	ctrl.font= this.font;
+	ctrl.fillText( this.caption, x + width * 0.2, y + height * 0.7 );
+    }
+}
 function MovementStream( x, y, cellSize, w, h ) {
   
   this.streams = new Array(500);
@@ -34,6 +62,14 @@ function MovementStream( x, y, cellSize, w, h ) {
   resourceManager.addImage("special2", "img/special2.png");
   this.init();
   
+
+    this.goButton = new SimpleButton( 550 + 10.5 * this.cellSize, 80, 75,
+				      this.cellSize, "go", "#EEEEEE", "#00FF00", 
+				      'bold 30px sans-serif' );
+
+
+    
+
   /// Randomly generate movement streams
   this.generate = function( n ) {
     for ( var i=0; i<n ;i++ ){
@@ -41,6 +77,8 @@ function MovementStream( x, y, cellSize, w, h ) {
     }
     this.len = n;
   };
+
+    
   
   this.align = function( u, ort ){
     v = { x:0, y:0 };
@@ -134,6 +172,7 @@ function MovementStream( x, y, cellSize, w, h ) {
   };
   
   this.draw = function() {
+      this.goButton.draw();
       ctrl.strokeStyle = "#000000";
       ctrl.lineWidth = 1;
       ctrl.beginPath();
@@ -154,47 +193,24 @@ function MovementStream( x, y, cellSize, w, h ) {
       
       // attacks and clear
       
-      for(var i = 0; i<=this.width; i = i +4){
+      var btnAreaWidth = 16;
+      for(var i = 0; i<=btnAreaWidth; i = i +4){
 	  
 	  ctrl.moveTo(this.x + i * this.cellSize, this.y);
 	  ctrl.lineTo(this.x+ i *this.cellSize, this.y + 5*this.cellSize);
       } 
-     
+      
       ctrl.moveTo( this.x , this.y +150);
-      ctrl.lineTo( this.x + this. width * this.cellSize, this.y +150);
-
-
-
-     
+      ctrl.lineTo( this.x + btnAreaWidth * this.cellSize, this.y +150);
       
       ctrl.closePath();
       ctrl.stroke();
       
-      
-      //go button
-      ctrl.beginPath();
-      
-      ctrl.moveTo(550 + 10.5* this.cellSize, 40);
-      ctrl.lineTo(550 + 10.5* this.cellSize, 55 + this.cellSize);
-      
-      ctrl.moveTo(550 + 13* this.cellSize, 40);
-      ctrl.lineTo(550 +13* this.cellSize, 55+this.cellSize);
+
       
       
-      ctrl.moveTo( 550+ 10.5*this.cellSize ,
-		       40 );
-      ctrl.lineTo( 550 + 13 * this.cellSize,
-		       40 ); 
-      
-      ctrl.moveTo( 550+ 10.5*this.cellSize ,
-	      40 + 1.5 * this.cellSize );
-      ctrl.lineTo( 550 + 13 * this.cellSize,
-		       40 + 1.5 * this.cellSize ); 
-      
-      
-      
-      ctrl.closePath();
-      ctrl.stroke();
+
+
 
       var posX = 0;
       var posY = 0;
@@ -209,7 +225,7 @@ function MovementStream( x, y, cellSize, w, h ) {
 	  posX++;
 	  if ( posX == this.width ){
 	      posY++;
-	posX = 0;
+	      posX = 0;
 	  }
       }
       ctrl.fillStyle = '#f00';
@@ -228,9 +244,7 @@ function MovementStream( x, y, cellSize, w, h ) {
       ctrl.font = 'bold 14px sans-serif';
       ctrl.fillText('Range', this.x +12.5*this.cellSize, (this.height +1.5)*this.cellSize);
       */     
-      ctrl.fillStyle = '#00ff00'; 
-      ctrl.font= 'bold 40px sans-serif';
-      ctrl.fillText('GO!', 550 +(10.5 * this.cellSize), 75);
+
       
       //attack images
       ctrl.drawImage(resourceManager.getImage("basic"), this.x + 4.35*this.cellSize, (this.height+1)*this.cellSize);
@@ -254,10 +268,14 @@ function MovementStream( x, y, cellSize, w, h ) {
 	  actions.push(11,0);
       } else if(pos.posX>= 12 && pos.posX <= 16&& pos.posY >= 1 &&  pos.posY < 5 && mouseCtrl.leftPressed){
 	  actions.push(12,0);
-      } else if(mouseCtrl.x>= 867 && mouseCtrl.x<=942 && mouseCtrl.y >= 40 && mouseCtrl.y <=87 && mouseCtrl.leftPressed){
-	if (logic.stage == 0) {
-	  logic.dispatchEvent( { name: "To Action Mode" } );
-	}
+      } else if(mouseCtrl.x >= this.goButton.x && 
+		mouseCtrl.x <= this.goButton.x + this.goButton.width &&
+		mouseCtrl.y >= this.goButton.y && 
+		mouseCtrl.y <= this.goButton.y + this.goButton.height && 
+		mouseCtrl.leftPressed ) {
+	  if (logic.stage == 0) {
+	      logic.dispatchEvent( { name: "To Action Mode" } );
+	  }
       } else if ( 0 == this.status.click ){
 	if ( this.status.ready && mouseCtrl.leftPressed ){
 	  if ( pos.posX >= 0&& pos.posY<=1 ){

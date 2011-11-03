@@ -8,9 +8,9 @@ var enemy = new Enemy(9, "#EEEE00", 7, 7, 3 );
 var pawns = new Array();
 
 
-var streams = new MovementStream( 20, 20, 30, 16, 1 );
-var actions = new ActionQueue( 10, 550, 40, 30 );
-var actionsAI = new ActionQueue( 10, 550, 100, 30 );
+var streams = new MovementStream( 20, 20, 30, 30, 1 );
+var actions = new ActionQueue( 10, 550, 80, 30 );
+var actionsAI = new ActionQueue( 10, 550, 140, 30 );
 
 var logic = new GameLogic();
 

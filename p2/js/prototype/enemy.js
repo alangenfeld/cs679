@@ -142,6 +142,7 @@ function Enemy( maxHP, color, posX, posY, ort ){
     };
     
     this.think = function() {
+	this.setStreams( streams.streams );
 	var decision = {p0:0, p1:0, atk:0, score:-3};
 	var maxLen = actionsAI.maxLen - 1;
 	var score = 0;
@@ -196,7 +197,6 @@ function Enemy( maxHP, color, posX, posY, ort ){
 	actionsAI.push( 10 + decision.atk, 0 );
 
 	/// Remove selected movements from streams;
-	this.streams.splice( decision.p0, decision.p1 - decision.p0 + 1 );
     };
 
 

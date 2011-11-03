@@ -108,22 +108,27 @@ function AttackStyle() {
 }
 
 function MeleeAttack() {
-    this.name = "Melee";
-    this.parNum = 120;
+    this.name = "Bishop";
+    this.parNum = 20;
     this.spd = 0.4;
     this.damage = 1;
-    this.cooldown = 1;
+    this.cooldown = 3;
+    this.dx = [ -1, 1, 1, -1 ];
+    this.dy = [ -1, -1, 1, 1 ];
     this.generate = function( caster ) {
 	this.targets.length = 0;
 	var posX = 0;
 	var posY = 0;
 	var k = 0;
-	for ( var ort=0; ort<4; ort ++ ){
-	    posX = caster.posX + board.dx[ort];
-	    posY = caster.posY + board.dy[ort];
-	    if ( board.inBoard( posX, posY ) ){
+	for ( var ort=0; ort<8; ort ++ ){
+	    k = 0;
+	    posX = caster.posX + this.dx[ort];
+	    posY = caster.posY + this.dy[ort];
+	    while ( board.inBoard( posX, posY ) ) {
 		k += 2;
 		this.targets.push( { posX: posX, posY: posY, start: k, lifetime: 10 } );
+		posX += this.dx[ort];
+		posY += this.dy[ort];
 	    }
 	}
     }
@@ -132,7 +137,7 @@ MeleeAttack.prototype = new AttackStyle;
 
 
 function PowerAttack() {
-    this.name = "Power";
+    this.name = "King";
     this.parNum = 50;
     this.spd = 0.4;
     this.damage = 2;
@@ -157,7 +162,7 @@ function PowerAttack() {
 PowerAttack.prototype = new AttackStyle;
 
 function CrossAttack() {
-    this.name = "Cross";
+    this.name = "Rock";
     this.parNum = 20;
     this.spd = 0.4;
     this.damage = 1;
