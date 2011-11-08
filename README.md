@@ -7,7 +7,9 @@ This engine is very simple. Each iteration through the game loop updates and dra
 Current How To
 
 Step 1: Make a "class"
+
 ```javascript
+
 // give your "class" an awesome and unique name
 function AwesomeBox(attributes) {
   // save any attributes to the object
