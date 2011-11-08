@@ -80,8 +80,13 @@ AwesomeBox.prototype = new GameObject;
 Step 2: Make a game
 
 ```javascript
-var awesomeBox = new AwesomeBox();
+// First setup any initial game objects
 
-// its that easy
+// when the object is created, the init() call will add the object to the manager,
+// and when the game is started it will be updated and drawn accordingly. 
+var awesomeBox = new AwesomeBox();
+// to remove the object, use awesomeBox.shutdown()
+
+// Then start the game. Tts that easy.
 game.start();
 ```
