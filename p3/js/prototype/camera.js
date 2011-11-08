@@ -45,7 +45,7 @@ Camera.prototype = new GameObject;
 
 function Light(pos) {
   this.pos = pos;
-  this.col = [0.6, 0.5, 0.5];
+  this.col = [1.0, 0.9, 0.9];
   this.ambient = [0.1, 0.1, 0.1];
   this.transformedPos = [0,0,0];
   this.lastPress = 0;

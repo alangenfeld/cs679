@@ -15,65 +15,153 @@ function shaderNameToType(str)
 {
   
   if (str.slice(0, 2) == "fs") {
-     return "fs" };
+    return "fs" };
   if (str.slice(0, 2) == "vs") {
-     return "vs" };
+    return "vs" };
   if (str.search("frag") >= 0) {
-     return "fs" };
+    return "fs" };
   if (str.search("vert") >= 0) {
-     return "vs" };
+    return "vs" };
   if (str.search(".fs") >= 0) {
-     return "fs" };
+    return "fs" };
   if (str.search(".vs") >= 0) {
-     return "vs" };
+    return "vs" };
   throw "Can't guess shader type!";
   
 }
 
 function loadShaders(gl, shaders, callback) {
   
-    // (C) WebReflection - Mit Style License
-    function onreadystatechange() {
+  // (C) WebReflection - Mit Style License
+  function onreadystatechange() {
+    
+    var
+    xhr = this,
+    i = xhr.i
+    ;
+    if (xhr.readyState == 4) {
       
-        var
-            xhr = this,
-            i = xhr.i
-        ;
-        if (xhr.readyState == 4) {
-	  
-            shaders[i] = gl.createShader(
-               shaderNameToType(shaders[i]) =="fs" ?
-                    gl.FRAGMENT_SHADER :
-                    gl.VERTEX_SHADER
-            );
-            gl.shaderSource(shaders[i], xhr.responseText);
-            gl.compileShader(shaders[i]);
-            if (!gl.getShaderParameter(shaders[i], gl.COMPILE_STATUS))
-                throw gl.getShaderInfoLog(shaders[i])
-            ;
-            // console.log("Compiled:"+xhr.responseText)
-            !--length && typeof callback == "function" && callback(shaders);
-        }
+      shaders[i] = gl.createShader(
+        shaderNameToType(shaders[i]) =="fs" ?
+          gl.FRAGMENT_SHADER :
+          gl.VERTEX_SHADER
+      );
+      gl.shaderSource(shaders[i], xhr.responseText);
+      gl.compileShader(shaders[i]);
+      if (!gl.getShaderParameter(shaders[i], gl.COMPILE_STATUS))
+        throw gl.getShaderInfoLog(shaders[i])
+      ;
+      // console.log("Compiled:"+xhr.responseText)
+      !--length && typeof callback == "function" && callback(shaders);
     }
-    for (var
-        shaders = [].concat(shaders),
-        asynchronous = !!callback,
-        i = shaders.length,
-        length = i,
-        xhr;
-        i--;
-    ) {
+  }
+  for (var
+       shaders = [].concat(shaders),
+       asynchronous = !!callback,
+       i = shaders.length,
+       length = i,
+       xhr;
+       i--;
+      ) {
         (xhr = new XMLHttpRequest).i = i;
         // this line used to build the path
         // xhr.open("get", loadShaders.base + shaders[i] + ".c", asynchronous);
         xhr.open("get", shaders[i], asynchronous);
         if (asynchronous) {
-            xhr.onreadystatechange = onreadystatechange;
+          xhr.onreadystatechange = onreadystatechange;
         }
         xhr.send(null);
         onreadystatechange.call(xhr);
-    }
-    return shaders;
+      }
+  return shaders;
 }
 
+
+function getShader(name) {
+  var shaderProgram = shaderMap[name];
+  if (!shaderProgram) {
+    // load the shaders from files
+    var fragmentShader = loadShaders(gl, "shader/"+name+".vs")[0];
+    var vertexShader   = loadShaders(gl, "shader/"+name+".fs")[0];
+    // build the shaderProgram object
+    shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    // make sure all is well
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      throw("Could not initialize shaders");
+    }
+    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
+    shaderMap[name] = shaderProgram;
+  }
+
+  return shaderProgram;
+}
+
+function setAttribute(obj, attrib) {
+  obj[attrib.name] = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, obj[attrib.name]);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attrib.content), gl.STATIC_DRAW);
+  obj.shader[attrib.name] = gl.getAttribLocation(obj.shader, attrib.name);
+  gl.enableVertexAttribArray(obj.shader[attrib.name]);
+
+  if (!obj.attributes) {
+    obj.attributes = new Array();
+  }
+
+  obj.attributes.push(attrib);
+}
+
+function bindAttributes(obj) {
+  for (var i in obj.attributes) {
+    var name = obj.attributes[i].name;
+    gl.bindBuffer(gl.ARRAY_BUFFER, obj[name]);
+    gl.vertexAttribPointer(obj.shader[name], obj.attributes[i].size, gl.FLOAT, false, 0, 0);
+  }
+}
+
+function setUpLights(shader) {
+  shader.lightPos = gl.getUniformLocation(shader, "lightPos");
+  shader.lightCol = gl.getUniformLocation(shader, "lightCol");
+  shader.ambient = gl.getUniformLocation(shader, "ambient");
+}
+
+function bindLights(shader) {
+  gl.uniform3fv(shader.lightPos, light.transformedPos);
+  gl.uniform3fv(shader.lightCol, light.col);
+  gl.uniform3fv(shader.ambient, light.ambient);
+}
+
+function setTexture(obj,texName) {
+  obj.shader.texture = gl.getUniformLocation(obj.shader, "texture");
+  var img = new Image();
+  obj.texture = gl.createTexture();
+  obj.texture.image = img;
+  
+  img.onload = function () {
+    handleLoadedTexture(obj.texture);
+  };
+
+  img.src = "img/" + texName;
+}
+
+function bindTexture(obj) {
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, obj.texture);
+  gl.uniform1i(obj.shader.texture, 0);
+}
+
+function handleLoadedTexture(texture) {
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+
+  gl.bindTexture(gl.TEXTURE_2D, null);
+}
 

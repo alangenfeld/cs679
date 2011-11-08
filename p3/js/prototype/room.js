@@ -15,7 +15,9 @@ function Wall(pos, h, w, rotationDegrees, rotationVec) {
 		    -this.width/2,  this.height/2,  0.0,
 		  this.width/2,  -this.height/2,  0.0,
 		    -this.width/2,  -this.height/2,  0.0
-		]});
+		],
+		size: 3
+	       });
   setAttribute(this, 
 	       {name: "normal",
 		content: [
@@ -23,8 +25,23 @@ function Wall(pos, h, w, rotationDegrees, rotationVec) {
 		  0.0,  0.0,  1.0,
 		  0.0,  0.0,  1.0,
 		  0.0,  0.0,  1.0
-		]});
+		],
+		size: 3
+	       });
+
+  setAttribute(this, 
+	       {name: "uv",
+		content: [
+		  1.0,  1.0,
+		  0.0,  1.0,
+		  1.0,  0.0,
+		  0.0,  0.0
+		],
+		size: 2
+	       });
+
   
+  setTexture(this, "wall.png");
   setUpLights(this.shader);
   this.attributes.num = 4;
   this.init();
@@ -39,11 +56,13 @@ function Wall(pos, h, w, rotationDegrees, rotationVec) {
 
     bindLights(this.shader);
     bindAttributes(this);
+    bindTexture(this);
 
     setMatrixUniforms(this.shader);
     
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributes.num);
 
+    gl.bindTexture(gl.TEXTURE_2D, null);
     mvPopMatrix();
   };
 

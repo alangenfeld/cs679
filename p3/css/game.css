@@ -28,7 +28,6 @@ canvas {
   width: 800px;
   height: 600px;
   position: relative;
-  border: solid black 1px;
 }
 
 .centered {
