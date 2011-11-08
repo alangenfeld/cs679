@@ -22,8 +22,8 @@ function Camera() {
     if (mouse.leftPressed && this.leftPressed && keyboard.z) {
       this.loc[2] -= (mouse.y - this.mouseY)*this.speed;
     } else if (mouse.leftPressed && this.leftPressed) {
-      this.loc[0] += (mouse.x - this.mouseX)*this.speed;
-      this.loc[1] -= (mouse.y - this.mouseY)*this.speed;
+      this.loc[0] -= (mouse.x - this.mouseX)*this.speed;
+      this.loc[1] += (mouse.y - this.mouseY)*this.speed;
     } else if (mouse.rightPressed && this.rightPressed) {
       this.yaw -= (mouse.x - this.mouseX)*this.roll;
       this.pitch -= (mouse.y - this.mouseY)*this.roll;
@@ -42,3 +42,39 @@ function Camera() {
   };
 }
 Camera.prototype = new GameObject;
+
+function Light(pos) {
+  this.pos = pos;
+  this.col = [0.6, 0.5, 0.5];
+  this.ambient = [0.1, 0.1, 0.1];
+  this.transformedPos = [0,0,0];
+  this.lastPress = 0;
+  this.init();
+
+  this.update = function() {
+    var speed = 0.2;
+    if(keyboard.left) {
+      this.pos[0] -= speed;
+    } else if(keyboard.right) {
+      this.pos[0] += speed;
+    }else if(keyboard.up && keyboard.z) {
+      this.pos[2] += speed;
+    } else if(keyboard.down && keyboard.z) {
+      this.pos[2] -= speed;
+    } else if(keyboard.up) {
+      this.pos[1] += speed;
+    } else if(keyboard.down) {
+      this.pos[1] -= speed;
+    }
+    var cooldown = 10;
+    if (keyboard.space && game.tick - this.lastPress > cooldown) {
+      this.col = this.col[0] > 0 ? [0,0,0] : [1,1,1];
+      this.lastPress = game.tick;
+    }
+      
+
+    mat4.multiplyVec3(mvMatrix, this.pos, this.transformedPos);
+  };
+}
+Light.prototype = new GameObject;
+

@@ -55,7 +55,7 @@ function Room() {
   
   this.walls.push(new Wall([0,0,0], 10, 10, 0, [0,0,0]));
   this.walls.push(new Wall([0,5,2.5], 5, 10, 90, [1,0,0]));
-  this.walls.push(new Wall([5,0,2.5], 10, 5, 90, [0,1,0]));
+  this.walls.push(new Wall([5,0,2.5], 10, 5, -90, [0,1,0]));
   this.walls.push(new Wall([-5,0,2.5], 10, 5, 90, [0,1,0]));
   
 }

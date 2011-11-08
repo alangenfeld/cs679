@@ -4,6 +4,7 @@
 var Game = function() {
   this.paused = false;
   this.reset = null;
+  this.tick = 0;
 
   this.pause = function () {
     if (this.paused) {
@@ -35,6 +36,7 @@ var Game = function() {
   };
 
   this.start = function() {
+    game.tick++;
     loopStart = Date.now();
     
     // update each game object

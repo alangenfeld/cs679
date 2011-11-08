@@ -100,19 +100,8 @@ function setUpLights(shader) {
   shader.ambient = gl.getUniformLocation(shader, "ambient");
 }
 
-var light = {
-  pos : [0, 0, 6.0],
-  col : [1.0, 1.0, 1.0],
-  ambient : [0.0, 0.0, 0.0]
-};
-
 function bindLights(shader) {
-  var t = Date.now()/500;
-
-  light.pos[0] = Math.cos(t)*9;
-  light.pos[1] = Math.sin(t)*9;
-
-  gl.uniform3fv(shader.lightPos, light.pos);
+  gl.uniform3fv(shader.lightPos, light.transformedPos);
   gl.uniform3fv(shader.lightCol, light.col);
   gl.uniform3fv(shader.ambient, light.ambient);
 }
