@@ -3,7 +3,8 @@ var display = $("display");
 var gl = display.getContext("experimental-webgl");
 var ctx = display2.getContext("2d");
 
-gl.clearColor(1.0, 1.0, 1.0, 1.0);
+//gl.clearColor(1.0, 1.0, 1.0, 1.0);
+gl.clearColor(0,0,0, 1.0);
 gl.enable(gl.DEPTH_TEST);
 var mvMatrix = mat4.create();
 var mvMatrixStack = [];

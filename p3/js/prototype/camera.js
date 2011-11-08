@@ -45,8 +45,11 @@ Camera.prototype = new GameObject;
 
 function Light(pos) {
   this.pos = pos;
-  this.col = [1.0, 0.9, 0.9];
-  this.ambient = [0.1, 0.1, 0.1];
+  this.on =  [1.0, 0.9, 0.9];
+  this.off = [0.1, 0.1, 0.1];
+  this.col = this.on;
+  this.turnedOn = true;
+  this.ambient = [0.01, 0.01, 0.01];
   this.transformedPos = [0,0,0];
   this.lastPress = 0;
   this.init();
@@ -68,7 +71,16 @@ function Light(pos) {
     }
     var cooldown = 10;
     if (keyboard.space && game.tick - this.lastPress > cooldown) {
-      this.col = this.col[0] > 0 ? [0,0,0] : [1,1,1];
+      if (this.turnedOn) {
+	this.col = this.off;
+	this.turnedOn = false;
+	this.ambient = this.on;
+      } else {
+	this.col = this.on;
+	this.turnedOn = true;
+	this.ambient = this.off;
+      }
+
       this.lastPress = game.tick;
     }
       
