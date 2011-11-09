@@ -7,11 +7,11 @@ function GameObject3D() {
   this.textureName = null;
   this.light = false;
 
-  this.init = function() {
+  this.init3d = function() {
     if (!this.shaderName) {
       throw("shaderName not set");
     }
-    this.shader = getShader(shaderName);    
+    this.shader = getShader(this.shaderName);    
     if (this.vertices) {
       this.setAttribute({name:"vertex", content: this.vertices, size: 3});
     }
@@ -28,13 +28,15 @@ function GameObject3D() {
       this.setUpLights();
     }
 
-    this.prototype.init();
+    this.init();
   };
 
   this.draw3d = function() {
     if (!this.attributeCount) {
       throw("attributeCount not set!");
     }
+    gl.useProgram(this.shader);
+    setMatrixUniforms(this.shader);
 
     if (this.light) {
       this.bindLights();
@@ -44,9 +46,6 @@ function GameObject3D() {
     }
     this.bindAttributes();      
 
-    gl.useProgram(this.shader);
-    setMatrixUniforms(this.shader);
-    
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributeCount);
 
     gl.bindTexture(gl.TEXTURE_2D, null);
@@ -75,9 +74,9 @@ function GameObject3D() {
   };
 
   this.setUpLights = function() {
-    this.shader.lightPos = gl.getUniformLocation(shader, "lightPos");
-    this.shader.lightCol = gl.getUniformLocation(shader, "lightCol");
-    this.shader.ambient = gl.getUniformLocation(shader, "ambient");
+    this.shader.lightPos = gl.getUniformLocation(this.shader, "lightPos");
+    this.shader.lightCol = gl.getUniformLocation(this.shader, "lightCol");
+    this.shader.ambient = gl.getUniformLocation(this.shader, "ambient");
   };
 
   this.bindLights = function() {
@@ -92,8 +91,9 @@ function GameObject3D() {
     this.texture = gl.createTexture();
     this.texture.image = img;
     
+    var tex = this.texture;
     img.onload = function () {
-      handleLoadedTexture(this.texture);
+      handleLoadedTexture(tex);
     };
     
     img.src = "img/" + texName;

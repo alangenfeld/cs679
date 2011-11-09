@@ -101,59 +101,6 @@ function getShader(name) {
   return shaderProgram;
 }
 
-function setAttribute(obj, attrib) {
-  obj[attrib.name] = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, obj[attrib.name]);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attrib.content), gl.STATIC_DRAW);
-  obj.shader[attrib.name] = gl.getAttribLocation(obj.shader, attrib.name);
-  gl.enableVertexAttribArray(obj.shader[attrib.name]);
-
-  if (!obj.attributes) {
-    obj.attributes = new Array();
-  }
-
-  obj.attributes.push(attrib);
-}
-
-function bindAttributes(obj) {
-  for (var i in obj.attributes) {
-    var name = obj.attributes[i].name;
-    gl.bindBuffer(gl.ARRAY_BUFFER, obj[name]);
-    gl.vertexAttribPointer(obj.shader[name], obj.attributes[i].size, gl.FLOAT, false, 0, 0);
-  }
-}
-
-function setUpLights(shader) {
-  shader.lightPos = gl.getUniformLocation(shader, "lightPos");
-  shader.lightCol = gl.getUniformLocation(shader, "lightCol");
-  shader.ambient = gl.getUniformLocation(shader, "ambient");
-}
-
-function bindLights(shader) {
-  gl.uniform3fv(shader.lightPos, light.transformedPos);
-  gl.uniform3fv(shader.lightCol, light.col);
-  gl.uniform3fv(shader.ambient, light.ambient);
-}
-
-function setTexture(obj,texName) {
-  obj.shader.texture = gl.getUniformLocation(obj.shader, "texture");
-  var img = new Image();
-  obj.texture = gl.createTexture();
-  obj.texture.image = img;
-  
-  img.onload = function () {
-    handleLoadedTexture(obj.texture);
-  };
-
-  img.src = "img/" + texName;
-}
-
-function bindTexture(obj) {
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, obj.texture);
-  gl.uniform1i(obj.shader.texture, 0);
-}
-
 function handleLoadedTexture(texture) {
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 

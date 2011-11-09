@@ -1,73 +1,47 @@
 function Wall(pos, h, w, rotationDegrees, rotationVec) {
   this.width = w;
-  this.height = h;
+  this.depth = h;
   this.pos = pos;
   this.rotate = {
     deg : rotationDegrees,
     vec : rotationVec  
   };
+  this.shaderName = "basic";
 
-  this.shader = getShader("wall");
-  setAttribute(this, 
-	       {name: "vtx",
-		content: [
-		  this.width/2,  this.height/2,  0.0,
-		    -this.width/2,  this.height/2,  0.0,
-		  this.width/2,  -this.height/2,  0.0,
-		    -this.width/2,  -this.height/2,  0.0
-		],
-		size: 3
-	       });
-  setAttribute(this, 
-	       {name: "normal",
-		content: [
+  this.vertices = [this.width/2,  this.depth/2,  0.0,
+		   -this.width/2,  this.depth/2,  0.0,
+		   this.width/2,  -this.depth/2,  0.0,
+		   -this.width/2,  -this.depth/2,  0.0];
+
+  this.normals = [0.0,  0.0,  1.0,
 		  0.0,  0.0,  1.0,
 		  0.0,  0.0,  1.0,
-		  0.0,  0.0,  1.0,
-		  0.0,  0.0,  1.0
-		],
-		size: 3
-	       });
+		  0.0,  0.0,  1.0];
 
-  setAttribute(this, 
-	       {name: "uv",
-		content: [
-		  1.0,  1.0,
-		  0.0,  1.0,
-		  1.0,  0.0,
-		  0.0,  0.0
-		],
-		size: 2
-	       });
+  this.textureName = "wall.png";
+  this.texCoords = [1.0,  1.0,
+		    0.0,  1.0,
+		    1.0,  0.0,
+		    0.0,  0.0];
 
-  
-  setTexture(this, "wall.png");
-  setUpLights(this.shader);
-  this.attributes.num = 4;
-  this.init();
+  this.light = true;
+  this.attributeCount = 4;
+
+  this.init3d();
 
   this.draw = function() {
     mvPushMatrix();
 
-    gl.useProgram(this.shader);
-
     mat4.translate(mvMatrix, this.pos);
     mat4.rotate(mvMatrix, degToRad(this.rotate.deg), this.rotate.vec);
 
-    bindLights(this.shader);
-    bindAttributes(this);
-    bindTexture(this);
+    this.draw3d();
 
-    setMatrixUniforms(this.shader);
-    
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributes.num);
-
-    gl.bindTexture(gl.TEXTURE_2D, null);
     mvPopMatrix();
   };
-
 }
-Wall.prototype = new GameObject;
+//Wall.prototype = new GameObject;
+Wall.prototype = new GameObject3D;
 
 function Room() {
   this.walls = new Array();
