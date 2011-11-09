@@ -15,26 +15,20 @@ function AwesomeBox(attributes) {
   // save any attributes to the object
   this.attributes = attributes
   
-  // set up the shader. fetches the pair box.vs and box.fs
-  this.shader = getShader("box");
+  // set up the shader. fetches the pair basic.vs and basic.fs
+  this.shaderName = "basic";
 
   // set static attributes like vertices, normals, or texture coordinates
-  setAttribute(this,
-	       {name: "vtx",
-		content: [
-		0,0,0,		
-		0,0,0,		
-		0,0,0		
-		],
-		size: 3
-	       });
-  // setUpLights or setTexture can be used for lights/textures
-  // set the number of elements
-  this.attributes.num = 4;
+  this.vertices = [0.0,  0.0,  1.0,
+		  0.0,  0.0,  1.0,
+		  0.0,  0.0,  1.0,
+		  0.0,  0.0,  1.0];
 
 
-  // this call inherited from GameObject, adds the object to be updated and drawn
-  this.init();
+  this.attributeCount = 4;
+
+  // this call inherited from GameObject3D, adds the object to be updated and drawn
+  this.init3d();
 
   // optionaly override the update call. Use this to compute any state changes for your object
   this.update = function() {
@@ -51,22 +45,12 @@ function AwesomeBox(attributes) {
     // push the model view matrix
     mvPushMatrix();
 
-    // set the current shader
-    gl.useProgram(this.shader);
-
     // perform translations or rotations
     //    mat4.translate(mvMatrix, ...
     //    mat4.rotate(mvMatrix, ...
 
-    // bindTexture bindLights optionally used
-    // bind the attributes of this object
-    bindAttributes(this);
- 
-    // set the modelview, perspective and normal matricies
-    setMatrixUniforms(this.shader);
-    
     // draw dat stuff
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributes.num);
+    draw3d();
 
     // clean up and leave
     mvPopMatrix();
