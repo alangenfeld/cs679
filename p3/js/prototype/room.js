@@ -6,7 +6,7 @@ function Wall(pos, h, w, rotationDegrees, rotationVec) {
     deg : rotationDegrees,
     vec : rotationVec  
   };
-  this.shaderName = "basic";
+  this.shaderName = "textured";
 
   this.vertices = [this.width/2,  this.depth/2,  0.0,
 		   -this.width/2,  this.depth/2,  0.0,

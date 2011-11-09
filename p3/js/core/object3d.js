@@ -13,14 +13,31 @@ function GameObject3D() {
     }
     this.shader = getShader(this.shaderName);    
     if (this.vertices) {
-      this.setAttribute({name:"vertex", content: this.vertices, size: 3});
+      this.setAttribute({name:"vertex", 
+			 content: this.vertices, 
+			 type : gl.ARRAY_BUFFER,
+			 size: 3});
     }
     if (this.normals) {
-      this.setAttribute({name:"normal", content: this.normals, size: 3});
+      this.setAttribute({name:"normal", 
+			 content: this.normals, 
+			 type : gl.ARRAY_BUFFER,
+			 size: 3});
     }
     if (this.texCoords) {
-      this.setAttribute({name:"uv", content: this.texCoords, size: 2});
+      this.setAttribute({name:"uv",
+			 content: this.texCoords,
+			 type : gl.ARRAY_BUFFER,
+			 size: 2});
     }
+    if (this.vtxIndex) {
+      this.setAttribute({name:"vtxIndexBuffer",
+			 content: this.vtxIndex,
+			 type : gl.ELEMENT_ARRAY_BUFFER,
+			 size: 1});
+    }
+
+    
     if (this.textureName) {
       this.setTexture(this.textureName);
     }
@@ -46,15 +63,25 @@ function GameObject3D() {
     }
     this.bindAttributes();      
 
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributeCount);
+
+    if (this.vtxIndex) {
+      gl.drawElements(gl.TRIANGLES, this.vtxIndex.length, gl.UNSIGNED_SHORT, 0);
+    } else {
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributeCount);
+    }
 
     gl.bindTexture(gl.TEXTURE_2D, null);
   };
 
   this.setAttribute = function(attrib) {
     this[attrib.name] = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, this[attrib.name]);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(attrib.content), gl.STATIC_DRAW);
+    gl.bindBuffer(attrib.type, this[attrib.name]);
+
+    var array = attrib.type == gl.ELEMENT_ARRAY_BUFFER ? 
+      new Uint16Array(attrib.content) : new Float32Array(attrib.content);
+
+    gl.bufferData(attrib.type, array, gl.STATIC_DRAW);
+
     this.shader[attrib.name] = gl.getAttribLocation(this.shader, attrib.name);
     gl.enableVertexAttribArray(this.shader[attrib.name]);
     
@@ -68,8 +95,12 @@ function GameObject3D() {
   this.bindAttributes = function() {
     for (var i in this.attributes) {
       var name = this.attributes[i].name;
-      gl.bindBuffer(gl.ARRAY_BUFFER, this[name]);
-      gl.vertexAttribPointer(this.shader[name], this.attributes[i].size, gl.FLOAT, false, 0, 0);
+      gl.bindBuffer(this.attributes[i].type, this[name]);
+      if (this.attributes[i].type == gl.ARRAY_BUFFER) {
+	gl.vertexAttribPointer(this.shader[name], 
+			       this.attributes[i].size, 
+			       gl.FLOAT, false, 0, 0);	
+      }
     }
   };
 
@@ -77,12 +108,14 @@ function GameObject3D() {
     this.shader.lightPos = gl.getUniformLocation(this.shader, "lightPos");
     this.shader.lightCol = gl.getUniformLocation(this.shader, "lightCol");
     this.shader.ambient = gl.getUniformLocation(this.shader, "ambient");
+    this.shader.attenuation = gl.getUniformLocation(this.shader, "attenuation");
   };
 
   this.bindLights = function() {
     gl.uniform3fv(this.shader.lightPos, light.transformedPos);
     gl.uniform3fv(this.shader.lightCol, light.col);
     gl.uniform3fv(this.shader.ambient, light.ambient);
+    gl.uniform3fv(this.shader.attenuation, light.attenuation);
   };
 
   this.setTexture = function(texName) {
