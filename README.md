@@ -6,8 +6,10 @@ This engine is very simple. Each iteration through the game loop updates and dra
 
 Current How To
 
-#Step 1: Make a "class"
+Step 1: Make a "class"
+
 ```javascript
+
 // give your "class" an awesome and unique name
 function AwesomeBox(attributes) {
   // save any attributes to the object
@@ -73,4 +75,18 @@ function AwesomeBox(attributes) {
 // this causes the object to inherit the base object class, giving it access to 
 // init, update and draw calls. 
 AwesomeBox.prototype = new GameObject;
+```
+
+Step 2: Make a game
+
+```javascript
+// First setup any initial game objects
+
+// when the object is created, the init() call will add the object to the manager,
+// and when the game is started it will be updated and drawn accordingly. 
+var awesomeBox = new AwesomeBox();
+// to remove the object, use awesomeBox.shutdown()
+
+// Then start the game. Tts that easy.
+game.start();
 ```
