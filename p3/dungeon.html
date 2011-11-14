@@ -1,0 +1,206 @@
+<html>
+<body>
+<canvas id="myCanvas" width="800" height="800"></canvas>  
+<h1>dungeon maker alpha</h1>
+
+<script type="text/javascript">
+    var FPS = 30;
+	
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");
+	var emptyImg = new Image();   // Create new img element
+	emptyImg.src = 'emptyImg.png';	
+	var roomImg = new Image();   // Create new img element
+	roomImg.src = 'roomImg.png';
+	
+	context.fillStyle = "#000000";
+
+	var size = 17;
+	
+	var level = new Dungeon(size);
+	
+	function Dungeon(max){
+		this.dungeon = new Array();
+		//make this thing max*max
+		for(var y = 0; y<max; y++){
+			this.dungeon[y] = new Array();
+		}
+		
+		this.spawnX = Math.round(Math.random()*(max-1));
+		this.spawnY = Math.round(Math.random()*(max-1));
+		
+		//push first... set currentY
+		
+		var currentX = this.spawnX;
+		var currentY = this.spawnY;
+		
+		var roomCount = 1;
+		var roomsToMake = new Array();
+		console.log("in the dungeon maker max: "+max);
+		console.log("max ="+(max-roomCount));
+		
+		var thisRoom = new Room("", currentX, currentY);
+		this.dungeon[currentY][currentX] = thisRoom;
+		roomsToMake.push(thisRoom);
+
+		while(roomsToMake.length!=0 && roomCount < size){
+			console.log("making another room");
+			thisRoom = roomsToMake.pop();
+			currentX = thisRoom.x;
+			currentY = thisRoom.y;
+			
+			//get the room's string
+			var roomString = genRoomString((max-roomCount), thisRoom.type, currentX, currentY);
+			this.dungeon[currentY][currentX] = new Room(roomString);
+		
+			//keep a stack of rooms to be created (one for every possible dir)
+			for(var x = 0; x<roomString.length; x++){
+				var nextX = currentX;
+				var nextY = currentY;
+				var nextType="";
+				
+				//get the new room's coordinates
+				if(roomString.charAt(x)=='s'){nextY +=1; nextType +='n';}
+				if(roomString.charAt(x)=='n'){nextY -=1; nextType +='s';}
+				if(roomString.charAt(x)=='w'){nextX -=1; nextType +='e';}
+				if(roomString.charAt(x)=='e'){nextX +=1; nextType +='w';}
+			
+				//check to see if it's not already being made...
+				if(this.dungeon[nextY][nextX]!=null){
+					nextType = mergeStrings(this.dungeon[nextY][nextX].type, nextType);
+				}
+				else{
+					roomCount ++;
+				}
+			
+				roomsToMake.push(new Room(nextType, nextX, nextY))
+				this.dungeon[nextY][nextX] = new Room(nextType, nextX, nextY);
+			
+			}
+		}
+		
+		
+	}
+	
+	function mergeStrings(a,b){
+		for(var i = 0; i<b.length; i++){
+			if(a.indexOf(b.charAt(i))== -1){
+				a = a + b.charAt(i);
+			}
+		}
+		return a;
+	}
+	
+	//
+	function difStrings(a,b){
+		for(var i = 0; i<b.length; i++){
+			a = a.replace(b.charAt(i),"");
+		}
+		return a;
+	}
+	
+	function genRoomString(max, currentType, x, y){
+		if(max < 1)return currentType;
+		var draw = "nsew";
+		console.log("room at "+x+" "+y);
+		
+		draw = difStrings(draw, currentType);
+		
+		//can't go north
+		if(y==0){draw = draw.replace("n","");}
+		//can't go south
+		if(y==size-1){draw = draw.replace("s","");}
+		//can't go west
+		if(x==0){draw = draw.replace("w","");}
+		//can't go west
+		if(x==size-1){draw = draw.replace("e","");}
+		
+		console.log("possible = "+draw);
+		var numDir = draw.length;
+		var count = Math.round(Math.random()*numDir);
+		if(count<1)count = 1;
+		if(max<count)count = max;
+		console.log("count = "+count);
+		for(var x = 0; x<count; x++){
+			var index = Math.round(Math.random()*(draw.length-1));
+			currentType = currentType + draw.charAt(index);
+			draw = draw.replace(draw.charAt(index),"");
+		}
+		console.log("type = "+currentType);
+		return currentType;
+	}
+	
+	function Room(type, x, y){
+		this.type = type;
+		this.x = x;
+		this.y = y;
+	}
+		
+	setInterval(function() {
+			update();
+			draw();
+		}, 1000/FPS);
+	
+    function update(){	
+
+    }
+	
+	
+    function draw(){
+    	for(var x = 0; x<size; x++){
+    		for(var y = 0; y<size; y++){
+    			if(level.dungeon[y][x]!=null){
+    				context.drawImage(roomImg, x*30, y*30);
+    				context.fillStyle    = '#f00';
+					context.font = "bold 26px"
+					context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
+				}
+    			else{
+    				context.drawImage(emptyImg, x*30, y*30);
+    			}
+    		}
+    	}
+    }
+	
+	//Might be useful to keep this around for later
+	//function handleKeyDown(evt){
+	//	switch (evt.keyCode) {
+	//		case 38:  /* Up arrow was pressed */
+	//			console.log("UP!");
+	//			for(x=0;x<10;x++){
+    //				var thisBoid = boids[x];
+    //				thisBoid.dy=thisBoid.dy-5;
+	//			}
+	//		break;
+	//		case 40:  /* Down arrow was pressed */
+	//			console.log("DOWN!");
+	//			for(x=0;x<10;x++){
+    //				var thisBoid = boids[x];
+	//				thisBoid.dy=thisBoid.dy+5;
+	//			}
+	//		break;
+	//		case 37:  /* Left arrow was pressed */
+	//			console.log("LEFT!");
+	//			for(x=0;x<10;x++){
+    //				var thisBoid = boids[x];
+	//				thisBoid.dx=thisBoid.dx-5;
+	//			}
+	//		break;
+	//		case 39:  /* Right arrow was pressed */
+	//			console.log("RIGHT!");
+	//			for(x=0;x<10;x++){
+    //				var thisBoid = boids[x];
+	//				thisBoid.dx=thisBoid.dx+5;
+	//			}
+	//		break;
+	//	}
+	//}
+	//	
+    //window.addEventListener('keydown',handleKeyDown,true);
+
+
+
+</script>
+
+</body>
+</html>
