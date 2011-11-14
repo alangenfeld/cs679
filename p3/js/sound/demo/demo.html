@@ -1,0 +1,18 @@
+<html>
+<script language="javascript" src="../soundmanager2-nodebug-jsmin.js"></script>
+<body>
+	<script>
+		soundManager.url = '../';
+		soundManager.flaseVersion = 9;
+		soundManager.useFlashBlock = true;
+		
+		var sounda;
+		soundManager.onready(function() {
+			//ID of sound, and the url path to the sound.
+			sounda = soundManager.createSound({id: "asound", url: "coffin.mp3"});
+			sounda.play();
+		});
+		
+	</script>
+</body>
+</html>
