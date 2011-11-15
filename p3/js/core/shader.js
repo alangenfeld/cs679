@@ -1,114 +1,91 @@
-// loadShaderFromFile
-// adapted from: http://webreflection.blogspot.com/2010/09/fragment-and-vertex-shaders-my-way-to.html
+function Shader(name) {
+  if (!name) {
+    throw("shaderName not set");
+  }
 
-// note: we have to wait until things load before using them,
-// so there's this ajax request
+  this.program = getShader(name);
+  this.shadowMap = getShader("shadowmap");
 
-// hacked by MG to take the whole shader path
-// needs to figure out the shader type by dissecting the name
+  this.setAttribute = function(obj, attrib) {
+    obj[attrib.name] = gl.createBuffer();
+    gl.bindBuffer(attrib.type, obj[attrib.name]);
 
-// remember, this takes (and returns) lists!
+    var array = attrib.type == gl.ELEMENT_ARRAY_BUFFER ? 
+      new Uint16Array(attrib.content) : new Float32Array(attrib.content);
 
-var shaderMap = new Array();
+    gl.bufferData(attrib.type, array, gl.STATIC_DRAW);
 
-function shaderNameToType(str)
-{
-  
-  if (str.slice(0, 2) == "fs") {
-    return "fs" };
-  if (str.slice(0, 2) == "vs") {
-    return "vs" };
-  if (str.search("frag") >= 0) {
-    return "fs" };
-  if (str.search("vert") >= 0) {
-    return "vs" };
-  if (str.search(".fs") >= 0) {
-    return "fs" };
-  if (str.search(".vs") >= 0) {
-    return "vs" };
-  throw "Can't guess shader type!";
-  
-}
+    this.program[attrib.name] = gl.getAttribLocation(this.program, attrib.name);
+    gl.enableVertexAttribArray(this.program[attrib.name]);
 
-function loadShaders(gl, shaders, callback) {
-  
-  // (C) WebReflection - Mit Style License
-  function onreadystatechange() {
+    if (!obj.attributes) {
+      obj.attributes = new Array();
+    }
     
-    var
-    xhr = this,
-    i = xhr.i
-    ;
-    if (xhr.readyState == 4) {
-      
-      shaders[i] = gl.createShader(
-        shaderNameToType(shaders[i]) =="fs" ?
-          gl.FRAGMENT_SHADER :
-          gl.VERTEX_SHADER
-      );
-      gl.shaderSource(shaders[i], xhr.responseText);
-      gl.compileShader(shaders[i]);
-      if (!gl.getShaderParameter(shaders[i], gl.COMPILE_STATUS))
-        throw gl.getShaderInfoLog(shaders[i])
-      ;
-      // console.log("Compiled:"+xhr.responseText)
-      !--length && typeof callback == "function" && callback(shaders);
-    }
-  }
-  for (var
-       shaders = [].concat(shaders),
-       asynchronous = !!callback,
-       i = shaders.length,
-       length = i,
-       xhr;
-       i--;
-      ) {
-        (xhr = new XMLHttpRequest).i = i;
-        // this line used to build the path
-        // xhr.open("get", loadShaders.base + shaders[i] + ".c", asynchronous);
-        xhr.open("get", shaders[i], asynchronous);
-        if (asynchronous) {
-          xhr.onreadystatechange = onreadystatechange;
-        }
-        xhr.send(null);
-        onreadystatechange.call(xhr);
+    obj.attributes.push(attrib);
+  };
+
+  this.bindAttributes = function(obj) {
+    for (var i in obj.attributes) {
+      var name = obj.attributes[i].name;
+      gl.bindBuffer(obj.attributes[i].type, obj[name]);
+      if (obj.attributes[i].type == gl.ARRAY_BUFFER) {
+	gl.vertexAttribPointer(this.program[name], 
+			       obj.attributes[i].size, 
+			       gl.FLOAT, false, 0, 0);	
       }
-  return shaders;
-}
-
-
-function getShader(name) {
-  var shaderProgram = shaderMap[name];
-  if (!shaderProgram) {
-    // load the shaders from files
-    var fragmentShader = loadShaders(gl, "shader/"+name+".vs")[0];
-    var vertexShader   = loadShaders(gl, "shader/"+name+".fs")[0];
-    // build the shaderProgram object
-    shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
-    // make sure all is well
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-      throw("Could not initialize shaders");
     }
-    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-    shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
-    shaderMap[name] = shaderProgram;
-  }
+  };
 
-  return shaderProgram;
-}
+  this.setShadowVertex = function(obj, verts) {
+    obj["shadowVertex"] = gl.createBuffer();
 
-function handleLoadedTexture(texture) {
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
 
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
 
-  gl.bindTexture(gl.TEXTURE_2D, null);
-}
+    this.shadowMap["vertex"] = gl.getAttribLocation(this.shadowMap, "vertex");
+    gl.enableVertexAttribArray(this.shadowMap["vertex"]);
+  };
+  
+  this.bindShadowVertex = function(obj) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
+    gl.vertexAttribPointer(this.shadowMap["vertex"], 3,
+			   gl.FLOAT, false, 0, 0);
+  };
 
+
+  this.setUpLights = function() {
+    this.program.lightPos = gl.getUniformLocation(this.program, "lightPos");
+    this.program.lightCol = gl.getUniformLocation(this.program, "lightCol");
+    this.program.ambient = gl.getUniformLocation(this.program, "ambient");
+    this.program.attenuation = gl.getUniformLocation(this.program, "attenuation");
+  };
+
+  this.bindLights = function() {
+    gl.uniform3fv(this.program.lightPos, light.transformedPos);
+    gl.uniform3fv(this.program.lightCol, light.col);
+    gl.uniform3fv(this.program.ambient, light.ambient);
+    gl.uniform3fv(this.program.attenuation, light.attenuation);
+  };
+
+  this.setTexture = function(texName) {
+    this.program.texture = gl.getUniformLocation(this.program, "texture");
+    var img = new Image();
+    this.texture = gl.createTexture();
+    this.texture.image = img;
+    
+    var tex = this.texture;
+    img.onload = function () {
+      handleLoadedTexture(tex);
+    };
+    
+    img.src = "img/" + texName;
+  };
+
+  this.bindTexture = function() {
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    gl.uniform1i(this.program.texture, 0);
+  };
+};

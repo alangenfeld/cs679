@@ -17,75 +17,116 @@ var updateStats = function() {
   lastRender = renderFinish;
 };
 
+// loadShaderFromFile
+// adapted from: http://webreflection.blogspot.com/2010/09/fragment-and-vertex-shaders-my-way-to.html
 
-function DisplacedPoint(x, y) {
-  var rx = Math.random()*60 - 30;
-  var ry = Math.random()*60 - 30;
-  return new Point(x+rx,y+ry);
-}
+// note: we have to wait until things load before using them,
+// so there's this ajax request
 
-function Point(x, y) {
-  this.x = x;
-  this.y = y;
+// hacked by MG to take the whole shader path
+// needs to figure out the shader type by dissecting the name
 
-  this.move = function(v) {
-    this.x += v.x;
-    this.y += v.y;
-  };
+// remember, this takes (and returns) lists!
+var shaderMap = new Array();
 
-  this.distance = function(p) {
-    x = p.x - this.x;
-    y = p.y - this.y;
-    return Math.sqrt(x*x + y*y);
-  };
-
-  this.vectorTo = function(p, mag) { 
-    x = p.x - this.x;
-    y = p.y - this.y;
-    return new Vector(x, y, mag);
-  };
-}
-
-function Vector(x, y, mag) {
-  var length = Math.sqrt(x*x + y*y);
-  if (!mag) {
-    mag = 1;
-  }
-
-  this.x = 0;
-  this.y = 0;
-
-  if(length != 0) {
-    this.x = (x/length) * mag;
-    this.y = (y/length) * mag;
-  }
-
-  this.angle = function() {
-    var rad = Math.atan2(this.y, this.x);
-
-	if(rad > 0) {
-      return 180*(rad / Math.PI);
-    } else {
-      return 180*(rad / Math.PI) + 360;
-	}
-  };
+function shaderNameToType(str)
+{
   
-  this.inverse = function() {
-    this.x = -this.x;
-    this.y = -this.y;
-  };
+  if (str.slice(0, 2) == "fs") {
+    return "fs" };
+  if (str.slice(0, 2) == "vs") {
+    return "vs" };
+  if (str.search("frag") >= 0) {
+    return "fs" };
+  if (str.search("vert") >= 0) {
+    return "vs" };
+  if (str.search(".fs") >= 0) {
+    return "fs" };
+  if (str.search(".vs") >= 0) {
+    return "vs" };
+  throw "Can't guess shader type!";
+  
 }
 
-function averageVectors(initialDir, vectors, mag) {
-  var x = 0;
-  var y = 0;
-
-  for (idx in vectors) {
-    x += vectors[idx].x;
-    y += vectors[idx].y;
+function loadShaders(gl, shaders, callback) {
+  
+  // (C) WebReflection - Mit Style License
+  function onreadystatechange() {
+    
+    var
+    xhr = this,
+    i = xhr.i
+    ;
+    if (xhr.readyState == 4) {
+      
+      shaders[i] = gl.createShader(
+        shaderNameToType(shaders[i]) =="fs" ?
+          gl.FRAGMENT_SHADER :
+          gl.VERTEX_SHADER
+      );
+      gl.shaderSource(shaders[i], xhr.responseText);
+      gl.compileShader(shaders[i]);
+      if (!gl.getShaderParameter(shaders[i], gl.COMPILE_STATUS))
+        throw gl.getShaderInfoLog(shaders[i])
+      ;
+      // console.log("Compiled:"+xhr.responseText)
+      !--length && typeof callback == "function" && callback(shaders);
+    }
   }
-  x /= vectors.length;
-  y /= vectors.length;
-  return new Vector((initialDir.x + x)/2, (initialDir.y + y)/2, mag);
+  for (var
+       shaders = [].concat(shaders),
+       asynchronous = !!callback,
+       i = shaders.length,
+       length = i,
+       xhr;
+       i--;
+      ) {
+        (xhr = new XMLHttpRequest).i = i;
+        // this line used to build the path
+        // xhr.open("get", loadShaders.base + shaders[i] + ".c", asynchronous);
+        xhr.open("get", shaders[i], asynchronous);
+        if (asynchronous) {
+          xhr.onreadystatechange = onreadystatechange;
+        }
+        xhr.send(null);
+        onreadystatechange.call(xhr);
+      }
+  return shaders;
+}
+
+
+function getShader(name) {
+  var shaderProgram = shaderMap[name];
+  if (!shaderProgram) {
+    // load the shaders from files
+    var fragmentShader = loadShaders(gl, "shader/"+name+".vs")[0];
+    var vertexShader   = loadShaders(gl, "shader/"+name+".fs")[0];
+    // build the shaderProgram object
+    shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    // make sure all is well
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      throw("Could not initialize shaders");
+    }
+    shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+    shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+    shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
+    shaderMap[name] = shaderProgram;
+  }
+
+  return shaderProgram;
+}
+
+function handleLoadedTexture(texture) {
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+
+  gl.bindTexture(gl.TEXTURE_2D, null);
 }
 

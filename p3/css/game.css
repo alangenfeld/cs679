@@ -3,7 +3,7 @@
 }
 
 canvas {
-  border: solid black 1px;
+
 }
 
 #display {
@@ -28,6 +28,7 @@ canvas {
   width: 800px;
   height: 600px;
   position: relative;
+  border: solid black 1px;
   box-shadow: 0 0 15px rgba(0,0,0,1);
 }
 

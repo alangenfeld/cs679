@@ -1,5 +1,5 @@
 function Camera() {
-  this.loc = vec3.create([0, -10, 15]);
+  this.pos = vec3.create([0, -10, 15]);
 
   gl.viewport(0, 0, display.width, display.height);
 
@@ -9,7 +9,7 @@ function Camera() {
   this.yaw = 0.0;
   this.pitch = 40.0;
   this.speed = 0.05;
-  this.roll = 0.3;
+  this.roll = 0;
   this.mouseX = 0;
   this.mouseY = 0;
   this.leftPressed = false;
@@ -20,10 +20,10 @@ function Camera() {
     mat4.identity(mvMatrix);
     
     if (mouse.leftPressed && this.leftPressed && keyboard.z) {
-      this.loc[2] -= (mouse.y - this.mouseY)*this.speed;
+      this.pos[2] -= (mouse.y - this.mouseY)*this.speed;
     } else if (mouse.leftPressed && this.leftPressed) {
-      this.loc[0] -= (mouse.x - this.mouseX)*this.speed;
-      this.loc[1] += (mouse.y - this.mouseY)*this.speed;
+      this.pos[0] -= (mouse.x - this.mouseX)*this.speed;
+      this.pos[1] += (mouse.y - this.mouseY)*this.speed;
     } else if (mouse.rightPressed && this.rightPressed) {
       this.yaw -= (mouse.x - this.mouseX)*this.roll;
       this.pitch -= (mouse.y - this.mouseY)*this.roll;
@@ -37,7 +37,7 @@ function Camera() {
     mat4.rotate(mvMatrix, degToRad(-this.yaw), [0, 1, 0]);
     mat4.rotate(mvMatrix, degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();
-    vec3.scale(this.loc, -1, temp);
+    vec3.scale(this.pos, -1, temp);
     mat4.translate(mvMatrix, temp);
   };
 }

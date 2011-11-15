@@ -1,5 +1,6 @@
 // drawing context
 var display = $("display");
+var display2 = $("display2");
 var gl = display.getContext("experimental-webgl");
 var ctx = display2.getContext("2d");
 

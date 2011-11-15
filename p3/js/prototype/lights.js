@@ -26,15 +26,16 @@ function Light(pos) {
       this.pos[1] -= speed;
     }
     var cooldown = 10;
+
+    // use to compare light settings using spacebar. 
     if (keyboard.space && game.tick - this.lastPress > cooldown) {
       if (this.turnedOn) {
-	this.attenuation = this.dim;
-	this.turnedOn = false;
+//	this.attenuation = this.dim;
+//	this.turnedOn = false;
       } else {
-	this.attenuation = this.bright;
-	this.turnedOn = true;
+//	this.attenuation = this.bright;
+//	this.turnedOn = true;
       }
-
       this.lastPress = game.tick;
     }
       
