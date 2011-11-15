@@ -39,8 +39,15 @@ function Light(pos) {
       this.lastPress = game.tick;
     }
       
-
     mat4.multiplyVec3(mvMatrix, this.pos, this.transformedPos);
+  };
+
+  this.set = function() {
+//    mat4.rotate(mvMatrix, degToRad(-this.yaw), [0, 1, 0]);
+//    mat4.rotate(mvMatrix, degToRad(-this.pitch), [1, 0, 0]);
+    var temp = vec3.create();
+    vec3.scale(this.pos, -1, temp);
+    mat4.translate(mvMatrix, temp);
   };
 }
 Light.prototype = new GameObject;

@@ -1,9 +1,6 @@
 function Camera() {
   this.pos = vec3.create([0, -10, 15]);
 
-  gl.viewport(0, 0, display.width, display.height);
-
-  mat4.perspective(45, display.width / display.height, 0.1, 100.0, pMatrix);
 
   this.init();
   this.yaw = 0.0;
@@ -17,8 +14,6 @@ function Camera() {
 
   // will change
   this.update = function() {
-    mat4.identity(mvMatrix);
-    
     if (mouse.leftPressed && this.leftPressed && keyboard.z) {
       this.pos[2] -= (mouse.y - this.mouseY)*this.speed;
     } else if (mouse.leftPressed && this.leftPressed) {
@@ -33,7 +28,9 @@ function Camera() {
     }
     this.mouseX = mouse.x;
     this.mouseY = mouse.y;
-    
+  };
+
+  this.set = function() {
     mat4.rotate(mvMatrix, degToRad(-this.yaw), [0, 1, 0]);
     mat4.rotate(mvMatrix, degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();
@@ -42,5 +39,7 @@ function Camera() {
   };
 }
 Camera.prototype = new GameObject;
+
+var camera = new Camera();
 
 

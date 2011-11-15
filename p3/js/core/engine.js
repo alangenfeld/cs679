@@ -43,12 +43,42 @@ var Game = function() {
     objectManager.updateAll();
     updateFinish = Date.now();
     
-    // clear screen and redraw objects
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    // clear 2d canvas
     ctx.clearRect(0, 0, display2.width, display2.height);
 
-    // look in to window.requestAnimFrame
+
+    /**
+     * render shadow map
+     */
+    shadowPass = true;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowMapFB);
+    gl.viewport(0, 0, shadowMapFB.width, shadowMapFB.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    mat4.perspective(45, shadowMapFB.width / shadowMapFB.height, 
+		     0.1, 100.0, pMatrix);
+    mat4.identity(mvMatrix);
+
+    light.set();
     objectManager.drawAll();
+    gl.bindTexture(gl.TEXTURE_2D, shadowMapTex);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.bindTexture(gl.TEXTURE_2D, null);
+    shadowPass = false;
+
+    /**
+     * render objects
+     */
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, display.width, display.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    mat4.perspective(45, display.width / display.height, 0.1, 100.0, pMatrix);
+    mat4.identity(mvMatrix);
+
+    camera.set();
+    objectManager.drawAll();
+
     renderFinish = Date.now();
     
     updateStats();

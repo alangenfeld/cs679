@@ -9,7 +9,6 @@ function GameObject3D() {
 
   this.init3d = function() {
     this.shader = new Shader(this.shaderName);
-//    this.shader = getShader(this.shaderName);    
 
     if (this.vertices) {
       this.shader.setAttribute(this, {name:"vertex", 
@@ -53,7 +52,7 @@ function GameObject3D() {
       throw("attributeCount not set!");
     }
 
-    if (shadowMode) {
+    if (shadowPass) {
       gl.useProgram(this.shader.shadowMap);
       setMatrixUniforms(this.shader.shadowMap);
       this.shader.bindShadowVertex(this);      
@@ -77,7 +76,7 @@ function GameObject3D() {
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.attributeCount);
     }
 
-    gl.bindTexture(gl.TEXTURE_2D, null);
+//    gl.bindTexture(gl.TEXTURE_2D, null);
   };
 
 

@@ -51,3 +51,32 @@ window.requestAnimFrame =
 	window.setTimeout(callback, 1000 / 60);
       };
    })();
+
+var shadowMapFB;
+var shadowMapTex;
+initTextureFramebuffer();
+function initTextureFramebuffer() {
+  shadowMapFB = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, shadowMapFB);
+  shadowMapFB.width = 512;
+  shadowMapFB.height = 512;
+  
+  shadowMapTex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, shadowMapTex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, shadowMapFB.width, shadowMapFB.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+  
+  var renderbuffer = gl.createRenderbuffer();
+  gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, shadowMapFB.width, shadowMapFB.height);
+  
+  gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, shadowMapTex, 0);
+  gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+  
+  gl.bindTexture(gl.TEXTURE_2D, null);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+}
