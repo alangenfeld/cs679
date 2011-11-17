@@ -7,31 +7,30 @@ var ctx = display2.getContext("2d");
 //gl.clearColor(1.0, 1.0, 1.0, 1.0);
 gl.clearColor(0,0,0, 1.0);
 gl.enable(gl.DEPTH_TEST);
-var mvMatrix = mat4.create();
-var mvMatrixStack = [];
+var mMatrix = mat4.create();
+var mMatrixStack = [];
+var vMatrix = mat4.create();
 var pMatrix = mat4.create();
+var lMatrix = mat4.create();
 
-function mvPushMatrix() {
+function mPushMatrix() {
   var copy = mat4.create();
-  mat4.set(mvMatrix, copy);
-  mvMatrixStack.push(copy);
+  mat4.set(mMatrix, copy);
+  mMatrixStack.push(copy);
 }
 
-function mvPopMatrix() {
-  if (mvMatrixStack.length == 0) {
+function mPopMatrix() {
+  if (mMatrixStack.length == 0) {
     throw "Invalid popMatrix!";
   }
-  mvMatrix = mvMatrixStack.pop();
+  mMatrix = mMatrixStack.pop();
 }
 
 function setMatrixUniforms(shader) {
-  gl.uniformMatrix4fv(shader.pMatrixUniform, false, pMatrix);
-  gl.uniformMatrix4fv(shader.mvMatrixUniform, false, mvMatrix);
-
-  var normalMatrix = mat3.create();
-  mat4.toInverseMat3(mvMatrix, normalMatrix);
-  mat3.transpose(normalMatrix);
-  gl.uniformMatrix3fv(shader.nMatrixUniform, false, normalMatrix);
+  gl.uniformMatrix4fv(shader.pMatrix, false, pMatrix);
+  gl.uniformMatrix4fv(shader.mMatrix, false, mMatrix);
+  gl.uniformMatrix4fv(shader.vMatrix, false, vMatrix);
+  gl.uniformMatrix4fv(shader.lMatrix, false, lMatrix);
 }
 
 

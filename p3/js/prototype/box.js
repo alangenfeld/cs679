@@ -83,13 +83,13 @@ function Box(pos, dim) {
   this.init3d();
 
   this.draw = function() {
-    mvPushMatrix();
+    mPushMatrix();
 
-    mat4.translate(mvMatrix, this.pos);
+    mat4.translate(mMatrix, this.pos);
 
     this.draw3d();
 
-    mvPopMatrix();
+    mPopMatrix();
   };
 }
 Box.prototype = new GameObject3D;

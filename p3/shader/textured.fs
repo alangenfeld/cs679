@@ -10,7 +10,17 @@ uniform vec3 lightPos;
 uniform vec3 lightCol;
 uniform vec3 ambient;
 uniform vec3 attenuation;
+
 uniform sampler2D texture;
+uniform sampler2D shadowMap;
+
+float unpack (vec4 colour) {
+  const vec4 bitShifts = vec4(1.0 / (256.0 * 256.0 * 256.0),
+			      1.0 / (256.0 * 256.0),
+			      1.0 / 256.0,
+			      1.0);
+  return dot(colour, bitShifts);
+}
 
 void main(void) {
   vec4 col = texture2D(texture, texCoord);

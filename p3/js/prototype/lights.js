@@ -10,7 +10,10 @@ function Light(pos) {
   this.lastPress = 0;
   this.init();
 
+//  this.box = new Box(this.pos, [.2, .2, .2]);
+
   this.update = function() {
+
     var speed = 0.2;
     if(keyboard.left) {
       this.pos[0] -= speed;
@@ -39,7 +42,7 @@ function Light(pos) {
       this.lastPress = game.tick;
     }
       
-    mat4.multiplyVec3(mvMatrix, this.pos, this.transformedPos);
+    mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
   };
 
   this.set = function() {
@@ -47,7 +50,7 @@ function Light(pos) {
 //    mat4.rotate(mvMatrix, degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();
     vec3.scale(this.pos, -1, temp);
-    mat4.translate(mvMatrix, temp);
+    mat4.translate(lMatrix, temp);
   };
 }
 Light.prototype = new GameObject;

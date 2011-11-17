@@ -4,7 +4,7 @@ function Shader(name) {
   }
 
   this.program = getShader(name);
-  this.shadowMap = getShader("shadowmap");
+  this.shadowMapper = getShader("shadowmap");
 
   this.setAttribute = function(obj, attrib) {
     obj[attrib.name] = gl.createBuffer();
@@ -44,13 +44,13 @@ function Shader(name) {
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
 
-    this.shadowMap["vertex"] = gl.getAttribLocation(this.shadowMap, "vertex");
-    gl.enableVertexAttribArray(this.shadowMap["vertex"]);
+    this.shadowMapper["vertex"] = gl.getAttribLocation(this.shadowMapper, "vertex");
+    gl.enableVertexAttribArray(this.shadowMapper["vertex"]);
   };
   
   this.bindShadowVertex = function(obj) {
     gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
-    gl.vertexAttribPointer(this.shadowMap["vertex"], 3,
+    gl.vertexAttribPointer(this.shadowMapper["vertex"], 3,
 			   gl.FLOAT, false, 0, 0);
   };
 
@@ -63,7 +63,8 @@ function Shader(name) {
   };
 
   this.bindLights = function() {
-    gl.uniform3fv(this.program.lightPos, light.transformedPos);
+//    gl.uniform3fv(this.program.lightPos, light.transformedPos);
+    gl.uniform3fv(this.program.lightPos, light.pos);
     gl.uniform3fv(this.program.lightCol, light.col);
     gl.uniform3fv(this.program.ambient, light.ambient);
     gl.uniform3fv(this.program.attenuation, light.attenuation);
@@ -87,5 +88,15 @@ function Shader(name) {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
     gl.uniform1i(this.program.texture, 0);
+  };
+
+  this.setShadowMap = function() {
+    this.program.shadowMap = gl.getUniformLocation(this.program, "shadowMap");
+  };
+
+  this.bindShadowMap = function() {
+    gl.activeTexture(gl.TEXTURE1);
+    gl.bindTexture(gl.TEXTURE_2D, shadowMapTex);
+    gl.uniform1i(this.program.shadowMap, 1);
   };
 };
