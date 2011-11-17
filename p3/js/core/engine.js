@@ -56,8 +56,8 @@ var Game = function() {
     gl.viewport(0, 0, shadowMapFB.width, shadowMapFB.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(45, shadowMapFB.width / shadowMapFB.height, 
-		     0.1, 100.0, pMatrix);
+    mat4.perspective(90, shadowMapFB.width / shadowMapFB.height, 
+		     0.1, 1000.0, lpMatrix);
     mat4.identity(mMatrix);
     mat4.identity(lMatrix);
 

@@ -11,6 +11,7 @@ var mMatrix = mat4.create();
 var mMatrixStack = [];
 var vMatrix = mat4.create();
 var pMatrix = mat4.create();
+var lpMatrix = mat4.create();
 var lMatrix = mat4.create();
 
 function mPushMatrix() {
@@ -31,6 +32,7 @@ function setMatrixUniforms(shader) {
   gl.uniformMatrix4fv(shader.mMatrix, false, mMatrix);
   gl.uniformMatrix4fv(shader.vMatrix, false, vMatrix);
   gl.uniformMatrix4fv(shader.lMatrix, false, lMatrix);
+  gl.uniformMatrix4fv(shader.lpMatrix, false, lpMatrix);
 }
 
 
