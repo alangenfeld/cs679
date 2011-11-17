@@ -1,12 +1,11 @@
 function Camera() {
   this.pos = vec3.create([0, -10, 15]);
 
-
   this.init();
   this.yaw = 0.0;
   this.pitch = 40.0;
   this.speed = 0.05;
-  this.roll = 0;
+  this.roll = 0.2;
   this.mouseX = 0;
   this.mouseY = 0;
   this.leftPressed = false;

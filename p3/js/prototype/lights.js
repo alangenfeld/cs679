@@ -8,6 +8,10 @@ function Light(pos) {
   this.attenuation = this.bright;
   this.transformedPos = [0,0,0];
   this.lastPress = 0;
+
+  this.yaw = 0.0;
+  this.pitch = 0.0;
+
   this.init();
 
 //  this.box = new Box(this.pos, [.2, .2, .2]);
@@ -46,8 +50,8 @@ function Light(pos) {
   };
 
   this.set = function() {
-//    mat4.rotate(mvMatrix, degToRad(-this.yaw), [0, 1, 0]);
-//    mat4.rotate(mvMatrix, degToRad(-this.pitch), [1, 0, 0]);
+    mat4.rotate(lMatrix, degToRad(-this.yaw), [0, 1, 0]);
+    mat4.rotate(lMatrix, degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();
     vec3.scale(this.pos, -1, temp);
     mat4.translate(lMatrix, temp);

@@ -34,36 +34,16 @@ void main(void) {
 
   float texelSize = 1.0 / 512.0;
   vec3 depth = litPos.xyz / litPos.w;
-  depth.z -= 0.0003;
-  vec3 colour = vec3(0.0, 0.0, 0.0);
+  float delta = 0.0003;
+  depth.z -= delta;
   float shadow = 0.0;
 
-  // Filter
-  int count = 0;
-  for (int y = -1; y <= 1; ++y)
-  {
-    for (int x = -1; x <= 1; ++x)
-    {
-      vec2 offset = depth.xy + vec2(float(x) * texelSize, float(y) * texelSize);
-      if ( (offset.x >= 0.0) && (offset.x <= 1.0) && (offset.y >= 0.0) && (offset.y <= 1.0) )
-      {
-	// Decode from RGBA to float
-	shadow = unpack(texture2D(shadowMap, offset));
-
-	if ( depth.z > shadow )
-	  colour += lighting.xyz * vec3(0.1, 0.1, 0.1);
-	else
-	  colour += lighting.xyz;
-	
-	++count;
-      }
-    }
+  if ( (depth.x >= 0.0) && (depth.x <= 1.0) && (depth.y >= 0.0) && (depth.y <= 1.0) ) {
+    shadow = unpack(texture2D(shadowMap, depth.xy));
+  
+    if ( depth.z > shadow )
+      lighting = 0.1 * lighting.xyz;
   }
-  if ( count > 0 )
-    colour /= float(count);
-  else
-    colour = lighting.xyz;
 
-//  gl_FragColor = vec4(lighting, 1.0);
-  gl_FragColor = vec4(colour, 1.0);
+  gl_FragColor = vec4(lighting, 1.0);
 }
