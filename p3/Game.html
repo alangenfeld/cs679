@@ -25,16 +25,17 @@
 <script type="text/javascript" src="/js/prototype/lights.js"></script>  
 <script type="text/javascript" src="/js/prototype/plane.js"></script> 
 <script type="text/javascript" src="/js/prototype/box.js"></script>
+<script type="text/javascript" src="js/prototype/room.js"></script> 
 <script type="text/javascript">
+    var statsOn = true;
+
 	
-	var canvas = document.getElementById("myCanvas");
-	var context = canvas.getContext("2d");
+	var canvas = document.getElementById("display");
+
 	var emptyImg = new Image();   // Create new img element
 	emptyImg.src = 'img/emptyImg.png';	
 	var roomImg = new Image();   // Create new img element
 	roomImg.src = 'img/roomImg.png';
-	
-	context.fillStyle = "#000000";
 
 	var size = 17;
 	
@@ -45,13 +46,22 @@
 	var CurrentRoom = level.dungeon[level.spawnX][level.spawnY];
 	var RoomRender = new Room();
 
-	var box = new Box([0, 0, 2], [1, 1, 1]);
+	//lets use this box as a player
+	var PlayerBox = new Box([0, 0, 2], [1, 1, 1]);
 
+	//start the renderer
 	game.start();
+	
+	var FPS = 30;
+	setInterval(function() {
+			update();
+			draw();
+		}, 1000/FPS);
+	
+	//main update loop for the game
+	function update(){	
 
-	
-	game.start();
-	
+    }
 	
 </script>
 

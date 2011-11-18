@@ -1,7 +1,15 @@
 	function GameRoom(type, x, y){
+		var size = 6;
 		this.type = type;
 		this.x = x;
 		this.y = y;
+		this.grid = new Array();
+		for(var x = 0; x<size; x++){
+			this.grid[new Array()];
+		}
+		
+		//add items to the room here randomly
+		//we can also decide what kind of room it is here. puzzle room etc
 	}
 	
 	
