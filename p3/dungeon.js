@@ -5,8 +5,8 @@
 			this.dungeon[y] = new Array();
 		}
 		
-		this.spawnX = Math.round(Math.random()*(max-1));
-		this.spawnY = Math.round(Math.random()*(max-1));
+		this.spawnX = Math.round(max/2);
+		this.spawnY = Math.round(max/2);
 		
 		//push first... set currentY
 		
@@ -18,7 +18,7 @@
 		console.log("in the dungeon maker max: "+max);
 		console.log("max ="+(max-roomCount));
 		
-		var thisRoom = new Room("", currentX, currentY);
+		var thisRoom = new GameRoom("", currentX, currentY);
 		this.dungeon[currentY][currentX] = thisRoom;
 		roomsToMake.push(thisRoom);
 
@@ -30,7 +30,7 @@
 			
 			//get the room's string
 			var roomString = genRoomString((max-roomCount), thisRoom.type, currentX, currentY);
-			this.dungeon[currentY][currentX] = new Room(roomString);
+			this.dungeon[currentY][currentX] = new GameRoom(roomString);
 		
 			//keep a stack of rooms to be created (one for every possible dir)
 			for(var x = 0; x<roomString.length; x++){
@@ -52,8 +52,8 @@
 					roomCount ++;
 				}
 			
-				roomsToMake.push(new Room(nextType, nextX, nextY))
-				this.dungeon[nextY][nextX] = new Room(nextType, nextX, nextY);
+				roomsToMake.push(new GameRoom(nextType, nextX, nextY))
+				this.dungeon[nextY][nextX] = new GameRoom(nextType, nextX, nextY);
 			
 			}
 		}

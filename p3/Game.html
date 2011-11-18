@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="css/game.css" title="compact" rel="stylesheet" type="text/css">
+</head>
+<html>
+<body>
+  <div class="screen centered">
+    <canvas id="display"  width="800" height="600"></canvas>
+    <canvas id="display2" width="1" height="1"></canvas>
+  </div>
+<h1>dungeon alpha</h1>
+<script type="text/javascript" src="dungeon.js"></script>
+<script type="text/javascript" src="GameRoom.js"></script>
+<script type="text/javascript" src="/js/core/util.js"></script>
+<script type="text/javascript" src="/js/core/matrix.js"></script>
+<script type="text/javascript" src="/js/core/shader.js"></script>
+<script type="text/javascript" src="/js/core/gfx.js"></script>
+<script type="text/javascript" src="/js/core/engine.js"></script>
+<script type="text/javascript" src="/js/core/object.js"></script>
+<script type="text/javascript" src="/js/core/object3d.js"></script>
+<script type="text/javascript" src="/js/core/input.js"></script>
+<script type="text/javascript" src="/js/prototype/camera.js"></script>  
+<script type="text/javascript" src="/js/prototype/lights.js"></script>  
+<script type="text/javascript" src="/js/prototype/plane.js"></script> 
+<script type="text/javascript" src="/js/prototype/box.js"></script>
+<script type="text/javascript">
+	
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");
+	var emptyImg = new Image();   // Create new img element
+	emptyImg.src = 'img/emptyImg.png';	
+	var roomImg = new Image();   // Create new img element
+	roomImg.src = 'img/roomImg.png';
+	
+	context.fillStyle = "#000000";
+
+	var size = 17;
+	
+	//init level
+	var level = new Dungeon(size);
+
+	var light = new Light([0,0,4]);
+	var CurrentRoom = level.dungeon[level.spawnX][level.spawnY];
+	var RoomRender = new Room();
+
+	var box = new Box([0, 0, 2], [1, 1, 1]);
+
+	game.start();
+
+	
+	game.start();
+	
+	
+</script>
+
+</body>
+</html>
