@@ -93,15 +93,3 @@ function Box(pos, dim) {
   };
 }
 Box.prototype = new GameObject3D;
-
-
-
-/**
-  this.texName = "wall.png";
-  this.texCoords = [1.0,  1.0,
-		    0.0,  1.0,
-		    1.0,  0.0,
-		    0.0,  0.0];
-
-  this.light = true;
-*/

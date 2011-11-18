@@ -113,7 +113,7 @@ function Shader(name) {
 
   this.bindShadowCube = function() {
       gl.activeTexture(gl.TEXTURE10);
-      gl.bindTexture(gl.TEXTURE_, shadowCubeTex);
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, shadowCubeTex);
       gl.uniform1i(this.program.shadowCube, 10);
   };
 };

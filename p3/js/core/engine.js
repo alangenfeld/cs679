@@ -61,8 +61,15 @@ var Game = function() {
 
       gl.bindTexture(gl.TEXTURE_2D, shadowMapTex[i]);
       gl.generateMipmap(gl.TEXTURE_2D);
+
+      gl.bindTexture(gl.TEXTURE_, shadowMapTex[i]);
+      gl.generateMipmap(gl.TEXTURE_2D);
+
       gl.bindTexture(gl.TEXTURE_2D, null);
     }
+
+
+
 
     shadowPass = -1;
 
