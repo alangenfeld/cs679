@@ -2,9 +2,10 @@ function Shader(name) {
   if (!name) {
     throw("shaderName not set");
   }
-
   this.program = getShader(name);
   this.shadowMapper = getShader("shadowmap");
+
+  this.program.shadowMap = Array();
 
   this.setAttribute = function(obj, attrib) {
     obj[attrib.name] = gl.createBuffer();
@@ -90,13 +91,29 @@ function Shader(name) {
     gl.uniform1i(this.program.texture, 0);
   };
 
-  this.setShadowMap = function() {
-    this.program.shadowMap = gl.getUniformLocation(this.program, "shadowMap");
+  this.setShadowMaps = function() {
+    for (var i=0; i<5; i++) {
+      this.program.shadowMap[i] = 
+	gl.getUniformLocation(this.program, "shadowMap[" + i + "]");
+    }
+  };
+  
+  this.bindShadowMaps = function() {
+    for (var i=0; i<5; i++) {
+      gl.activeTexture(gl.TEXTURE1 + i);
+      gl.bindTexture(gl.TEXTURE_2D, shadowMapTex[i]);
+      gl.uniform1i(this.program.shadowMap[i], 1+i);
+    }
   };
 
-  this.bindShadowMap = function() {
-    gl.activeTexture(gl.TEXTURE1);
-    gl.bindTexture(gl.TEXTURE_2D, shadowMapTex);
-    gl.uniform1i(this.program.shadowMap, 1);
+  this.setShadowCube = function() {
+    this.program.shadowCube = 
+      gl.getUniformLocation(this.program, "shadowCube");
+  };
+
+  this.bindShadowCube = function() {
+      gl.activeTexture(gl.TEXTURE10);
+      gl.bindTexture(gl.TEXTURE_, shadowCubeTex);
+      gl.uniform1i(this.program.shadowCube, 10);
   };
 };

@@ -113,9 +113,14 @@ function getShader(name) {
 
     shaderProgram.mMatrix = gl.getUniformLocation(shaderProgram, "uMMatrix");   
     shaderProgram.vMatrix = gl.getUniformLocation(shaderProgram, "uVMatrix");
-    shaderProgram.lMatrix = gl.getUniformLocation(shaderProgram, "uLMatrix");
     shaderProgram.pMatrix = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.lpMatrix = gl.getUniformLocation(shaderProgram, "uLPMatrix");
+
+    shaderProgram.lMatrix = Array();
+
+    for (var i=0; i<5; i++) {
+      shaderProgram.lMatrix[i] = gl.getUniformLocation(shaderProgram, "uLMatrix[" + i + "]");
+    }
 
     shaderMap[name] = shaderProgram;
   }

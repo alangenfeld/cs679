@@ -50,25 +50,21 @@ var Game = function() {
     /**
      * render shadow map
      */
-    shadowPass = true;
+    for (var i=0; i<5; i++) {
+      shadowPass = i;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, shadowMapFB[i]);
+      gl.viewport(0, 0, shadowMapFB.width, shadowMapFB.height);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowMapFB);
-    gl.viewport(0, 0, shadowMapFB.width, shadowMapFB.height);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      light.set(i);
+      objectManager.drawAll();
 
-    mat4.perspective(90, shadowMapFB.width / shadowMapFB.height, 
-		     0.1, 1000.0, lpMatrix);
-    mat4.identity(mMatrix);
-    mat4.identity(lMatrix);
+      gl.bindTexture(gl.TEXTURE_2D, shadowMapTex[i]);
+      gl.generateMipmap(gl.TEXTURE_2D);
+      gl.bindTexture(gl.TEXTURE_2D, null);
+    }
 
-    light.set();
-    objectManager.drawAll();
-
-    gl.bindTexture(gl.TEXTURE_2D, shadowMapTex);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.bindTexture(gl.TEXTURE_2D, null);
-
-    shadowPass = false;
+    shadowPass = -1;
 
     /**
      * render objects
@@ -77,10 +73,6 @@ var Game = function() {
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, display.width, display.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    mat4.perspective(45, display.width / display.height, 0.1, 100.0, pMatrix);
-    mat4.identity(mMatrix);
-    mat4.identity(vMatrix);
 
     camera.set();
     objectManager.drawAll();

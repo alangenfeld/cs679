@@ -12,7 +12,11 @@ $("lightsOff").onclick = function() {
 
 var light = new Light([0,0,4]);
 var room = new Room();
-
-var box = new Box([0, 0, 2], [1, 1, 1]);
+var boxes = Array();
+boxes.push( new Box([3, 0, 2], [1, 1, 1]));
+boxes.push( new Box([0, 3, 3], [1, 1, 1]));
+boxes.push( new Box([-3, 0, 4], [1, 1, 1]));
+boxes.push( new Box([0, -3, 1], [1, 1, 1]));
+boxes.push( new Box([0, 0, 1], [1, 1, 1]));
 
 game.start();

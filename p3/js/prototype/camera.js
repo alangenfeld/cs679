@@ -30,6 +30,10 @@ function Camera() {
   };
 
   this.set = function() {
+    mat4.perspective(45, display.width / display.height, 0.1, 100.0, pMatrix);
+    mat4.identity(mMatrix);
+    mat4.identity(vMatrix);
+
     mat4.rotate(vMatrix, degToRad(-this.yaw), [0, 1, 0]);
     mat4.rotate(vMatrix, degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();

@@ -8,6 +8,9 @@ function Light(pos) {
   this.attenuation = this.bright;
   this.transformedPos = [0,0,0];
   this.lastPress = 0;
+  this.near = .1;
+  this.far = 100;
+  this.fov = 90;
 
   this.yaw = 0.0;
   this.pitch = 0.0;
@@ -17,7 +20,7 @@ function Light(pos) {
 //  this.box = new Box(this.pos, [.2, .2, .2]);
 
   this.update = function() {
-
+    
     var speed = 0.2;
     if(keyboard.left) {
       this.pos[0] -= speed;
@@ -49,12 +52,41 @@ function Light(pos) {
     mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
   };
 
-  this.set = function() {
-    mat4.rotate(lMatrix, degToRad(-this.yaw), [0, 1, 0]);
-    mat4.rotate(lMatrix, degToRad(-this.pitch), [1, 0, 0]);
+  this.set = function(face) {
+    switch(face) {
+    case 0 : //-z
+      this.pitch = 0;
+      this.yaw = 0;
+      break;
+    case 1 : //+y
+      this.pitch = 90;
+      this.yaw = 0;
+      break;
+    case 2 : // -x
+      this.pitch = 90;
+      this.yaw = 90;
+      break;
+    case 3 : //-y
+      this.pitch = 90;
+      this.yaw = 180;
+      break;
+    case 4 : // +x
+      this.pitch = 90;
+      this.yaw = -90;
+      break;
+    }
+
+    mat4.perspective(this.fov, shadowMapFB.width / shadowMapFB.height, 
+		     this.near, this.far, lpMatrix);
+
+    mat4.identity(mMatrix);
+    mat4.identity(lMatrix[face]);
+
+    mat4.rotate(lMatrix[face], degToRad(-this.yaw), [0, 1, 0]);
+    mat4.rotate(lMatrix[face], degToRad(-this.pitch), [1, 0, 0]);
     var temp = vec3.create();
     vec3.scale(this.pos, -1, temp);
-    mat4.translate(lMatrix, temp);
+    mat4.translate(lMatrix[face], temp);
   };
 }
 Light.prototype = new GameObject;

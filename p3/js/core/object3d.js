@@ -42,7 +42,7 @@ function GameObject3D() {
     }
     if (this.light) {
       this.shader.setUpLights();
-      this.shader.setShadowMap();
+      this.shader.setShadowMaps();
     }
 
     this.init();
@@ -53,9 +53,9 @@ function GameObject3D() {
       throw("attributeCount not set!");
     }
 
-    if (shadowPass) {
+    if (shadowPass >= 0) {
       gl.useProgram(this.shader.shadowMapper);
-      setMatrixUniforms(this.shader.shadowMapper);
+      setShadowUniforms(this.shader.shadowMapper, shadowPass);
       this.shader.bindShadowVertex(this);      
 
     } else {
@@ -64,7 +64,7 @@ function GameObject3D() {
       
       if (this.light) {
 	this.shader.bindLights();
-	this.shader.bindShadowMap();
+	this.shader.bindShadowMaps();
       }
       if (this.shader.texture) {
 	this.shader.bindTexture();      
