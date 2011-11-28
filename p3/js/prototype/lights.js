@@ -4,14 +4,13 @@ function Light(pos) {
   this.turnedOn = true;
   this.ambient = [0.01, 0.01, 0.01];
   this.bright = [0.8, 0.06, 0.05];
-  this.dim = [1.0, 0.22, 0.2];
+  this.dim = [1.0, 1.0, 1.0];
   this.attenuation = this.bright;
   this.transformedPos = [0,0,0];
   this.lastPress = 0;
   this.near = .1;
   this.far = 100;
   this.fov = 90;
-
   this.yaw = 0.0;
   this.pitch = 0.0;
 
@@ -21,7 +20,7 @@ function Light(pos) {
 
   this.update = function() {
     
-    var speed = 0.2;
+    /*var speed = 0.2;
     if(keyboard.left) {
       this.pos[0] -= speed;
     } else if(keyboard.right) {
@@ -49,7 +48,7 @@ function Light(pos) {
       this.lastPress = game.tick;
     }
       
-    mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
+    mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);*/
   };
 
   this.set = function(face) {
