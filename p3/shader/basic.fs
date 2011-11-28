@@ -2,7 +2,6 @@
 precision highp float;
 #endif
 
-varying vec4 litPos[5];
 varying vec4 worldPos;
 varying vec3 n;
 

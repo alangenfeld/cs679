@@ -48,6 +48,11 @@ function setMatrixUniforms(shader) {
   for (var i=0; i<5; i++) {
     gl.uniformMatrix4fv(shader.lMatrix[i], false, lMatrix[i]);
   }
+
+  var normalMatrix = mat3.create();
+  mat4.toInverseMat3(mMatrix, normalMatrix);
+  mat3.transpose(mMatrix);
+  gl.uniformMatrix3fv(shader.nMatrix, false, normalMatrix);
 }
 
 
