@@ -5,7 +5,11 @@ function Box(pos, dim) {
   this.depth = dim[1];
   this.height = dim[2];
 
-  this.shaderName = "basic";
+  if (shadows) {
+    this.shaderName = "basic_shadow";
+  } else {
+    this.shaderName = "basic";
+  }
 
   this.vertices = [this.width/2,  this.depth/2,  this.height/2,
 		   -this.width/2,  this.depth/2,  this.height/2,

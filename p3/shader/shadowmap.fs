@@ -2,6 +2,8 @@
 precision highp float;
 #endif
   
+varying vec4 worldDist;
+
 vec4 pack (float depth)
 {
   const vec4 bitSh = vec4(256 * 256 * 256,

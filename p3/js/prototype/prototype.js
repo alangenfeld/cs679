@@ -9,8 +9,9 @@ $("lightsOff").onclick = function() {
   light.ambient = [.01, .01, .01];
 };
 
-
+shadows = true;
 var light = new Light([0,0,4]);
+light.manualControl = true;
 var room = new Room();
 var boxes = Array();
 boxes.push( new Box([3, 0, 2], [1, 1, 1]));

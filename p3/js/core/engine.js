@@ -46,37 +46,31 @@ var Game = function() {
     // clear 2d canvas
     ctx.clearRect(0, 0, display2.width, display2.height);
 
-
     /**
      * render shadow map
      */
-    for (var i=0; i<5; i++) {
+    mat4.perspective(90, shadowCubeFB.width / shadowCubeFB.height, 
+		     0.01, 100.0, lpMatrix);
+
+    for (var i=0; i<6; i++) {
       shadowPass = i;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, shadowMapFB[i]);
-      gl.viewport(0, 0, shadowMapFB.width, shadowMapFB.height);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, shadowCubeFB[i]);
+      gl.viewport(0, 0, shadowCubeFB.width, shadowCubeFB.height);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       light.set(i);
       objectManager.drawAll();
-
-      gl.bindTexture(gl.TEXTURE_2D, shadowMapTex[i]);
-      gl.generateMipmap(gl.TEXTURE_2D);
-
-      gl.bindTexture(gl.TEXTURE_, shadowMapTex[i]);
-      gl.generateMipmap(gl.TEXTURE_2D);
-
-      gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
-
-
+    // update cube map
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, shadowCubeTex);
+    gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
 
     shadowPass = -1;
 
     /**
      * render objects
      */
-
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, display.width, display.height);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

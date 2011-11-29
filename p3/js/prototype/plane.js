@@ -6,7 +6,12 @@ function Plane(pos, h, w, rotationDegrees, rotationVec) {
     deg : rotationDegrees,
     vec : rotationVec  
   };
-  this.shaderName = "basic";
+
+  if (shadows) {
+    this.shaderName = "basic_shadow";
+  } else {
+    this.shaderName = "textured";
+  }
 
   this.vertices = [this.width/2,  this.depth/2,  0.0,
 		   -this.width/2,  this.depth/2,  0.0,

@@ -91,13 +91,14 @@ function Shader(name) {
     gl.uniform1i(this.program.texture, 0);
   };
 
+/*
   this.setShadowMaps = function() {
     for (var i=0; i<5; i++) {
       this.program.shadowMap[i] = 
 	gl.getUniformLocation(this.program, "shadowMap[" + i + "]");
     }
   };
-  
+
   this.bindShadowMaps = function() {
     for (var i=0; i<5; i++) {
       gl.activeTexture(gl.TEXTURE1 + i);
@@ -105,7 +106,7 @@ function Shader(name) {
       gl.uniform1i(this.program.shadowMap[i], 1+i);
     }
   };
-
+*/
   this.setShadowCube = function() {
     this.program.shadowCube = 
       gl.getUniformLocation(this.program, "shadowCube");

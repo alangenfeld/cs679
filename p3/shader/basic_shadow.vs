@@ -6,6 +6,8 @@ uniform mat3 uNMatrix;
 uniform mat4 uVMatrix;
 uniform mat4 uPMatrix;
 
+//const mat4 ScaleMatrix = mat4(0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.5, 0.5, 0.5, 1.0);
+
 varying vec4 worldPos;
 varying vec3 n;
 
