@@ -2,25 +2,17 @@
 precision highp float;
 #endif
   
-varying vec4 worldDist;
+varying vec4 worldPos;
 
-vec4 pack (float depth)
-{
-  const vec4 bitSh = vec4(256 * 256 * 256,
-			  256 * 256,
-			  256,
-			  1.0);
-  const vec4 bitMsk = vec4(0,
-			   1.0 / 256.0,
-			   1.0 / 256.0,
-			   1.0 / 256.0);
-  vec4 comp = fract(depth * bitSh);
-  comp -= comp.xxyz * bitMsk;
-  return comp;
+uniform vec3 lightPos;
+
+vec4 pack2 (float fDepth) {
+  return vec4(floor(fDepth) / 256.0, fract(fDepth),
+               fract(fDepth) * 256.0, fract(fDepth) * 256.0 * 256.0);
 }
 
 void main (void)
 {
   // Encode depth to RGBA texture
-  gl_FragColor = pack(gl_FragCoord.z);
+  gl_FragColor = pack2(distance(worldPos.xyz, lightPos));
 }

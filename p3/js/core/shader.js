@@ -53,11 +53,14 @@ function Shader(name) {
     gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
     gl.vertexAttribPointer(this.shadowMapper["vertex"], 3,
 			   gl.FLOAT, false, 0, 0);
+
+    gl.uniform3fv(this.shadowMapper.lightPos, light.pos);
   };
 
 
   this.setUpLights = function() {
     this.program.lightPos = gl.getUniformLocation(this.program, "lightPos");
+    this.shadowMapper.lightPos = gl.getUniformLocation(this.shadowMapper, "lightPos");
     this.program.lightCol = gl.getUniformLocation(this.program, "lightCol");
     this.program.ambient = gl.getUniformLocation(this.program, "ambient");
     this.program.attenuation = gl.getUniformLocation(this.program, "attenuation");

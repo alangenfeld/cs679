@@ -1,6 +1,11 @@
 function Box(pos, dim) {
   this.pos = pos;
 
+  this.yaw = 0;
+  this.pitch = 0;
+  this.rotating = false;
+  this.rotatingSpeed = .6 * Math.random() - .3;
+
   this.width = dim[0];
   this.depth = dim[1];
   this.height = dim[2];
@@ -86,10 +91,21 @@ function Box(pos, dim) {
 
   this.init3d();
 
+
+  this.update = function() {
+    this.yaw += this.rotatingSpeed;    
+    this.pitch += this.rotatingSpeed;    
+  };
+
   this.draw = function() {
     mPushMatrix();
 
+
     mat4.translate(mMatrix, this.pos);
+    if (this.rotating) {
+      mat4.rotate(mMatrix, degToRad(this.yaw), [0, 1, 0]);
+      mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
+    }
 
     this.draw3d();
 
