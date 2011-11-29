@@ -5,6 +5,7 @@ var gl = display.getContext("experimental-webgl");
 var ctx = display2.getContext("2d");
 
 var shadows = false;
+var showDepthMapFace = -1;
 
 //gl.clearColor(1.0, 1.0, 1.0, 1.0);
 gl.clearColor(0,0,0, 1.0);

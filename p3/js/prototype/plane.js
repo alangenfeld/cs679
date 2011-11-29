@@ -8,7 +8,7 @@ function Plane(pos, h, w, rotationDegrees, rotationVec) {
   };
 
   if (shadows) {
-    this.shaderName = "basic_shadow";
+    this.shaderName = "textured_shadow";
   } else {
     this.shaderName = "textured";
   }

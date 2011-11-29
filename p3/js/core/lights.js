@@ -48,40 +48,28 @@ function Light(pos) {
   };
 
   this.set = function(face) {
+    mat4.identity(vMatrix);
     switch(face) {
     case 0 : // +x
-      this.pitch = 90;
-      this.yaw = -90;
+      mat4.lookAt(this.pos, [100, 0, 0], [0, -1, 0], vMatrix);
       break;
     case 1 : // -x
-      this.pitch = 90;
-      this.yaw = 90;
+      mat4.lookAt(this.pos, [-100, 0, 0], [0, -1, 0], vMatrix);
       break;
     case 2 : //+y
-      this.pitch = 90;
-      this.yaw = 0;
+      mat4.lookAt(this.pos, [0, 100, 0], [0, 0, 1], vMatrix);
       break;
     case 3 : //-y
-      this.pitch = 90;
-      this.yaw = 180;
+      mat4.lookAt(this.pos, [0, -100, 0], [0, 0, -1], vMatrix);
       break;
     case 4 : //+z
-      this.pitch = 180;
-      this.yaw = 0;
       break;
+      mat4.lookAt(this.pos, [0, 0, 100], [0, -1, 0], vMatrix);
     case 5 : //-z
-      this.pitch = 0;
-      this.yaw = 90;
+      mat4.lookAt(this.pos, [0, 0, -100], [0, -1, 0], vMatrix);
       break;
     }
 
-    mat4.identity(vMatrix);
-
-    mat4.rotate(vMatrix, degToRad(-this.yaw), [0, 1, 0]);
-    mat4.rotate(vMatrix, degToRad(-this.pitch), [1, 0, 0]);
-    var temp = vec3.create();
-    vec3.scale(this.pos, -1, temp);
-    mat4.translate(vMatrix, temp);
   };
 }
 Light.prototype = new GameObject;

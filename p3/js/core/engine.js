@@ -46,37 +46,7 @@ var Game = function() {
     // clear 2d canvas
     ctx.clearRect(0, 0, display2.width, display2.height);
 
-    /**
-     * render shadow map
-     */
-    mat4.perspective(90, shadowCubeFB.width / shadowCubeFB.height, 
-		     0.01, 100.0, lpMatrix);
-
-    for (var i=0; i<6; i++) {
-      shadowPass = i;
-      gl.bindFramebuffer(gl.FRAMEBUFFER, shadowCubeFB[i]);
-      gl.viewport(0, 0, shadowCubeFB.width, shadowCubeFB.height);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-      light.set(i);
-      objectManager.drawAll();
-    }
-
-    // update cube map
-    gl.bindTexture(gl.TEXTURE_CUBE_MAP, shadowCubeTex);
-    gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
-
-    shadowPass = -1;
-
-    /**
-     * render objects
-     */
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    gl.viewport(0, 0, display.width, display.height);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    camera.set();
-    objectManager.drawAll();
+    render();
 
     renderFinish = Date.now();
     
@@ -90,3 +60,54 @@ var Game = function() {
   };
 };
 var game = new Game;
+
+function render() {
+  if (showDepthMapFace < 0) {
+    renderShadowMaps();
+    renderObjects();
+  } else {
+    renderMapToScreen(showDepthMapFace);
+  }
+}
+
+function renderShadowMaps() {
+  mat4.perspective(90, shadowCubeFB.width / shadowCubeFB.height, 
+		   0.01, 100.0, lpMatrix);
+  
+  for (var i=0; i<6; i++) {
+    shadowPass = i;
+    gl.bindFramebuffer(gl.FRAMEBUFFER, shadowCubeFB[i]);
+    gl.viewport(0, 0, shadowCubeFB.width, shadowCubeFB.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    
+    light.set(i);
+    objectManager.drawAll();
+  }
+  shadowPass = -1;
+  // update cube map
+  gl.bindTexture(gl.TEXTURE_CUBE_MAP, shadowCubeTex);
+  gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+}
+
+function renderMapToScreen(i) {
+  mat4.perspective(90, shadowCubeFB.width / shadowCubeFB.height, 
+		   0.01, 100.0, lpMatrix);
+  
+  shadowPass = i;
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, shadowCubeFB.width, shadowCubeFB.height);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  
+  light.set(i);
+  objectManager.drawAll();
+}
+
+
+function renderObjects() {
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, display.width, display.height);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  
+  camera.set();
+  objectManager.drawAll();
+}
