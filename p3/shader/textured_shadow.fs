@@ -38,7 +38,7 @@ void main(void) {
   float delta = shadow - dist;
   float bias = 1.0;
   
-  float visibility  = ((shadow - dist) > -bias) ? (1.0) : (0.5);
+  float visibility  = ((shadow - dist) > -bias) ? (1.0) : (0.2);
 
   gl_FragColor = vec4(visibility * lighting, 1.0);
 }
