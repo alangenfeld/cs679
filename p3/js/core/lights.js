@@ -71,7 +71,7 @@ function Light(pos) {
       break;
     case 5 : //-z
       this.pitch = 0;
-      this.yaw = 0;
+      this.yaw = 90;
       break;
     }
 
