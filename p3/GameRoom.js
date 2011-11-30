@@ -1,4 +1,4 @@
-	function GameRoom(type, x, y){
+	function GameRoom(type, x, y, pxSize){
 		//say this is a 6x6 room
 		//(0,0) is bottom left
 		var size = 5;
@@ -18,12 +18,12 @@
 		
 		//we minus 3 to center it
 		//TODO can we disable a box so that the current room's box is the only one shown?
-		this.grid[randX][randY] = new Box([(randX-3)*3,(randY-3)*3,0], [3,3,1]);
+		this.grid[randX][randY] = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
 		
 		//we can also decide what kind of room it is here. puzzle room etc
 		
 		this.checkCollisionAt = function(x,y){
-			console.log("x = "+x+" y="+y);
+			//console.log("x = "+x+" y="+y);
 			//if(this.grid[x][y]!=null){
 				//thing = this.grid[x][y];
 				//thing.collide();?
