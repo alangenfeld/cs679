@@ -5,9 +5,7 @@ precision highp float;
 varying vec4 worldPos;
 varying vec3 n;
 
-uniform mat4 uLPMatrix;
-
-uniform vec3 color;
+uniform vec3 baseColor;
 uniform vec3 lightPos;
 uniform vec3 lightCol;
 uniform vec3 ambient;
@@ -20,7 +18,7 @@ float unpack2 (vec4 colour) {
 }
 
 void main(void) {
-  vec4 col = vec4(color.rgb, 1.0);
+  vec4 col = vec4(baseColor.rgb, 1.0);
   vec3 lightDirection = lightPos - worldPos.xyz;
   float w = max(dot(normalize(n), normalize(lightDirection)), 0.0);
   float dist = length(lightDirection);
@@ -29,6 +27,7 @@ void main(void) {
 			    (attenuation.z * dist * dist));
 
   vec3 lighting = ambient + lightCol * w * attenuate;
+  lighting = col.rgb * lighting;
 
   vec4 sample = textureCube(shadowCube, -lightDirection.xyz);
   float shadow = unpack2(sample);

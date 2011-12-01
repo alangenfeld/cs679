@@ -2,6 +2,7 @@ function Shader(name) {
   if (!name) {
     throw("shaderName not set");
   }
+  this.name = name;
   this.program = getShader(name);
   this.shadowMapper = getShader("shadowmap");
 
@@ -74,7 +75,7 @@ function Shader(name) {
   };
 
   this.setUpColor = function() {
-    this.program.color = gl.getUniformLocation(this.program, "color");
+    this.program.color = gl.getUniformLocation(this.program, "baseColor");
   };
 
   this.bindColor = function(color) {

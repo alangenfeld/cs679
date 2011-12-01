@@ -40,12 +40,12 @@ function GameObject3D() {
     if (this.textureName) {
       this.shader.setTexture(this.textureName);
     }
+    if (this.color3d) {
+      this.shader.setUpColor();
+    }
     if (this.light) {
       this.shader.setUpLights();
       this.shader.setShadowCube();
-    }
-    if (this.color3d) {
-      this.shader.setUpColor();
     }
 
     this.init();

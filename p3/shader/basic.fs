@@ -20,6 +20,7 @@ void main(void) {
 			    (attenuation.z * dist * dist));
 
   vec3 lighting = ambient + lightCol * w * attenuate;
+  lighting = col.rgb * lighting;
 
   gl_FragColor = vec4(lighting, 1.0);
 }

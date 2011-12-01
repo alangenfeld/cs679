@@ -138,7 +138,5 @@ function ColorBox(pos, dim, color) {
     this.setup3d();
     this.init3d();
   }
-  
-  
 }
 ColorBox.prototype = new Box;

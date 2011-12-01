@@ -28,6 +28,7 @@ void main(void) {
 			    (attenuation.z * dist * dist));
 
   vec3 lighting = ambient + lightCol * w * attenuate;
+  lighting = col.rgb * lighting;
 
   vec4 sample = textureCube(shadowCube, -lightDirection.xyz);
   float shadow = unpack2(sample);
