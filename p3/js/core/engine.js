@@ -61,9 +61,12 @@ var Game = function() {
 };
 var game = new Game;
 
+shadowPass = -1;
 function render() {
   if (showDepthMapFace < 0) {
-    renderShadowMaps();
+    if (shadows) {
+       renderShadowMaps();
+    }
     renderObjects();
   } else {
     renderMapToScreen(showDepthMapFace);

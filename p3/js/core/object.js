@@ -2,8 +2,7 @@
  * Base game object class
  */
 function GameObject() {
-  this.x = 0;
-  this.y = 0;
+  this.render = true;
 
   this.init = function() {
     objectManager.objects.push(this);
@@ -36,7 +35,8 @@ function ObjectManager() {
 
   this.drawAll = function() {
     for (idx in this.objects) {
-      this.objects[idx].draw();
+      if (this.objects[idx].render)
+	this.objects[idx].draw();
     }
   };
 
