@@ -3,6 +3,7 @@
  */
 function GameObject() {
   this.render = true;
+  this.shadow = true;
 
   this.init = function() {
     objectManager.objects.push(this);
@@ -35,8 +36,11 @@ function ObjectManager() {
 
   this.drawAll = function() {
     for (idx in this.objects) {
-      if (this.objects[idx].render)
+      if (shadowPass >= 0 && this.objects[idx].shadow) {
 	this.objects[idx].draw();
+      } else if (shadowPass < 0 && this.objects[idx].render) {
+	this.objects[idx].draw();
+      }
     }
   };
 

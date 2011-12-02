@@ -140,3 +140,57 @@ function ColorBox(pos, dim, color) {
   }
 }
 ColorBox.prototype = new Box;
+
+function InvertedBox(pos, dim, color) {
+  this.pos = pos;
+
+  this.width = dim[0];
+  this.depth = dim[1];
+  this.height = dim[2];
+
+  this.color3d = color;
+
+  if (shadows) {
+    this.shaderName = "color_shadow";
+  } else {
+    this.shaderName = "color";
+  }
+
+  if (pos && dim) {
+    this.setup3d();
+
+    this.normals = [0.0, 0.0, -1.0,
+		    0.0, 0.0, -1.0,
+		    0.0, 0.0, -1.0,
+		    0.0, 0.0, -1.0,
+		    
+		    0.0, 0.0, 1.0,
+		    0.0, 0.0, 1.0,
+		    0.0, 0.0, 1.0,
+		    0.0, 0.0, 1.0,
+
+		    -1.0, 0.0, 0.0,
+		    -1.0, 0.0, 0.0,
+		    -1.0, 0.0, 0.0,
+		    -1.0, 0.0, 0.0,
+
+		    1.0, 0.0, 0.0,
+		    1.0, 0.0, 0.0,
+		    1.0, 0.0, 0.0,
+		    1.0, 0.0, 0.0,
+
+		    0.0, -1.0, 0.0,
+		    0.0, -1.0, 0.0,
+		    0.0, -1.0, 0.0,
+		    0.0, -1.0, 0.0,
+
+		    0.0, 1.0, 0.0,
+		    0.0, 1.0, 0.0,
+		    0.0, 1.0, 0.0,
+		    0.0, 1.0, 0.0
+		   ];
+
+    this.init3d();
+  }
+}
+InvertedBox.prototype = new Box;

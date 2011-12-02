@@ -14,7 +14,9 @@ function Light(pos) {
 
   this.init();
 
-  //  this.box = new Box(this.pos, [.2, .2, .2]);
+  this.box = new InvertedBox(this.pos, [.5, .5, .5], [1,1,1]);
+  this.box.shadow = false;
+
 
   this.update = function() {
     
