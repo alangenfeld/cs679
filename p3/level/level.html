@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Canvas Paint</title>
+    <style type="text/css"><!--
+      #container { position: relative; }
+      #imageView { border: 1px solid #000; }
+      #imageTemp { position: absolute; top: 1px; left: 1px; }
+    --></style>
+  </head>
+  <body>
+    <p><label>Drawing tool: <select id="dtool">
+        <option value="line">Line</option>
+       
+        <option value="poly">Polygon</option>
+    </select></label></p>
+
+    
+    
+    
+    <div id="container">
+      <canvas id="imageView" width="800" height="400">
+      
+      </canvas>
+    </div>
+    <button  type ="button" onclick ="undoLine()">UNDO LINE</button>
+      <button  type ="button" onclick ="undoPoly()">UNDO POLYGON</button>
+        <button  type ="button" onclick ="generateCode()">GENERATE CODE</button>
+	
+    <form name="myform">
+<table border="0" cellspacing="0" cellpadding="5" width = "400"><tr>
+
+<td><textarea name="outputtext" cols = "100" rows = "100"></textarea></td>
+</tr></table>
+</form>
+    <script type="text/javascript" src="level.js"></script>
+    
+    
+  </body>
+</html>
+
