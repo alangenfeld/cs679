@@ -46,10 +46,10 @@
   </div>
 </audio>
 <h1>dungeon alpha</h1>
+<script type="text/javascript" src="enemy.js"></script>
 <script type="text/javascript" src="dungeon.js"></script>
 <script type="text/javascript" src="GameRoom.js"></script>
 <script type="text/javascript" src="player.js"></script>
-<script type="text/javascript" src="enemy.js"></script>
 <script type="text/javascript" src="js/core/util.js"></script>
 <script type="text/javascript" src="js/core/matrix.js"></script>
 <script type="text/javascript" src="js/core/shader.js"></script>
@@ -84,7 +84,7 @@
 	var RoomRender = new Room(pxRoomSize);
 
 	var player = new Player([0, 0, 2], [1, 1, 1]);
-	var enemy = new Enemy([0,0,1], [1,1,1], player);
+	var enemy = new Enemy([0,0,1], [1,1,1], ai0);
 	var player = new Player([0, 0, 2], [1, 1, 1], pxRoomSize);
 
 	var light = player.light;
