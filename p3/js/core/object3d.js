@@ -40,6 +40,9 @@ function GameObject3D() {
     if (this.textureName) {
       this.shader.setTexture(this.textureName);
     }
+    if (this.color3d) {
+      this.shader.setUpColor();
+    }
     if (this.light) {
       this.shader.setUpLights();
       this.shader.setShadowCube();
@@ -65,6 +68,9 @@ function GameObject3D() {
       if (this.light) {
 	this.shader.bindLights();
 	this.shader.bindShadowCube();
+      }
+      if (this.color3d) {
+	this.shader.bindColor(this.color3d);
       }
       if (this.shader.texture) {
 	this.shader.bindTexture();      

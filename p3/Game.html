@@ -77,13 +77,19 @@
 	var size = 17;
 	
 	//init level
-	var level = new Dungeon(size);
+	var pxRoomSize = 10;
+	var level = new Dungeon(size,pxRoomSize);
 	
 	var currentRoom = level.dungeon[level.spawnX][level.spawnY];
-	var RoomRender = new Room();
+	var RoomRender = new Room(pxRoomSize);
 
+<<<<<<< HEAD
 	var player = new Player([0, 0, 2], [1, 1, 1]);
 	var enemy = new Enemy([0,0,1], [1,1,1], player);
+=======
+	var player = new Player([0, 0, 2], [1, 1, 1], pxRoomSize);
+
+>>>>>>> 7d0d3007104dc8a6d692954a7c91876b47d12248
 	var light = player.light;
 
 	//start the renderer

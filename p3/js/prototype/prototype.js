@@ -9,11 +9,12 @@ $("lightsOff").onclick = function() {
   light.ambient = [.01, .01, .01];
 };
 
-shadows = true;
+//shadows = true;
 var light = new Light([0,0,4]);
 light.manualControl = true;
-var room = new Room();
+var room = new Room(10);
 var boxes = Array();
+<<<<<<< HEAD
 boxes.push( new Box([3, 0, 2], [1, 1, 1]));
 boxes.push( new Box([0, 3, 3], [1, 1, 1]));
 boxes.push( new Box([-3, 0, 4], [1, 1, 1]));
@@ -21,6 +22,14 @@ boxes.push( new Box([0, -3, 1], [1, 1, 1]));
 
 var enemies = Array();
 enemies.push(new Box([0, 0, 1], [1, 1, 1]));
+=======
+
+boxes.push( new ColorBox([3, 0, 2], [1, 1, 1], [0,0,1]));
+boxes.push( new ColorBox([0, 3, 3], [1, 1, 1]), [0,1,0]);
+boxes.push( new ColorBox([-3, 0, 4], [1, 1, 1], [1,0,0]));
+boxes.push( new ColorBox([0, -3, 1], [1, 1, 1], [1,1,0]));
+boxes.push( new ColorBox([0, 0, 1], [1, 1, 1], [0,1,0]));
+>>>>>>> 7d0d3007104dc8a6d692954a7c91876b47d12248
 
 for (var i in boxes) {
   boxes[i].rotating = true;

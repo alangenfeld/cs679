@@ -2,6 +2,7 @@ function Shader(name) {
   if (!name) {
     throw("shaderName not set");
   }
+  this.name = name;
   this.program = getShader(name);
   this.shadowMapper = getShader("shadowmap");
 
@@ -67,11 +68,18 @@ function Shader(name) {
   };
 
   this.bindLights = function() {
-//    gl.uniform3fv(this.program.lightPos, light.transformedPos);
     gl.uniform3fv(this.program.lightPos, light.pos);
     gl.uniform3fv(this.program.lightCol, light.col);
     gl.uniform3fv(this.program.ambient, light.ambient);
     gl.uniform3fv(this.program.attenuation, light.attenuation);
+  };
+
+  this.setUpColor = function() {
+    this.program.color = gl.getUniformLocation(this.program, "baseColor");
+  };
+
+  this.bindColor = function(color) {
+    gl.uniform3fv(this.program.color, color);
   };
 
   this.setTexture = function(texName) {
