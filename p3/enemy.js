@@ -46,16 +46,26 @@ var ai0 = function(){
 
 //Fly tword player.
 var ai1 = function(){
-	var delay = 200;
+	var delay = 100;
+	var delay2 = 10;
+	var delayRand = (Math.random() * 20);
 	var accel = 0.013;
 	var accelDir = 0.01;
 	console.log(this.aiVars['count']);
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = delay;
+		this.aiVars['count2'] = delay2 + delayRand;
 	}
 	if(this.aiVars['count'] > 0){
 		this.aiVars['count']--;
-		console.log("yay");
+		return;
+	}
+	if(this.pos[2] < 1.5){
+		this.pos[2] += 0.05;
+		return;
+	}
+	if(this.aiVars['count2'] > 0){
+		this.aiVars['count2']--;
 		return;
 	}
 	

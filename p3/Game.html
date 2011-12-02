@@ -86,7 +86,11 @@
 	var RoomRender = new Room(pxRoomSize);
 
 	var player = new Player([0, 0, 2], [1, 1, 1]);
-	var enemy = new Enemy([0,0,1], [1,1,1], ai0);
+	var enemy = Array();
+	enemy.push(new Enemy([1,2,-1], [.3,.3,.3], ai1));
+	enemy.push(new Enemy([-2,3,-1], [.3,.3,.3], ai1));
+	enemy.push(new Enemy([-3,-2,-1], [.3,.3,.3], ai1));
+	enemy.push(new Enemy([2,0,-1], [.3,.3,.3], ai1));
 	var player = new Player([0, 0, 2], [1, 1, 1], pxRoomSize);
 
 	var light = player.light;
@@ -103,7 +107,9 @@
 	//main update loop for the game
 	function update(){	
 		player.update();
-		enemy.update();
+		for(e in enemy){
+			enemy[e].update();
+		}
 		currentRoom.checkCollisionAt(player.roomx, player.roomy);
 		//update enemies;
   }
