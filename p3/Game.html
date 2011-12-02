@@ -49,18 +49,19 @@
 <script type="text/javascript" src="dungeon.js"></script>
 <script type="text/javascript" src="GameRoom.js"></script>
 <script type="text/javascript" src="player.js"></script>
-<script type="text/javascript" src="/js/core/util.js"></script>
-<script type="text/javascript" src="/js/core/matrix.js"></script>
-<script type="text/javascript" src="/js/core/shader.js"></script>
-<script type="text/javascript" src="/js/core/gfx.js"></script>
-<script type="text/javascript" src="/js/core/engine.js"></script>
-<script type="text/javascript" src="/js/core/object.js"></script>
-<script type="text/javascript" src="/js/core/object3d.js"></script>
-<script type="text/javascript" src="/js/core/input.js"></script>
-<script type="text/javascript" src="/js/core/camera.js"></script>  
-<script type="text/javascript" src="/js/core/lights.js"></script>  
-<script type="text/javascript" src="/js/prototype/plane.js"></script> 
-<script type="text/javascript" src="/js/prototype/box.js"></script>
+<script type="text/javascript" src="enemy.js"></script>
+<script type="text/javascript" src="js/core/util.js"></script>
+<script type="text/javascript" src="js/core/matrix.js"></script>
+<script type="text/javascript" src="js/core/shader.js"></script>
+<script type="text/javascript" src="js/core/gfx.js"></script>
+<script type="text/javascript" src="js/core/engine.js"></script>
+<script type="text/javascript" src="js/core/object.js"></script>
+<script type="text/javascript" src="js/core/object3d.js"></script>
+<script type="text/javascript" src="js/core/input.js"></script>
+<script type="text/javascript" src="js/core/camera.js"></script>  
+<script type="text/javascript" src="js/core/lights.js"></script>  
+<script type="text/javascript" src="js/prototype/plane.js"></script> 
+<script type="text/javascript" src="js/prototype/box.js"></script>
 <script type="text/javascript" src="js/prototype/room.js"></script> 
 <script type="text/javascript">
     var statsOn = true;
@@ -82,7 +83,7 @@
 	var RoomRender = new Room();
 
 	var player = new Player([0, 0, 2], [1, 1, 1]);
-
+	var enemy = new Enemy([0,0,1], [1,1,1], player);
 	var light = player.light;
 
 	//start the renderer
@@ -97,6 +98,7 @@
 	//main update loop for the game
 	function update(){	
 		player.update();
+		enemy.update();
 		currentRoom.checkCollisionAt(player.roomx, player.roomy);
 		//update enemies;
   }

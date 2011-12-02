@@ -23,7 +23,7 @@
 		//we can also decide what kind of room it is here. puzzle room etc
 		
 		this.checkCollisionAt = function(x,y){
-			console.log("x = "+x+" y="+y);
+			//console.log("x = "+x+" y="+y);
 			//if(this.grid[x][y]!=null){
 				//thing = this.grid[x][y];
 				//thing.collide();?

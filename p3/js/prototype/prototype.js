@@ -18,10 +18,16 @@ boxes.push( new Box([3, 0, 2], [1, 1, 1]));
 boxes.push( new Box([0, 3, 3], [1, 1, 1]));
 boxes.push( new Box([-3, 0, 4], [1, 1, 1]));
 boxes.push( new Box([0, -3, 1], [1, 1, 1]));
-boxes.push( new Box([0, 0, 1], [1, 1, 1]));
+
+var enemies = Array();
+enemies.push(new Box([0, 0, 1], [1, 1, 1]));
 
 for (var i in boxes) {
   boxes[i].rotating = true;
+}
+
+for (var i in enemies){
+	enemies[i].rotating = true;
 }
 
 game.start();
