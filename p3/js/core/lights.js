@@ -65,8 +65,8 @@ function Light(pos) {
       mat4.lookAt(this.pos, [0, -100, 0], [0, 0, -1], vMatrix);
       break;
     case 4 : //+z
-      break;
       mat4.lookAt(this.pos, [0, 0, 100], [0, -1, 0], vMatrix);
+      break;
     case 5 : //-z
       mat4.lookAt(this.pos, [0, 0, -100], [0, -1, 0], vMatrix);
       break;

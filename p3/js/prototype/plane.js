@@ -46,3 +46,4 @@ function Plane(pos, h, w, rotationDegrees, rotationVec) {
   };
 }
 Plane.prototype = new GameObject3D;
+
