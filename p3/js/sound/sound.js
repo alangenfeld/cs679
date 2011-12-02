@@ -2,7 +2,7 @@ soundManager.url = 'js/sound/';
 soundManager.flaseVersion = 9;
 soundManager.useFlashBlock = true;
 
-var sounds;
+var sounds = new Array();
 var soundFlags;
 soundManager.onready(function() {
 	//ID of sound, and the url path to the sound.
