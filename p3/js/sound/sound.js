@@ -7,7 +7,7 @@ var soundFlags;
 soundManager.onready(function() {
 	//ID of sound, and the url path to the sound.
 	//Loading all of the sounds.
-	sounds["bgm0"] = soundManager.createSound({id: "bgm0", url: "js/sound/demo/coffin.mp3"});
+	sounds["bgm0"] = soundManager.createSound({id: "bgm0", url: "js/sound/demo/yewbicAmbient03.wav"});
 	sounds["bgm0"].play();
 	loopSound(sounds["bgm0"]);
 	
