@@ -9,7 +9,7 @@ $("lightsOff").onclick = function() {
   light.ambient = [.01, .01, .01];
 };
 
-//shadows = true;
+shadows = true;
 var light = new Light([0,0,4]);
 light.manualControl = true;
 var room = new Room(10);
