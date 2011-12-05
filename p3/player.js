@@ -36,11 +36,6 @@ function Player(pos, dim, planeSize){
     		if (keyboard.space && game.tick - player.lastPress > cooldown) {
       			player.lastPress = game.tick;
     		}
-      
-    		mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
-    		mat4.multiplyVec3(mMatrix, this.light.pos, this.light.transformedPos);
-    		this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
-    		this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
     		
     		//am I at the edge? if so...
     		//south
@@ -48,33 +43,48 @@ function Player(pos, dim, planeSize){
     		
     		if(this.roomx==2 && this.roomy==0 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("s")!=-1)){
     			this.enterCool = game.tick;
-    			//currentRoom = level.dungeon[level.spawnX][level.spawnY+1];
-    			//RoomRender = new Room(pxRoomSize);
+    			currentRoom.disable();
+    			currentRoom = level.dungeon[currentRoom.y+1][currentRoom.x];
+    			currentRoom.enable();
     			console.log("moving down");
+    			this.pos[1]=planeSize/2;
     		}
     		
     		//north
     		if(this.roomx==2 && this.roomy==4 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("n")!=-1)){
     		    this.enterCool = game.tick;
-    			//currentRoom = level.dungeon[level.spawnX][level.spawnY+1];
-    			//RoomRender = new Room(pxRoomSize);
+    			currentRoom.disable();
+    			currentRoom = level.dungeon[currentRoom.y-1][currentRoom.x];
+    			currentRoom.enable();
     			console.log("moving on up");
+    			this.pos[1]=-planeSize/2;
     		}
     		//West
     		if(this.roomx==0 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("w")!=-1)){
     			this.enterCool = game.tick;
-    			//currentRoom = level.dungeon[level.spawnX][level.spawnY+1];
-    			//RoomRender = new Room(pxRoomSize);
+    			currentRoom.disable();
+    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x+1];
+    			currentRoom.enable();
     			console.log("moving west");
+    			this.pos[0]=planeSize/2;
     		}
     		
     		//east
-    		if(this.roomx==0 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
+    		if(this.roomx==4 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
     		    this.enterCool = game.tick;
-    			//currentRoom = level.dungeon[level.spawnX][level.spawnY+1];
-    			//RoomRender = new Room(pxRoomSize);
+    			currentRoom.disable();
+    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x-1];
+    			currentRoom.enable();
     			console.log("moving east");
+    			this.pos[0]=-planeSize/2;
     		}
+    		
+    		
+    		this.light.pos = this.pos;
+    		mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
+    		mat4.multiplyVec3(mMatrix, this.light.pos, this.light.transformedPos);
+    		this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
+    		this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
     		
   		}
   		
