@@ -45,6 +45,7 @@
     <canvas id="display2" width="150" height="150"></canvas>
   </div>
 </audio>
+<canvas id="myCanvas" width="800" height="800"></canvas>  
 <script type="text/javascript" src="enemy.js"></script>
 <script type="text/javascript" src="dungeon.js"></script>
 <script type="text/javascript" src="GameRoom.js"></script>
@@ -65,6 +66,10 @@
 <script type="text/javascript" src="js/prototype/box.js"></script>
 <script type="text/javascript" src="js/prototype/room.js"></script> 
 <script type="text/javascript">
+
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");
+
     var statsOn = true;
 
     shadows = true;
@@ -103,7 +108,7 @@
 	var FPS = 30;
 	setInterval(function() {
 			update();
-			//draw();
+			draw();
 		}, 1000/FPS);
 	
 	//main update loop for the game
@@ -115,6 +120,22 @@
 		}
 		currentRoom.checkCollisionAt(player.roomx, player.roomy);
   }
+  
+  function draw(){
+    	for(var x = 0; x<size; x++){
+    		for(var y = 0; y<size; y++){
+    			if(level.dungeon[y][x]!=null){
+    				context.drawImage(roomImg, x*30, y*30);
+    				context.fillStyle    = '#f00';
+					context.font = "bold 26px"
+					context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
+				}
+    			else{
+    				context.drawImage(emptyImg, x*30, y*30);
+    			}
+    		}
+    	}
+    }
 	
 </script>
 

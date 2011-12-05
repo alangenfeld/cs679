@@ -43,7 +43,7 @@
 					}
 				}
 			}
-			console.log("moving to the next room with type : "+currentRoom.type);
+			console.log("moving to the next room with type : "+currentRoom.type+" at "+currentRoom.x+" y "+currentRoom.y);
 		}
 		
 		this.disable = function(){
