@@ -19,7 +19,7 @@ var ai0 = function(){
 		this.aiVars['count'] = 0;
 	}
 	var moveDist = 0.05;
-	var moveCount = 20;
+	var moveCount = 30;
 	
 	if(this.aiVars['count'] === 0){
 		this.direction = Math.floor(Math.random() * 4);
@@ -51,7 +51,6 @@ var ai1 = function(){
 	var delayRand = (Math.random() * 20);
 	var accel = 0.013;
 	var accelDir = 0.01;
-	console.log(this.aiVars['count']);
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = delay;
 		this.aiVars['count2'] = delay2 + delayRand;
@@ -92,7 +91,6 @@ var ai1 = function(){
 		}
 	}
 	if(this.aiVars['travelDir'][0] === 0){
-		console.log("y");
 		if(this.pos[0] - player.pos[0] > 0){
 			this.aiVars['accelDir'] -= accelDir;
 		}
@@ -105,7 +103,6 @@ var ai1 = function(){
 		this.aiVars['accel'] += accel;
 	}
 	else{
-		console.log("x");
 		if(this.pos[1] - player.pos[1] > 0){
 			this.aiVars['accelDir'] -= accelDir;
 		}
