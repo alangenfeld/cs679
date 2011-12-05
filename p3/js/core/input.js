@@ -57,6 +57,7 @@ function Keyboard() {
   this.down = false;
   this.space = false;
   this.z = false;
+  this.enter = false;
 
   function handleKeyDown(e) {
     if (e.keyCode == 37 || e.keyCode == 65) {
@@ -71,6 +72,8 @@ function Keyboard() {
       this.space = true;
     } else if(e.keyCode == 90) {
       this.z = true;
+    } else if(e.keyCode == 13) {
+      this.enter = true;
     }
   };
   window.onkeydown = handleKeyDown.bind(this);
@@ -88,6 +91,8 @@ function Keyboard() {
       this.space = false;
     } else if(e.keyCode == 90) {
       this.z = false;
+    } else if(e.keyCode == 13) {
+      this.enter = false;
     }
   };
   window.onkeyup = handleKeyUp.bind(this);
