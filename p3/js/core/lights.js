@@ -14,7 +14,9 @@ function Light(pos) {
 
   this.init();
 
-  //  this.box = new Box(this.pos, [.2, .2, .2]);
+  this.box = new InvertedBox(this.pos, [.5, .5, .5], [1,1,1]);
+  this.box.shadow = false;
+
 
   this.update = function() {
     
@@ -63,8 +65,8 @@ function Light(pos) {
       mat4.lookAt(this.pos, [0, -100, 0], [0, 0, -1], vMatrix);
       break;
     case 4 : //+z
-      break;
       mat4.lookAt(this.pos, [0, 0, 100], [0, -1, 0], vMatrix);
+      break;
     case 5 : //-z
       mat4.lookAt(this.pos, [0, 0, -100], [0, -1, 0], vMatrix);
       break;
