@@ -89,11 +89,32 @@ function Player(pos, dim, planeSize){
   		}
   		
   		this.draw = function(){
-  			ctx.drawImage(roomImg,0,0,150,150);
+  			
+  			/*ctx.drawImage(roomImg,0,0,150,150);
     		if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
     		if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2-15, 120);}
     		if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2-15);}
-    		if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2-15);}
+    		if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2-15);}*/
+    		var offsetx = currentRoom.x - 2;
+    		var offsety = currentRoom.y - 2;
+    		for(var y = 0; y<5; y++){
+    			for(var x = 0; x<5; x++){
+    				var someRoom = level.dungeon[offsety+y][offsetx+x];
+    				if(someRoom == null){
+    					ctx.drawImage(emptyImg,offsetx+x*30,offsety+y*30);
+    				}
+    				else{
+    					ctx.fillStyle = "rgb(200,0,0)";
+    					ctx.drawImage(roomImg,offsetx+x*30,offsety+y*30);
+    					if(someRoom.type.indexOf("n")!=-1){ctx.fillRect(offsetx+x*30+5,offsety+y*30,offsetx+x*30+10,offsety+y*30+4);}
+    					//if(currentRoom.type.indexOf("s")!=-1){ctx.fillRect(offsetx+x*30+12,offsety+y*30,offsetx+x*30,offsety+y*30+30);}
+    					//if(currentRoom.type.indexOf("e")!=-1){ctx.fillRect(offsetx+x*30,offsety+y*30,offsetx+x*30,offsety+y*30);}
+    					//if(currentRoom.type.indexOf("w")!=-1){ctx.fillRect(offsetx+x*30+4,offsety+y*30,offsetx+x*30,offsety+y*30);}
+
+    				}
+    			}
+    		}
+    		
   		}
   		
 		this.init();
