@@ -63,7 +63,7 @@ function Player(pos, dim, planeSize){
     		if(this.roomx==0 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("w")!=-1)){
     			this.enterCool = game.tick;
     			currentRoom.disable();
-    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x+1];
+    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x-1];
     			currentRoom.enable();
     			console.log("moving west");
     			this.pos[0]=planeSize/2;
@@ -73,7 +73,7 @@ function Player(pos, dim, planeSize){
     		if(this.roomx==4 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
     		    this.enterCool = game.tick;
     			currentRoom.disable();
-    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x-1];
+    			currentRoom = level.dungeon[currentRoom.y][currentRoom.x+1];
     			currentRoom.enable();
     			console.log("moving east");
     			this.pos[0]=-planeSize/2;
