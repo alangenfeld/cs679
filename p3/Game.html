@@ -49,7 +49,6 @@
 <script type="text/javascript" src="enemy.js"></script>
 <script type="text/javascript" src="dungeon.js"></script>
 <script type="text/javascript" src="GameRoom.js"></script>
-<script type="text/javascript" src="player.js"></script>
 <script type="text/javascript" src="js/core/util.js"></script>
 <script type="text/javascript" src="js/core/matrix.js"></script>
 <script type="text/javascript" src="js/core/shader.js"></script>
@@ -65,10 +64,8 @@
 <script type="text/javascript" src="js/prototype/plane.js"></script> 
 <script type="text/javascript" src="js/prototype/box.js"></script>
 <script type="text/javascript" src="js/prototype/room.js"></script> 
+<script type="text/javascript" src="player.js"></script>
 <script type="text/javascript">
-
-	var canvas = document.getElementById("display2");
-	var context = canvas.getContext("2d");
 
     var statsOn = true;
 
@@ -122,19 +119,22 @@
   }
   
   function draw(){
+  		/*scale = 150/size
     	for(var x = 0; x<size; x++){
     		for(var y = 0; y<size; y++){
     			if(level.dungeon[y][x]!=null){
-    				context.drawImage(roomImg, x*30, y*30);
-    				context.fillStyle    = '#f00';
-					context.font = "bold 26px"
-					context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
+    				ctx.drawImage(roomImg, x*30, y*30);
+    				ctx.fillStyle    = '#f00';
+					ctx.font = "bold 26px"
+					ctx.fillText(level.dungeon[y][x].type, x*30, y*30+15);
 				}
     			else{
-    				context.drawImage(emptyImg, x*30, y*30);
+    				ctx.drawImage(emptyImg, x*30, y*30);
     			}
     		}
-    	}
+    	}*/
+    	
+
     }
 	
 </script>

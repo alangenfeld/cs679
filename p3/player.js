@@ -88,4 +88,16 @@ function Player(pos, dim, planeSize){
     		
   		}
   		
+  		this.draw = function(){
+  			ctx.drawImage(roomImg,0,0,150,150);
+    		if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2, 0);}
+    		if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2, 120);}
+    		if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2);}
+    		if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2);}
+  		}
+  		
+		this.init();
+  		
 	}
+
+  		Player.prototype = new GameObject;

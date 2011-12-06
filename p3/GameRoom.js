@@ -21,6 +21,7 @@
 		var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
 		//debugger;
 		someBox.render = false;
+		someBox.shadow = false;
 		this.grid[randX][randY] = someBox;
 		
 		//we can also decide what kind of room it is here. puzzle room etc
