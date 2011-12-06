@@ -104,13 +104,19 @@ function Player(pos, dim, planeSize){
     					ctx.drawImage(emptyImg,offsetx+x*30,offsety+y*30);
     				}
     				else{
-    					ctx.fillStyle = "rgb(200,0,0)";
     					ctx.drawImage(roomImg,offsetx+x*30,offsety+y*30);
-    					if(someRoom.type.indexOf("n")!=-1){ctx.fillRect(offsetx+x*30+5,offsety+y*30,offsetx+x*30+10,offsety+y*30+4);}
+    					ctx.fillStyle    = '#f00';
+						ctx.font = "bold 26px"
+    					if(someRoom.type.indexOf("n")!=-1){ctx.fillText("n",offsetx+x*30+15,offsety+y*30+5);}
+    					if(someRoom.type.indexOf("s")!=-1){ctx.fillText("s",offsetx+x*30+15,offsety+y*30+28);}
+    					if(someRoom.type.indexOf("e")!=-1){ctx.fillText("e",offsetx+x*30+25,offsety+y*30+15);}
+						if(someRoom.type.indexOf("w")!=-1){ctx.fillText("w",offsetx+x*30,offsety+y*30+15);}
+						if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){ctx.fillText("*",offsetx+x*30+15,offsety+y*30+20);}
+
     					//if(currentRoom.type.indexOf("s")!=-1){ctx.fillRect(offsetx+x*30+12,offsety+y*30,offsetx+x*30,offsety+y*30+30);}
     					//if(currentRoom.type.indexOf("e")!=-1){ctx.fillRect(offsetx+x*30,offsety+y*30,offsetx+x*30,offsety+y*30);}
     					//if(currentRoom.type.indexOf("w")!=-1){ctx.fillRect(offsetx+x*30+4,offsety+y*30,offsetx+x*30,offsety+y*30);}
-
+						//context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
     				}
     			}
     		}
@@ -121,4 +127,4 @@ function Player(pos, dim, planeSize){
   		
 	}
 
-  		Player.prototype = new GameObject;
+  	Player.prototype = new GameObject;
