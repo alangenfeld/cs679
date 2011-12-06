@@ -19,6 +19,25 @@
 		//we minus 3 to center it
 		//TODO can we disable a box so that the current room's box is the only one shown?
 		var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
+		
+		var enemyRand = Math.random();
+		var enemyProb = 0.6;
+		this.enemies = new Array();
+		if(enemyRand <= enemyProb){
+			var enemyType = Math.floor(Math.random() * 2);
+			var enemyRandX = Math.random()
+			if(enemyType === 0){
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai0, []));
+			}
+			else{
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai1, []));
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai1, []));
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai1, []));
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai1, []));
+				this.enemies.push(new Enemy([Math.random() * 5, Math.random() * 5, 1], 3, ai1, []));
+			}
+		}
+		
 		//debugger;
 		someBox.render = false;
 		this.grid[randX][randY] = someBox;
@@ -33,8 +52,16 @@
 				//check type and do somehting based on that?
 			//}
 		}
+		this.update = function(){
+			for(e in this.enemies){
+				this.enemies[e].update();
+			}
+		}
 		
 		this.enable = function(){
+			for(e in this.enemies){
+				this.enemies[e].enable();
+			}
 			for(var a = 0; a<size; a++){
 				for(var b = 0; b<size; b++){
 					var object = this.grid[a][b];
@@ -47,6 +74,9 @@
 		}
 		
 		this.disable = function(){
+			for(e in this.enemies){
+				this.enemies[e].disable();
+			}
 			for(var a = 0; a<size; a++){
 				for(var b = 0; b<size; b++){
 					var object = this.grid[a][b];
@@ -56,6 +86,8 @@
 				}
 			}
 		}
+		
+		this.init();
 	}
 	
 	
@@ -106,3 +138,4 @@
 		}
 		return a;
 	}
+	GameRoom.prototype = GameObject();

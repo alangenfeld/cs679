@@ -1,16 +1,38 @@
-function Enemy(pos, dim,ai){
+function Enemy(pos, dim, ai, aiAttr){
 	this.pos = pos;
 	this.originalPos = pos;
+	this.aiAttr = aiAttr;
 	this.Box = new Box(pos, dim);
 	this.transformedPos = [0,0,0];
 	this.aiVars = new Array();
 	this.ai = ai;
+	this.active = false;
 	// use to compare light settings using spacebar. 
 	this.update = function(){
+		if(!this.active){
+			return;
+		}
+		console.log("wheee");
 		this.ai();
 		mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
 	}
 	
+	this.enable = function(){
+		console.log("enabled at: " + this.pos);
+		this.active = true;
+	}
+	this.disable = function(){
+		this.active = false;
+	}
+	
+}
+
+function getAi(num){
+	if(num <= 0){
+		return ai0;
+	}
+	else
+		return ai1;
 }
 
 //Random movement.
@@ -46,7 +68,7 @@ var ai0 = function(){
 
 //Fly tword player.
 var ai1 = function(){
-	var delay = 100;
+	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
 	var accel = 0.013;
