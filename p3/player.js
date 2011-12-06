@@ -1,8 +1,8 @@
 function Player(pos, dim, planeSize){
 		this.pos = pos;
-  		// use an inverted box to have light from inside light box
+  		// use an inverted box to have light from inside light box.
   		this.Box = new InvertedBox(pos, dim, [1,1,1]);
-  		// turn shadows off to prevent player hull from blocking lights view of room
+  		// turn shadows off to prevent player hull from blocking lights view of room.
   		this.Box.shadow = false;
 
 		this.transformedPos = [0,0,0];

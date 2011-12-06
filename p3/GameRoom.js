@@ -138,4 +138,4 @@
 		}
 		return a;
 	}
-	GameRoom.prototype = GameObject();
+GameRoom.prototype = GameObject();
