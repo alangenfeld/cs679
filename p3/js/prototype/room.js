@@ -1,13 +1,54 @@
-
-function Room(size) {
+function Room(size, doors) {
   this.walls = new Array();
+  if (doors) {
+    this.doors = doors;
+  } else {
+    this.doors = [false, false, false, false];
+  }
+    
+  this.size = size;
+
+  // floor  
+  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0], "wall.png"));
+
+  // north
+  if (this.doors[0]) {
+    this.walls.push(new Wall(
+		      [0,size/2,size/4], size/2, size,
+		      90, [-1,0,0],
+		      0
+		    ));
+  } else {
+    this.walls.push(new Plane([0,size/2,size/4], size/2, size, -90, [1,0,0], "wall.png"));
+  }
+
+  // east
+  if (this.doors[1]) {
+    this.walls.push(new Wall(
+		      [size/2,0,size/4], size, size/2, 
+		      90, [0,1,0],
+		      90
+		    ));
+  } else {
+    this.walls.push(new Plane([size/2,0,size/4], size, size/2, 90, [0,1,0], "wall.png"));
+  }  
   
-  var size = size;
   
-  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0]));
-  this.walls.push(new Plane([0,size/2,size/4], size/2, size, -90, [1,0,0]));
-  this.walls.push(new Plane([size/2,0,size/4], size, size/2, 90, [0,1,0]));
-  this.walls.push(new Plane([-size/2,0,size/4], size, size/2, -90, [0,1,0]));
+  // west
+  if (this.doors[2]) {
+    this.walls.push(new Wall(
+		      [-size/2,0,size/4], size, size/2, 
+			-90, [0,1,0],
+		      -90
+		    ));
+  } else {
+    this.walls.push(new Plane([-size/2,0,size/4], size, size/2, -90, [0,1,0]));
+  }
+
+  // south
+  if (this.doors[3]) {
+    this.walls.push(new Plane([0, -size/2-.75, 0], 1.5, 1.5, 0, [0,0,0], "wall.png"));
+  }
   
 }
 Room.prototype = new GameObject;

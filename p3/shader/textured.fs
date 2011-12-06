@@ -1,7 +1,6 @@
 #ifdef GL_ES
 precision highp float;
 #endif
-varying vec3 modelPos;
 varying vec4 worldPos;
 varying vec3 n;
 varying vec2 texCoord;
@@ -36,4 +35,5 @@ void main(void) {
   vec3 lighting = ambient + lightCol * w * attenuate;
   lighting = col.rgb * lighting;
   gl_FragColor = vec4(lighting, 1.0);
+  gl_FragColor = vec4(n, 1.0);
 }

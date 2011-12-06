@@ -1,7 +1,6 @@
 #ifdef GL_ES
 precision highp float;
 #endif
-varying vec3 modelPos;
 varying vec4 worldPos;
 varying vec3 n;
 varying vec2 texCoord;
@@ -17,7 +16,6 @@ uniform samplerCube shadowCube;
 float unpack2 (vec4 colour) {
   return colour.r * 256.0 + colour.g + colour.b / 256.0 + colour.a / (256.0 * 256.0);
 }
-
 
 void main(void) {
   vec4 col = texture2D(texture, texCoord);
@@ -41,4 +39,5 @@ void main(void) {
   float visibility  = ((shadow - dist) > -bias) ? (1.0) : (0.2);
 
   gl_FragColor = vec4(visibility * lighting, 1.0);
+
 }
