@@ -15,7 +15,7 @@ function Player(pos, dim, planeSize){
     	this.enterCool = 0;
 
 		this.update = function(){	
-    		var speed = 0.2;
+    		var speed = 0.07;
     		var roomEdge = planeSize/2 -.25;
     		//instead of making it continuous... make it snap?
     		//console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
@@ -90,10 +90,10 @@ function Player(pos, dim, planeSize){
   		
   		this.draw = function(){
   			ctx.drawImage(roomImg,0,0,150,150);
-    		if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2, 0);}
-    		if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2, 120);}
-    		if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2);}
-    		if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2);}
+    		if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
+    		if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2-15, 120);}
+    		if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2-15);}
+    		if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2-15);}
   		}
   		
 		this.init();

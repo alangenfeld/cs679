@@ -16,6 +16,17 @@
 		var randX = Math.round(Math.random()*4);
 		var randY = Math.round(Math.random()*4);
 		
+		var boxColorProb = Math.random();
+		
+		var boxColor = "white"
+		
+		if(boxColorProb>1/3*2){
+			boxColor = "orange";
+		}
+		if(boxColorProb>1/3&&boxColorProb<1/3*2){
+			boxColor = "purple";
+		}
+		
 		//we minus 3 to center it
 		//TODO can we disable a box so that the current room's box is the only one shown?
 		var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
