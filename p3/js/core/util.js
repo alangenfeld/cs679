@@ -17,6 +17,12 @@ var updateStats = function() {
   lastRender = renderFinish;
 };
 
+
+function isBitSet( value, position ) {
+  return value & ( 1 << position );
+};
+
+
 // loadShaderFromFile
 // adapted from: http://webreflection.blogspot.com/2010/09/fragment-and-vertex-shaders-my-way-to.html
 
@@ -47,6 +53,7 @@ function shaderNameToType(str)
   throw "Can't guess shader type!";
   
 }
+
 
 function loadShaders(gl, shaders, callback) {
   
@@ -134,3 +141,225 @@ function handleLoadedTexture(texture) {
   gl.bindTexture(gl.TEXTURE_2D, null);
 }
 
+var modelMap = new Array();
+
+function getModel(modelName) {
+  var model = modelMap[modelName];
+  if (model)
+    return model;
+  
+  var path = "models/" + modelName + ".js";
+  model = fetchModel(path);
+  modelMap[modelName] = model;
+  return model;
+}
+
+function fetchModel(modelName) {
+  function onreadystatechange() {
+    var
+    xhr = this,
+    i = xhr.i
+    ;
+    if (xhr.readyState == 4) {
+      model = parseTHREE(JSON.parse(xhr.response));
+
+      // console.log("Compiled:"+xhr.responseText)
+    }
+  }
+  xhr = new XMLHttpRequest;
+  xhr.open("get", modelName, false);
+  xhr.send(null);
+  onreadystatechange.call(xhr);
+
+  return model;
+}
+
+function loadModel(obj, modelName) {
+  var model = getModel(modelName);
+  debugger;
+  var vertices, normals, faces;
+
+  obj.vertices = vertices;
+  obj.normals = normals;
+  obj.vtxIndex = faces;
+
+  obj.light = true;
+  obj.attributeCount = model.faces.length;
+}
+
+
+// this is a total hack. 
+function parseTHREE( json ) {
+
+  var scope = {
+    faceUvs: new Array(), 
+    faceVertexUvs: new Array(),
+    vertices: new Array(), 
+    materials: new Array(), 
+    faces: new Array()
+  };
+  
+  var i, j, 
+
+  offset, zLength,
+
+  type,
+  isQuad, 
+  hasMaterial, 
+  hasFaceUv, hasFaceVertexUv,
+  hasFaceNormal, hasFaceVertexNormal,
+  hasFaceColor, hasFaceVertexColor,
+
+  vertex, face,
+
+  faces = json.faces,
+  vertices = json.vertices,
+  normals = json.normals,
+  colors = json.colors,
+
+  nUvLayers = 0;
+
+  // disregard empty arrays
+  for ( i = 0; i < json.uvs.length; i++ ) {
+    if ( json.uvs[ i ].length ) nUvLayers ++;
+  }
+
+  for ( i = 0; i < nUvLayers; i++ ) {
+    scope.faceUvs[ i ] = [];
+    scope.faceVertexUvs[ i ] = [];
+  }
+
+  offset = 0;
+  zLength = vertices.length;
+
+  while ( offset < zLength ) {
+    vertex = {};
+    vertex.x = vertices[ offset ++ ];
+    vertex.y = vertices[ offset ++ ];
+    vertex.z = vertices[ offset ++ ];
+
+    scope.vertices.push( vertex );
+  }
+
+  offset = 0;
+  zLength = faces.length;
+
+  while ( offset < zLength ) {
+    type = faces[ offset ++ ];
+
+    isQuad              = isBitSet( type, 0 );
+    hasMaterial         = isBitSet( type, 1 );
+    hasFaceUv           = isBitSet( type, 2 );
+    hasFaceVertexUv     = isBitSet( type, 3 );
+    hasFaceNormal       = isBitSet( type, 4 );
+    hasFaceVertexNormal = isBitSet( type, 5 );
+    hasFaceColor        = isBitSet( type, 6 );
+    hasFaceVertexColor  = isBitSet( type, 7 );
+
+    if ( isQuad ) {
+      
+      face = {};
+
+      face.a = faces[ offset ++ ];
+      face.b = faces[ offset ++ ];
+      face.c = faces[ offset ++ ];
+      face.d = faces[ offset ++ ];
+
+      nVertices = 4;
+    } else {
+      //            face = new THREE.Face3();
+      face.a = faces[ offset ++ ];
+      face.b = faces[ offset ++ ];
+      face.c = faces[ offset ++ ];
+
+      nVertices = 3;
+    }
+
+    if ( hasMaterial ) {
+      materialIndex = faces[ offset ++ ];
+      face.materials = scope.materials[ materialIndex ];
+    }
+
+    if ( hasFaceUv ) {
+      for ( i = 0; i < nUvLayers; i++ ) {
+        uvLayer = json.uvs[ i ];
+
+        uvIndex = faces[ offset ++ ];
+
+        u = uvLayer[ uvIndex * 2 ];
+        v = uvLayer[ uvIndex * 2 + 1 ];
+
+	//                scope.faceUvs[ i ].push( new THREE.UV( u, v ) );
+      }
+
+    }
+
+    if ( hasFaceVertexUv ) {
+      for ( i = 0; i < nUvLayers; i++ ) {
+        uvLayer = json.uvs[ i ];
+
+        uvs = [];
+
+        for ( j = 0; j < nVertices; j ++ ) {
+	  
+          uvIndex = faces[ offset ++ ];
+          u = uvLayer[ uvIndex * 2 ];
+          v = uvLayer[ uvIndex * 2 + 1 ];
+
+	  //                    uvs[ j ] = new THREE.UV( u, v );
+        }
+        scope.faceVertexUvs[ i ].push( uvs );
+      }
+    }
+
+    if ( hasFaceNormal ) {
+      normalIndex = faces[ offset ++ ] * 3;
+
+      normal = {};
+      //            normal = new THREE.Vector3();
+
+      normal.x = normals[ normalIndex ++ ];
+      normal.y = normals[ normalIndex ++ ];
+      normal.z = normals[ normalIndex ];
+
+      face.normal = normal;
+    }
+
+    if ( hasFaceVertexNormal ) {
+      for ( i = 0; i < nVertices; i++ ) {
+        normalIndex = faces[ offset ++ ] * 3;
+	normal = {};
+	//                normal = new THREE.Vector3();
+
+        normal.x = normals[ normalIndex ++ ];
+        normal.y = normals[ normalIndex ++ ];
+        normal.z = normals[ normalIndex ];
+
+	if (!face.vertexNormals) {
+	  face.vertexNormals = new Array();
+          face.vertexNormals.push( normal );
+	}
+	else
+          face.vertexNormals.push( normal );
+      }
+    }
+
+    if ( hasFaceColor ) {
+      //            color = new THREE.Color( faces[ offset ++ ] );
+      face.color = color;
+    }
+
+    if ( hasFaceVertexColor ) {
+      for ( i = 0; i < nVertices; i++ ) {
+        colorIndex = faces[ offset ++ ];
+
+	//                color = new THREE.Color( colors[ colorIndex ] );
+        face.vertexColors.push( color );
+      }
+    }
+
+    scope.faces.push( face );
+
+  }
+  return scope;
+};
