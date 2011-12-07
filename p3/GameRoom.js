@@ -16,21 +16,22 @@
 		var randX = Math.round(Math.random()*4);
 		var randY = Math.round(Math.random()*4);
 		
+		var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
+		
 		var boxColorProb = Math.random();
 		
-		var boxColor = "white"
-		
 		if(boxColorProb>1/3*2){
-			boxColor = "orange";
+			someBox.shutdown();
+			someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[1,0,0]);
 		}
 		if(boxColorProb>1/3&&boxColorProb<1/3*2){
-			boxColor = "purple";
+			someBox.shutdown();
+			someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,1,0]);
 		}
 		
 		//we minus 3 to center it
 		//TODO can we disable a box so that the current room's box is the only one shown?
-		var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
-		//debugger;
+		
 		someBox.render = false;
 		someBox.shadow = false;
 		this.grid[randX][randY] = someBox;
@@ -47,11 +48,23 @@
 		}
 		
 		this.enable = function(){
+			var walls = [false, false, false, false];
+		
+			if(this.type.indexOf("n")!=-1){walls[0]=true;}
+			if(this.type.indexOf("e")!=-1){walls[1]=true;}
+			if(this.type.indexOf("w")!=-1){walls[2]=true;}
+			if(this.type.indexOf("s")!=-1){walls[3]=true;}
+			
+			this.roomRender = new Room(pxRoomSize, walls);
+			//this.roomRender.render = false;
+			//this.roomRender.shadow = false;
+			
 			for(var a = 0; a<size; a++){
 				for(var b = 0; b<size; b++){
 					var object = this.grid[a][b];
 					if(object != null){
 						object.render = true;
+						object.shadow = true;
 					}
 				}
 			}
@@ -59,11 +72,13 @@
 		}
 		
 		this.disable = function(){
+			this.roomRender.shutdown();
 			for(var a = 0; a<size; a++){
 				for(var b = 0; b<size; b++){
 					var object = this.grid[a][b];
 					if(object != null){
 						object.render = false;
+						object.shadow = false;
 					}
 				}
 			}
