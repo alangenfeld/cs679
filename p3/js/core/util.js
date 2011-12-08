@@ -181,7 +181,7 @@ function loadModel(obj, modelName) {
     vtxIndex.push(face.a);
     vtxIndex.push(face.b);
     vtxIndex.push(face.c);
-    debugger
+
     normals[3*face.a] = face.vertexNormals[0].x;
     normals[3*face.a+1] = face.vertexNormals[0].y;
     normals[3*face.a+2] = face.vertexNormals[0].z;
@@ -207,7 +207,7 @@ function loadModel(obj, modelName) {
   obj.vertices = model.vertices;
   obj.normals = normals;
   obj.vtxIndex = vtxIndex;
-debugger
+
   obj.light = true;
   obj.attributeCount = model.faces.length;
 }
@@ -263,9 +263,9 @@ function parseTHREE( json ) {
 //    vertex.z = vertices[ offset ++ ];
     //scope.vertices.push( vertex );
 
-  scope.vertices.push(vertices[ offset ++ ]);
-  scope.vertices.push(vertices[ offset ++ ]);
-  scope.vertices.push(vertices[ offset ++ ]);
+    scope.vertices.push(vertices[ offset ++ ] * json.scale);
+    scope.vertices.push(vertices[ offset ++ ] * json.scale);
+    scope.vertices.push(vertices[ offset ++ ] * json.scale);
   }
 
   offset = 0;
