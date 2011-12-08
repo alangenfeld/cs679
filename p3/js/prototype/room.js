@@ -49,6 +49,12 @@ function Room(size, doors) {
   if (this.doors[3]) {
     this.walls.push(new Plane([0, -size/2-.75, 0], 1.5, 1.5, 0, [0,0,0], "wall.png"));
   }
+
+  this.shutdown = function() {
+    for(var i in this.walls) {
+      this.walls[i].shutdown();
+    }
+  };
   
 }
 Room.prototype = new GameObject;
