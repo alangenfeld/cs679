@@ -5,7 +5,7 @@ function Room(size, doors) {
   } else {
     this.doors = [false, false, false, false];
   }
-    
+  
   this.size = size;
 
   // floor  
