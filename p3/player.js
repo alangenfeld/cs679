@@ -22,7 +22,7 @@ function Player(pos, dim, planeSize){
   this.enterCool = 0;
 
   this.update = function(){	
-    var speed = 0.07;
+    var speed = 0.09;
     var roomEdge = planeSize/2 -.25;
     //instead of making it continuous... make it snap?
     //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
@@ -133,8 +133,6 @@ function Player(pos, dim, planeSize){
     mat4.translate(mMatrix, this.pos);
     mat4.rotate(mMatrix, degToRad(this.roll), [0, 0, 1]);
     mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
-
-
 
     this.draw3d();
     mPopMatrix();
