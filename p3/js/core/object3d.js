@@ -15,7 +15,7 @@ function GameObject3D() {
 				      content: this.vertices, 
 				      type : gl.ARRAY_BUFFER,
 				      size: 3});
-      this.shader.setShadowVertex(this, this.vertices);
+      this.shader.setShadowVertex(this, this.vertices, this.vtxIndex);
     }
     if (this.normals) {
       this.shader.setAttribute(this, {name:"normal", 
@@ -35,6 +35,7 @@ function GameObject3D() {
 				      type : gl.ELEMENT_ARRAY_BUFFER,
 				      size: 1});
     }
+
 
     
     if (this.textureName) {

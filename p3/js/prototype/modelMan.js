@@ -9,11 +9,11 @@ function ModelMan(pos, modelName) {
   this.rotatingSpeed = 0 ; 
 
   loadModel(this, modelName);
-
+  this.color3d = [.2, 0, .2];
   if (shadows) {
-    this.shaderName = "basic_shadow";
+    this.shaderName = "color_shadow";
   } else {
-    this.shaderName = "basic";
+    this.shaderName = "color";
   }
 
   this.init3d();

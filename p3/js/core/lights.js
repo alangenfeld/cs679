@@ -1,9 +1,9 @@
-function Light(pos) {
+function Light(pos, box) {
   this.pos = pos;
   this.col = [1.0, 0.9, 0.9];
   this.turnedOn = true;
   this.manualControl = false;
-  this.ambient = [0.01, 0.01, 0.01];
+  this.ambient = [0.05, 0.05, 0.05];
   this.bright = [0.8, 0.06, 0.05];
   this.dim = [1.0, 1.0, 1.0];
   this.attenuation = this.bright;
@@ -14,9 +14,10 @@ function Light(pos) {
 
   this.init();
 
-  this.box = new InvertedBox(this.pos, [.5, .5, .5], [1,1,1]);
-  this.box.shadow = false;
-
+  if (box) {
+    this.box = new InvertedBox(this.pos, [.5, .5, .5], [1,1,1]);
+    this.box.shadow = false;
+  }
 
   this.update = function() {
     

@@ -5,16 +5,21 @@ function Player(pos, dim, planeSize){
   
   loadModel(this, "simplePlayer");
 
-  if (shadows) {
-    this.shaderName = "player_shadow";
-  } else {
-    this.shaderName = "player";
-  }
+  this.shaderName = "player";
+
+  // somebody should change this probably
+  this.color3d = [1, .5, 0];
+
   this.shadow = false;
   this.init3d();  
 
   this.lastPress = 0;
   this.light = new Light(pos);
+
+  // set the light to a warm color
+  this.light.col = [.8, .6, .5];
+  this.lightOffset = 0;
+
   var planeSize = planeSize;
   var roomSize = 5;
   this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
@@ -40,7 +45,7 @@ function Player(pos, dim, planeSize){
       this.roll = -90;
     }
     var cooldown = 10;
-    this.light.pos = [this.pos[0], this.pos[1], this.pos[2]+2];
+    this.light.pos = [this.pos[0], this.pos[1], this.pos[2]+this.lightOffset];
 
     // use to compare light settings using spacebar. 
     if (keyboard.space && game.tick - player.lastPress > cooldown) {
