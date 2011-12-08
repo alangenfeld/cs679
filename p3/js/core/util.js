@@ -37,7 +37,6 @@ var shaderMap = new Array();
 
 function shaderNameToType(str)
 {
-  
   if (str.slice(0, 2) == "fs") {
     return "fs" };
   if (str.slice(0, 2) == "vs") {
@@ -51,7 +50,6 @@ function shaderNameToType(str)
   if (str.search(".vs") >= 0) {
     return "vs" };
   throw "Can't guess shader type!";
-  
 }
 
 
@@ -76,7 +74,6 @@ function loadShaders(gl, shaders, callback) {
       if (!gl.getShaderParameter(shaders[i], gl.COMPILE_STATUS))
         throw gl.getShaderInfoLog(shaders[i])
       ;
-      // console.log("Compiled:"+xhr.responseText)
       !--length && typeof callback == "function" && callback(shaders);
     }
   }
@@ -162,8 +159,6 @@ function fetchModel(modelName) {
     ;
     if (xhr.readyState == 4) {
       model = parseTHREE(JSON.parse(xhr.response));
-
-      // console.log("Compiled:"+xhr.responseText)
     }
   }
   xhr = new XMLHttpRequest;
@@ -176,17 +171,46 @@ function fetchModel(modelName) {
 
 function loadModel(obj, modelName) {
   var model = getModel(modelName);
-  debugger;
-  var vertices, normals, faces;
 
-  obj.vertices = vertices;
+  var vtxIndex = new Array();
+  var normals = new Array();
+
+  for(var i in model.faces) {
+    var face = model.faces[i];
+
+    vtxIndex.push(face.a);
+    vtxIndex.push(face.b);
+    vtxIndex.push(face.c);
+    debugger
+    normals[3*face.a] = face.vertexNormals[0].x;
+    normals[3*face.a+1] = face.vertexNormals[0].y;
+    normals[3*face.a+2] = face.vertexNormals[0].z;
+    normals[3*face.b] = face.vertexNormals[1].x;
+    normals[3*face.b+1] = face.vertexNormals[1].y;
+    normals[3*face.b+2] = face.vertexNormals[1].z;
+    normals[3*face.c] = face.vertexNormals[2].x;
+    normals[3*face.c+1] = face.vertexNormals[2].y;
+    normals[3*face.c+2] = face.vertexNormals[2].z;
+
+    // if quad
+    if (face.d) { 
+      vtxIndex.push(face.a);
+      vtxIndex.push(face.c);
+      vtxIndex.push(face.d);
+
+      normals[3*face.d] = face.vertexNormals[3].x;
+      normals[3*face.d+1] = face.vertexNormals[3].y;
+      normals[3*face.d+2] = face.vertexNormals[3].z;
+    }
+  }
+
+  obj.vertices = model.vertices;
   obj.normals = normals;
-  obj.vtxIndex = faces;
-
+  obj.vtxIndex = vtxIndex;
+debugger
   obj.light = true;
   obj.attributeCount = model.faces.length;
 }
-
 
 // this is a total hack. 
 function parseTHREE( json ) {
@@ -233,12 +257,15 @@ function parseTHREE( json ) {
   zLength = vertices.length;
 
   while ( offset < zLength ) {
-    vertex = {};
-    vertex.x = vertices[ offset ++ ];
-    vertex.y = vertices[ offset ++ ];
-    vertex.z = vertices[ offset ++ ];
+//    vertex = {};
+//    vertex.x = vertices[ offset ++ ];
+//    vertex.y = vertices[ offset ++ ];
+//    vertex.z = vertices[ offset ++ ];
+    //scope.vertices.push( vertex );
 
-    scope.vertices.push( vertex );
+  scope.vertices.push(vertices[ offset ++ ]);
+  scope.vertices.push(vertices[ offset ++ ]);
+  scope.vertices.push(vertices[ offset ++ ]);
   }
 
   offset = 0;

@@ -9,14 +9,14 @@ $("lightsOff").onclick = function() {
   light.ambient = [.01, .01, .01];
 };
 
-//shadows = true;
-var light = new Light([0,0,4]);
+shadows = true;
+var light = new Light([0,0,5]);
 light.manualControl = true;
 var room = new Room(10);
 var boxes = Array();
 var enemies = Array();
 
-var boss = new ModelMan([0, 2, 3], "simplePlayer");
+var boss = new ModelMan([0, 0, 3], "simplePlayer");
 
 /**
 boxes.push( new ColorBox([3, 0, 2], [1, 1, 1], [0,0,1]));
