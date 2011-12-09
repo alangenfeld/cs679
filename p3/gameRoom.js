@@ -75,17 +75,28 @@ function GameRoom(type, x, y, pxSize){
   //we can also decide what kind of room it is here. puzzle room etc
 
   this.checkCollisionAt = function(x,y){
-    //console.log("x = "+x+" y="+y);
-    //if(this.grid[x][y]!=null){
-    //thing = this.grid[x][y];
-    //thing.collide();?
-    //check type and do somehting based on that?
-    //}
+    
   };
 
+  
+  var ecluDist = function(pos0, pos1){
+	return Math.sqrt(Math.pow(pos0[0] - pos1[0], 2.0) + Math.pow(pos0[1] - pos1[1], 2.0) + Math.pow(pos0[2] - pos1[2], 2.0));
+  }
+  
+  this.checkEnemyCollisions = function(){
+	for(var enemy in this.enemyArray){
+		var eclu = ecluDist(this.enemyArray[enemy].pos, player.pos);
+		if(eclu < 0.7){
+			player.sanity -= this.enemyArray[enemy].damage;
+		};
+	}
+  }
+  
+  
   this.update = function() {
     // this uses references to the global variables in game.js
-    currentRoom.checkCollisionAt(player.roomx, player.roomy);
+    //currentRoom.checkCollisionAt(player.roomx, player.roomy);
+	currentRoom.checkEnemyCollisions();
   };
   
   this.enable = function(){
