@@ -34,10 +34,10 @@ function Dungeon(max, pxRoomSize){
     var roomString = genRoomString((max-roomCount), thisRoom.type, currentX, currentY);
     this.dungeon[currentY][currentX] = new GameRoom(roomString, currentX, currentY, pxRoomSize);
     
-    if(roomCount == 10){
-    	console.log("exit room at x="+currentX+" y ="+currentY);
+   // if(roomCount == 10){
+    	//console.log("exit room at x="+currentX+" y ="+currentY);
     	this.exitRoom = [currentY,currentX];
-    }
+    //}
     
     //keep a stack of rooms to be created (one for every possible dir)
     for(var x = 0; x<roomString.length; x++){
