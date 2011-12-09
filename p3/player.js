@@ -40,7 +40,7 @@ function Player(pos, dim, planeSize){
       gameOver();
     }
     if (this.sanity < 100){
-      this.sanity += .03;      
+      this.sanity += .04;      
     }
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
