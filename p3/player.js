@@ -125,7 +125,7 @@ function Player(pos, dim, planeSize){
     	  if(someRoom.type.indexOf("e")!=-1){ctx.fillRect (x*30+28, y*30+13, 2, 4);}
 	  	  if(someRoom.type.indexOf("w")!=-1){ctx.fillRect (x*30, y*30+13, 2, 4);}
 		  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){
-		  	ctx.fillStyle =  "rgba(255, 0, 0, "+(Math.sin(fade)+1)/2+")";
+		  	ctx.fillStyle =  "rgba(255, 0, 0, "+((Math.sin(fade)+1)/2)*.5+")";
 		  	ctx.fillRect (x*30, y*30, 30, 30);
 		  }
 
