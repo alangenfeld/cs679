@@ -44,7 +44,7 @@ Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
-	this.damage = 3.0 / 60.0;
+	this.damage = 2.0 / 60.0;
 
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = 0;

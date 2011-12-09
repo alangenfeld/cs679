@@ -65,14 +65,18 @@ function Player(pos, dim, planeSize){
     }
     
     //check end condition
-    if(this.roomx==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
+      // was having problems with this
+/*    if(this.roomx==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
     	&& this.roomy==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2) 
     	&& keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.exitRoom)){
     	//TODO display something like YOU ARE WINNER ALL YOUR BASES
       win();
     }
-    
-    
+    */
+    if (keyboard.enter && (currentRoom.exitRoom)){
+      win();
+    }
+
     //am I at the edge? if so...
     //south
     //currentRoom.
