@@ -97,6 +97,7 @@ function GameRoom(type, x, y, pxSize){
   }
   
   this.disable = function(){
+  	this.box.render = false;
     this.roomRender.shutdown();
     for(var a = 0; a<size; a++){
       for(var b = 0; b<size; b++){
