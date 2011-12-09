@@ -35,11 +35,10 @@ function Player(pos, dim, planeSize){
     //instead of making it continuous... make it snap?
     //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
 
-    // if crazy
+    // if crazy game over
     if (this.sanity <= 0) {
       gameOver();
     }
-
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
       this.pos[0] -= speed;

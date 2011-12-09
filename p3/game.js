@@ -30,13 +30,13 @@ console.log(currentRoom.type);
 
 function gameOver() {
   $("game").style.display = "none";
-  $("loss").style.display = "display";
+  $("loss").style.display = "block";
   game.over();
 }
 
 function win() {
   $("game").style.display = "none";
-  $("win").style.display = "display";
+  $("win").style.display = "block";
   game.over();
 }
 
