@@ -113,7 +113,7 @@ function Player(pos, dim, planeSize){
     for(var y = 0; y<5; y++){
       for(var x = 0; x<5; x++){
     	var someRoom = level.dungeon[offsety+y][offsetx+x];
-    	if(someRoom == null){
+    	if(someRoom == null || someRoom.visited == false){
     	  ctx.drawImage(emptyImg,x*30,y*30);
     	}
     	else{

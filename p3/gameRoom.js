@@ -6,7 +6,7 @@ function GameRoom(type, x, y, pxSize){
   this.x = x;
   this.y = y;
   this.grid = new Array(5);
-  
+  this.visited = false;
   this.init();
   
   for(var i = 0; i<size; i++) {
@@ -57,7 +57,7 @@ function GameRoom(type, x, y, pxSize){
   
   this.enable = function(){
     var walls = [false, false, false, false];
-    
+    this.visited = true;
     if(this.type.indexOf("n")!=-1){walls[0]=true;}
     if(this.type.indexOf("e")!=-1){walls[1]=true;}
     if(this.type.indexOf("w")!=-1){walls[2]=true;}
