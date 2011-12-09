@@ -35,7 +35,7 @@ console.log(currentRoom.type);
 if (statsOn) {
   game.start();
 } else {
-  $("loading").innerHTML = "GAME LOADED<br\>Click to Play";
+  $("instr").innerHTML += "GAME LOADED<br\>Click to Play";
   $("landing").onclick = function() {
   $("landing").style.display = "none";
     $("game").style.display = "block";
