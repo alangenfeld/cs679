@@ -22,15 +22,22 @@ function Dungeon(max, pxRoomSize){
   this.dungeon[currentY][currentX] = thisRoom;
   roomsToMake.push(thisRoom);
 
+  this.exitRoom = [0,0];
+
   while(roomsToMake.length!=0 && roomCount < size){
     console.log("making another room");
     thisRoom = roomsToMake.pop();
     currentX = thisRoom.x;
     currentY = thisRoom.y;
-    
+    //var exitRoom = thisRoom.exitRoom;
     //get the room's string
     var roomString = genRoomString((max-roomCount), thisRoom.type, currentX, currentY);
     this.dungeon[currentY][currentX] = new GameRoom(roomString, currentX, currentY, pxRoomSize);
+    
+    if(roomCount == 10){
+    	console.log("exit room at x="+currentX+" y ="+currentY);
+    	this.exitRoom = [currentY,currentX];
+    }
     
     //keep a stack of rooms to be created (one for every possible dir)
     for(var x = 0; x<roomString.length; x++){
@@ -46,17 +53,22 @@ function Dungeon(max, pxRoomSize){
       
       //check to see if it's not already being made...
       if(this.dungeon[nextY][nextX]!=null){
-	nextType = mergeStrings(this.dungeon[nextY][nextX].type, nextType);
+		nextType = mergeStrings(this.dungeon[nextY][nextX].type, nextType);
+		exitRoom = this.dungeon[nextY][nextX].exitRoom;
       }
       else{
-	roomCount ++;
+		roomCount ++;
       }
       
       roomsToMake.push(new GameRoom(nextType, nextX, nextY, pxRoomSize))
+      
       this.dungeon[nextY][nextX] = new GameRoom(nextType, nextX, nextY, pxRoomSize);
       
     }
   }
+  //debugger;
+  this.dungeon[this.exitRoom[0]][this.exitRoom[1]].setExitRoom();
+    
   
   
 }
