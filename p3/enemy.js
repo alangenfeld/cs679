@@ -44,7 +44,7 @@ Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
-	this.damage = 1.0 / 60.0;
+	this.damage = 3.0 / 60.0;
 
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = 0;
@@ -77,7 +77,7 @@ var ai0 = function(){
 
 //Fly tword player.
 var ai1 = function(){
-	this.damage = 1.0 / 60.0;
+	this.damage = 2.0 / 60.0;
 	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
