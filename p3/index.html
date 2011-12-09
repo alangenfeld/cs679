@@ -7,42 +7,30 @@
 <html>
 <body>
 <body>
-  <div class="title centered">
-    Proto
+  <div id="landing" class="screen centered show">
+    <div id="instr" class="centered text">
+      <br/>      <br/>
+      <h3>Group 2: Dennis, Charles S., Jon K., Alex</h3>
+      <br/>
+      <b>Welcome to the playtest of spooky untitled game.</b>
+      <br/><br/>
+      You are lost and helpless in a dark world.
+      You are trying to explore to find why you are in this dark world.
+      <br/><br/> <br/>
+      <b>Movement:</b> use WASD or the arrow keys to move
+      <br/><br/> <br/> 
+      The goal of the game in its current state is to find the magic rotating place holder cube.
+      On your way your sanity will be challenged by <b>spooky</b> creatures.
+      <br/>
+    </div>
   </div>
-  <script>
-    var statsOn = true;
-  </script>
-  <div class="util">
-    <span>
-      Update Time:
-    </span>
-    <span id="ut"></span>
-    <br/>
-    <span>
-      Render Time:
-    </span>
-    <span id="rt"></span>
-    <br/>
-    <span>
-      FPS:
-    </span>
-    <span id="fps"></span>
-    <br/>
-    <span>
-      Objects:
-    </span>
-    <span id="num_objs"></span>
-    <br/>
-    <br/>
-  </div>
-  <div class="screen centered">
+  <div id="game" class="screen centered hidden">
     <canvas id="display"  width="800" height="600"></canvas>
     <canvas id="display2" width="800" height="150"></canvas>
   </div>
 </audio>
 <script>
-var statsOn = true;
+var statsOn = false;
 </script>
 <script type="text/javascript" src="js/core/util.js"></script>
 <script type="text/javascript" src="js/core/matrix.js"></script>

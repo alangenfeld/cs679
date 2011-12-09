@@ -1,4 +1,3 @@
-var statsOn = true;
 
 shadows = true;
 var canvas = document.getElementById("display");
@@ -29,7 +28,19 @@ var light = player.light;
 
 console.log(currentRoom.type);
 
-//start the renderer
-game.start();
+/**
+ * Start
+ */
+// stats on == no landing page
+if (statsOn) {
+  game.start();
+} else {
+  $("loading").innerHTML = "GAME LOADED<br\>Click to Play";
+  $("landing").onclick = function() {
+  $("landing").style.display = "none";
+    $("game").style.display = "block";
+    game.start();
+  };
+}
 
 
