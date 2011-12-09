@@ -2,13 +2,15 @@ function Player(pos, dim, planeSize){
   this.pos = pos;
   this.roll = 0;
   this.pitch = 90;
+  this.maxSanity = 100;
+  this.sanity = 100;
   
   loadModel(this, "simplePlayer");
 
   this.shaderName = "player";
 
   // somebody should change this probably
-  this.color3d = [1, .5, 0];
+  this.color3d = [.8, .2, .2];
 
   this.shadow = false;
   this.init3d();  
@@ -136,6 +138,19 @@ function Player(pos, dim, planeSize){
     	}
       }
     }
+
+    
+    ctx.fillStyle = "#808080";
+    ctx.fillRect(495, 35, 210, 30);
+
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(500, 40, 200, 20);
+
+    ctx.fillStyle = "#008000";
+    ctx.fillRect(500, 40, 2*this.sanity, 20);
+
+    ctx.font = "20pt sans-serif";    
+    ctx.fillText("Sanity", 560, 25);
 
     // draw player model
     mPushMatrix();

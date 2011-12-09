@@ -32,9 +32,4 @@ console.log(currentRoom.type);
 //start the renderer
 game.start();
 
-function update(){	
-
-}
-
-
 
