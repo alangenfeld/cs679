@@ -66,6 +66,7 @@ function Player(pos, dim, planeSize){
     	&& this.roomy==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2) 
     	&& keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.exitRoom)){
     	//TODO display something like YOU ARE WINNER ALL YOUR BASES
+      win();
     }
     
     
