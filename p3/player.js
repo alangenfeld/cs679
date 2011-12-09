@@ -99,8 +99,10 @@ function Player(pos, dim, planeSize){
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
   }
   
+  var fade = 0;
+  
   this.draw = function(){
-    
+    fade += .03
     /*ctx.drawImage(roomImg,0,0,150,150);
      if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
      if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2-15, 120);}
@@ -112,17 +114,20 @@ function Player(pos, dim, planeSize){
       for(var x = 0; x<5; x++){
     	var someRoom = level.dungeon[offsety+y][offsetx+x];
     	if(someRoom == null){
-    	  ctx.drawImage(emptyImg,offsetx+x*30,offsety+y*30);
+    	  ctx.drawImage(emptyImg,x*30,y*30);
     	}
     	else{
-    	  ctx.drawImage(roomImg,offsetx+x*30,offsety+y*30);
-    	  ctx.fillStyle    = '#f00';
-	  ctx.font = "bold 26px"
-    	  if(someRoom.type.indexOf("n")!=-1){ctx.fillText("n",offsetx+x*30+15,offsety+y*30+5);}
-    	  if(someRoom.type.indexOf("s")!=-1){ctx.fillText("s",offsetx+x*30+15,offsety+y*30+28);}
-    	  if(someRoom.type.indexOf("e")!=-1){ctx.fillText("e",offsetx+x*30+25,offsety+y*30+15);}
-	  if(someRoom.type.indexOf("w")!=-1){ctx.fillText("w",offsetx+x*30,offsety+y*30+15);}
-	  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){ctx.fillText("*",offsetx+x*30+15,offsety+y*30+20);}
+    	  ctx.drawImage(roomImg,x*30,y*30);
+    	  ctx.fillStyle =  "rgba(255, 0, 0, 1)";
+    	  ctx.font = "bold 26px"
+    	  if(someRoom.type.indexOf("n")!=-1){ctx.fillRect (x*30+13, y*30, 4, 2);}
+    	  if(someRoom.type.indexOf("s")!=-1){ctx.fillRect (x*30+13, y*30+28, 4, 2);}
+    	  if(someRoom.type.indexOf("e")!=-1){ctx.fillRect (x*30+28, y*30+13, 2, 4);}
+	  	  if(someRoom.type.indexOf("w")!=-1){ctx.fillRect (x*30, y*30+13, 2, 4);}
+		  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){
+		  	ctx.fillStyle =  "rgba(255, 0, 0, "+(Math.sin(fade)+1)/2+")";
+		  	ctx.fillRect (x*30, y*30, 30, 30);
+		  }
 
     	  //if(currentRoom.type.indexOf("s")!=-1){ctx.fillRect(offsetx+x*30+12,offsety+y*30,offsetx+x*30,offsety+y*30+30);}
     	  //if(currentRoom.type.indexOf("e")!=-1){ctx.fillRect(offsetx+x*30,offsety+y*30,offsetx+x*30,offsety+y*30);}
