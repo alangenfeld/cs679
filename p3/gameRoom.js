@@ -13,7 +13,7 @@ function GameRoom(type, x, y, pxSize){
     this.grid[i] = new Array(5);
   }
   
-  //add items to the room here randomly
+  //add items to the room here randomly  
   
   var randX = Math.round(Math.random()*4);
   var randY = Math.round(Math.random()*4);
@@ -39,6 +39,35 @@ function GameRoom(type, x, y, pxSize){
 
   this.grid[randX][randY] = someBox;
   
+  
+    //Adding in enemies based on a dice roll..
+  this.enemyArray = new Array();
+  if(Math.random() < 0.5){
+	var enemyType = Math.random() * 2.0;
+	//Enemy 1
+	if(enemyType <= 1.0){
+		var randE0X = Math.round(Math.random() * 4.0);
+		var randE0Y = Math.round(Math.random() * 4.0);
+		this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+										[pxSize/5,pxSize/5,1], ai0));
+	}
+	//Enemy 2
+	else{
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 2.0 + 1.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),0], 
+											[pxSize/5,pxSize/5,1], ai1));
+		}
+	}
+  }
+  
+  for(var enemy in this.enemyArray){
+	this.enemyArray[enemy].render = false;
+	this.enemyArray[enemy].shadow = false;
+  }
   //we can also decide what kind of room it is here. puzzle room etc
 
   this.checkCollisionAt = function(x,y){
@@ -63,6 +92,12 @@ function GameRoom(type, x, y, pxSize){
     if(this.type.indexOf("w")!=-1){walls[2]=true;}
     if(this.type.indexOf("s")!=-1){walls[3]=true;}
     
+	for(var enemy in this.enemyArray){
+		this.enemyArray[enemy].render = true;
+		this.enemyArray[enemy].shadow = true;
+		this.enemyArray[enemy].enabled = true;
+	}
+	
     this.roomRender = new Room(pxRoomSize, walls);
     //this.roomRender.render = false;
     //this.roomRender.shadow = false;
@@ -81,6 +116,11 @@ function GameRoom(type, x, y, pxSize){
   
   this.disable = function(){
     this.roomRender.shutdown();
+		for(var enemy in this.enemyArray){
+		this.enemyArray[enemy].render = false;
+		this.enemyArray[enemy].shadow = false;
+		this.enemyArray[enemy].enabled = false;
+	}
     for(var a = 0; a<size; a++){
       for(var b = 0; b<size; b++){
 	var object = this.grid[a][b];

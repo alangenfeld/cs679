@@ -5,6 +5,8 @@ function Enemy(pos, dim,ai) {
   this.roll = 0;
   this.pitch = -90;
 
+  this.enabled = false;
+  
   this.aiVars = new Array();
   this.ai = ai;
   // use to compare light settings using spacebar. 
@@ -30,7 +32,9 @@ function Enemy(pos, dim,ai) {
   };
 
   this.update = function(){
-    this.ai();
+	if(this.enabled){
+		this.ai();
+	}
   };
   
 }
