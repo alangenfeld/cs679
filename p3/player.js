@@ -39,6 +39,9 @@ function Player(pos, dim, planeSize){
     if (this.sanity <= 0) {
       gameOver();
     }
+    if (this.sanity < 100){
+      this.sanity += .03;      
+    }
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
       this.pos[0] -= speed;
