@@ -1,39 +1,40 @@
-function Enemy(pos, dim, ai, aiAttr){
-	this.pos = pos;
-	this.originalPos = pos;
-	this.aiAttr = aiAttr;
-	this.Box = new Box(pos, dim);
-	this.transformedPos = [0,0,0];
-	this.aiVars = new Array();
-	this.ai = ai;
-	this.active = false;
-	// use to compare light settings using spacebar. 
-	this.update = function(){
-		if(!this.active){
-			return;
-		}
-		console.log("wheee");
-		this.ai();
-		mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
-	}
-	
-	this.enable = function(){
-		console.log("enabled at: " + this.pos);
-		this.active = true;
-	}
-	this.disable = function(){
-		this.active = false;
-	}
-	
-}
+function Enemy(pos, dim,ai) {
+  this.pos = pos;
+  this.originalPos = pos;
 
-function getAi(num){
-	if(num <= 0){
-		return ai0;
-	}
-	else
-		return ai1;
+  this.roll = 0;
+  this.pitch = -90;
+
+  this.aiVars = new Array();
+  this.ai = ai;
+  // use to compare light settings using spacebar. 
+
+  loadModel(this, "ShadowEnemy1");
+  this.color3d = [.2, 0, .2];
+  if (shadows) {
+    this.shaderName = "color_shadow";
+  } else {
+    this.shaderName = "color";
+  }
+  this.init3d();
+
+  this.draw = function() {
+    mPushMatrix();
+
+    mat4.translate(mMatrix, this.pos);
+    mat4.rotate(mMatrix, degToRad(this.roll), [0, 0, 1]);
+    mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
+
+    this.draw3d();
+    mPopMatrix();
+  };
+
+  this.update = function(){
+    this.ai();
+  };
+  
 }
+Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
