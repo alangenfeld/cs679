@@ -8,6 +8,8 @@ function GameRoom(type, x, y, pxSize){
   this.grid = new Array(5);
   this.visited = false;
   this.init();
+  this.exitRoom = false;
+  this.box = null;
   
   for(var i = 0; i<size; i++) {
     this.grid[i] = new Array(5);
@@ -24,7 +26,7 @@ function GameRoom(type, x, y, pxSize){
   
   if(boxColorProb>1/3*2){
     someBox.shutdown();
-    someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[1,0,0]);
+    someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,0,1]);
   }
   if(boxColorProb>1/3&&boxColorProb<1/3*2){
     someBox.shutdown();
@@ -68,6 +70,8 @@ function GameRoom(type, x, y, pxSize){
 	this.enemyArray[enemy].render = false;
 	this.enemyArray[enemy].shadow = false;
   }
+  this.box = someBox;
+  
   //we can also decide what kind of room it is here. puzzle room etc
 
   this.checkCollisionAt = function(x,y){
@@ -104,17 +108,31 @@ function GameRoom(type, x, y, pxSize){
     
     for(var a = 0; a<size; a++){
       for(var b = 0; b<size; b++){
-	var object = this.grid[a][b];
-	if(object != null){
-	  object.render = true;
-	  object.shadow = true;
-	}
+		var object = this.grid[a][b];
+		if(object != null){
+		  object.render = true;
+		  object.shadow = true;
+		}
       }
     }
-    console.log("moving to the next room with type : "+currentRoom.type+" at "+currentRoom.x+" y "+currentRoom.y);
+    this.box.render = true;
+    console.log("moving to the next room with type : "+currentRoom.type+" at x ="+currentRoom.x+" y="+currentRoom.y + " exit room = "+currentRoom.exitRoom);
   };
   
+  this.setExitRoom = function(){
+  	console.log("Setting up the exit room");
+  	this.exitRoom = true;
+  	var someBox = new ColorBox([this.box.pos[0],this.box.pos[1],2], [pxSize/5,pxSize/5,1],[10,0,0]);
+  	someBox.rotating = true;
+  	//this.grid[this.box.pos[0]][this.box.pos[1]] = someBox;
+  	this.box.shutdown();
+  	this.box = someBox;
+  	this.box.render = false;
+  	this.box.shadow = false;
+  }
+  
   this.disable = function(){
+  	this.box.render = false;
     this.roomRender.shutdown();
 		for(var enemy in this.enemyArray){
 		this.enemyArray[enemy].render = false;
