@@ -34,6 +34,13 @@ function Player(pos, dim, planeSize){
     var roomEdge = planeSize/2 -.25;
     //instead of making it continuous... make it snap?
     //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
+
+    // if crazy
+    if (this.sanity <= 0) {
+      gameOver();
+    }
+
+
     if(keyboard.left && this.pos[0]>-roomEdge) {
       this.pos[0] -= speed;
       this.roll = 180;

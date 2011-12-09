@@ -28,6 +28,18 @@ var light = player.light;
 
 console.log(currentRoom.type);
 
+function gameOver() {
+  $("game").style.display = "none";
+  $("loss").style.display = "display";
+  game.over();
+}
+
+function win() {
+  $("game").style.display = "none";
+  $("win").style.display = "display";
+  game.over();
+}
+
 /**
  * Start
  */
