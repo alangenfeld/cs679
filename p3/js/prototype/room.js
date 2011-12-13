@@ -5,7 +5,7 @@ function Room(size, doors) {
   } else {
     this.doors = [false, false, false, false];
   }
-    
+  
   this.size = size;
 
   // floor  
@@ -42,13 +42,19 @@ function Room(size, doors) {
 		      -90
 		    ));
   } else {
-    this.walls.push(new Plane([-size/2,0,size/4], size, size/2, -90, [0,1,0]));
+    this.walls.push(new Plane([-size/2,0,size/4], size, size/2, -90, [0,1,0], "wall.png"));
   }
 
   // south
   if (this.doors[3]) {
     this.walls.push(new Plane([0, -size/2-.75, 0], 1.5, 1.5, 0, [0,0,0], "wall.png"));
   }
+
+  this.shutdown = function() {
+    for(var i in this.walls) {
+      this.walls[i].shutdown();
+    }
+  };
   
 }
 Room.prototype = new GameObject;

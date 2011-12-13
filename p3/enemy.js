@@ -1,20 +1,51 @@
-function Enemy(pos, dim,ai){
-	this.pos = pos;
-	this.originalPos = pos;
-	this.Box = new Box(pos, dim);
-	this.transformedPos = [0,0,0];
-	this.aiVars = new Array();
-	this.ai = ai;
-	// use to compare light settings using spacebar. 
-	this.update = function(){
+function Enemy(pos, dim,ai) {
+  this.pos = pos;
+  this.originalPos = pos;
+
+  this.roll = 0;
+  this.pitch = -90;
+
+  this.damage = 1.0;
+  
+  this.enabled = false;
+  
+  this.aiVars = new Array();
+  this.ai = ai;
+  // use to compare light settings using spacebar. 
+
+  loadModel(this, "ShadowEnemy1");
+  this.color3d = [.5, 0, .5];
+  if (shadows) {
+    this.shaderName = "color_shadow";
+  } else {
+    this.shaderName = "color";
+  }
+  this.init3d();
+
+  this.draw = function() {
+    mPushMatrix();
+
+    mat4.translate(mMatrix, this.pos);
+    mat4.rotate(mMatrix, degToRad(this.roll), [0, 0, 1]);
+    mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
+
+    this.draw3d();
+    mPopMatrix();
+  };
+
+  this.update = function(){
+	if(this.enabled){
 		this.ai();
-		mat4.multiplyVec3(mMatrix, this.pos, this.transformedPos);
 	}
-	
+  };
+  
 }
+Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
+	this.damage = 2.0 / 60.0;
+
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = 0;
 	}
@@ -46,7 +77,8 @@ var ai0 = function(){
 
 //Fly tword player.
 var ai1 = function(){
-	var delay = 100;
+	this.damage = 3.0 / 60.0;
+	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
 	var accel = 0.013;
