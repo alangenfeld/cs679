@@ -283,10 +283,10 @@ function parseTHREE( json ) {
     hasFaceColor        = isBitSet( type, 6 );
     hasFaceVertexColor  = isBitSet( type, 7 );
 
+    face = {};
+
     if ( isQuad ) {
       
-      face = {};
-
       face.a = faces[ offset ++ ];
       face.b = faces[ offset ++ ];
       face.c = faces[ offset ++ ];
