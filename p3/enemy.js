@@ -15,11 +15,8 @@ function Enemy(pos, dim,ai) {
 
   loadModel(this, "ShadowEnemy1");
   this.color3d = [.5, 0, .5];
-  if (shadows) {
-    this.shaderName = "color_shadow";
-  } else {
-    this.shaderName = "color";
-  }
+  this.shaderName = "enemy";
+
   this.init3d();
 
   this.draw = function() {

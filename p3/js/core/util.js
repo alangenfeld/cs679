@@ -14,6 +14,7 @@ var updateStats = function() {
     $("fps").innerHTML = (Math.floor(1000 / (renderFinish - lastRender))) + " fps";
     $("num_objs").innerHTML = (objectManager.objects.length);
   }
+
   lastRender = renderFinish;
 };
 

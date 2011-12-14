@@ -3,7 +3,7 @@ function Light(pos, box) {
   this.col = [1.0, 0.9, 0.9];
   this.turnedOn = true;
   this.manualControl = false;
-  this.ambient = [0.05, 0.05, 0.05];
+  this.ambient = [0.15, 0.15, 0.15];
   this.bright = [0.8, 0.06, 0.05];
   this.dim = [1.0, 1.0, 1.0];
   this.attenuation = this.bright;

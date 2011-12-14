@@ -168,18 +168,19 @@ function Player(pos, dim, planeSize){
       }
     }
 
-    
+    var sanityPos = display.width - 230;
+   
     ctx.fillStyle = "#808080";
-    ctx.fillRect(495, 35, 210, 30);
+    ctx.fillRect(sanityPos - 5, 35, 210, 30);
 
     ctx.fillStyle = "#000000";
-    ctx.fillRect(500, 40, 200, 20);
+    ctx.fillRect(sanityPos, 40, 200, 20);
 
     ctx.fillStyle = "#008000";
-    ctx.fillRect(500, 40, 2*this.sanity, 20);
+    ctx.fillRect(sanityPos, 40, 2*this.sanity, 20);
 
     ctx.font = "20pt sans-serif";    
-    ctx.fillText("Sanity", 560, 25);
+    ctx.fillText("Sanity", sanityPos + 60, 25);
 
     // draw player model
     mPushMatrix();

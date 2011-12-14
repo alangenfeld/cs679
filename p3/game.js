@@ -29,15 +29,30 @@ var light = player.light;
 console.log(currentRoom.type);
 
 function gameOver() {
-  $("game").style.display = "none";
-  $("loss").style.display = "block";
+  if (!statsOn) {
+    $("game").style.display = "none";
+    $("loss").style.display = "block";
+  } else {
+    
+  }
   game.over();
 }
 
 function win() {
-  $("game").style.display = "none";
-  $("win").style.display = "block";
-  game.over();
+  if (!statsOn) {
+    $("game").style.display = "none";
+    $("win").style.display = "block";
+  } else {
+
+  }
+  game.over();    
+}
+
+function  adjustScreen() {
+  display.width = document.width;
+  display2.width = document.width;
+  display.height = document.height;
+  setTimeout(adjustScreen, 3000);
 }
 
 /**
@@ -47,6 +62,7 @@ function win() {
 if (statsOn) {
   game.start();
 } else {
+  adjustScreen();
   $("instr").innerHTML += "GAME LOADED<br\>Click to Play";
   $("landing").onclick = function() {
   $("landing").style.display = "none";
