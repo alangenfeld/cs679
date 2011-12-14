@@ -13,7 +13,8 @@ function Enemy(pos, dim,ai) {
   this.ai = ai;
   // use to compare light settings using spacebar. 
 
-  loadModel(this, "ShadowEnemy1");
+  //loadModel(this, "ShadowEnemy1");
+  loadModel(this, "anglerFish");
   this.color3d = [.5, 0, .5];
   if (shadows) {
     this.shaderName = "color_shadow";
