@@ -13,8 +13,7 @@ function Enemy(pos, dim,ai) {
   this.ai = ai;
   // use to compare light settings using spacebar. 
 
-  //loadModel(this, "ShadowEnemy1");
-  loadModel(this, "anglerFish");
+  loadModel(this, "ShadowEnemy1");
   this.color3d = [.5, 0, .5];
   this.shaderName = "enemy";
 
@@ -75,6 +74,7 @@ var ai0 = function(){
 
 //Fly tword player.
 var ai1 = function(){
+	loadModel(this, "ShadowEnemy1");
 	this.damage = 3.0 / 60.0;
 	var delay = 10;
 	var delay2 = 10;
