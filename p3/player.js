@@ -5,6 +5,7 @@ function Player(pos, dim, planeSize){
   this.pitch = 90;
   this.maxSanity = 100;
   this.sanity = 100;
+  this.sanityRegen = .01;
   
   loadModel(this, "simplePlayer");
 
@@ -40,7 +41,7 @@ function Player(pos, dim, planeSize){
       gameOver();
     }
     if (this.sanity < 100){
-      this.sanity += .04;      
+      this.sanity += this.sanityRegen;      
     }
 
     if(keyboard.left && this.pos[0]>-roomEdge) {

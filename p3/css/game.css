@@ -55,3 +55,6 @@ canvas {
   text-align: center;
 }
 
+#sm2-container {
+  display: none;
+}
