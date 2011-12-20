@@ -1,4 +1,6 @@
 function Enemy(pos, dim,ai) {
+  this.planeSize = 15;
+  this.roomEdge = this.planeSize/2 -.25;
   this.pos = pos;
   this.originalPos = pos;
 
@@ -34,7 +36,14 @@ function Enemy(pos, dim,ai) {
 
   this.update = function(){
 	if(this.enabled){
+		this.render = true;
+		this.shadows = true;
 		this.ai();
+	}
+	else{
+		this.render = false;
+		this.shadows = false;
+		
 	}
   };
   
@@ -43,7 +52,7 @@ Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
-	this.damage = 2.0 / 60.0;
+	this.damage = 10.0;
 
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['xDir'] = 0;
@@ -73,34 +82,23 @@ var ai0 = function(){
 		}
 	}
 	
-	if(this.pos[0] + (moveDist * this.aiVars['xDir']) < this.xMin ||
-		this.pos[0] + (moveDist * this.aiVars['xDir']) > this.xMax)
+	if(this.pos[0] + (moveDist * this.aiVars['xDir']) < -this.roomEdge ||
+		this.pos[0] + (moveDist * this.aiVars['xDir']) > this.roomEdge)
 	{
 		this.aiVars['xDir'] *= -1; 
 
 
 
 	}
-	if(this.pos[1] + (moveDist * this.aiVars['yDir']) < this.yMin ||
-		this.pos[1] + (moveDist * this.aiVars['yDir']) > this.yMax)
+	if(this.pos[1] + (moveDist * this.aiVars['yDir']) < -this.roomEdge ||
+		this.pos[1] + (moveDist * this.aiVars['yDir']) > this.roomEdge)
 	{
 		this.aiVars['yDir'] *= -1;
-
-
-
 	}
 	
 	this.pos[0] += this.aiVars['xDir'] * moveDist;
 	this.pos[1] += this.aiVars['yDir'] * moveDist;
 	
-
-
-
-
-
-
-
-
 	this.aiVars['count']++;
 	this.aiVars['count'] %= moveCount;
 }
@@ -112,7 +110,7 @@ var ai1 = function(){
 	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
-	var accel = 0.008;
+	var accel = 0.006;
 	var accelDir = 0.003;
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = delay;
@@ -163,6 +161,9 @@ var ai1 = function(){
 		//console.log(this.aiVars['travelDir']);
 		this.pos[1] += this.aiVars['travelDir'][1] * this.aiVars['accel'];
 		this.pos[0] += this.aiVars['accelDir'];
+		if(this.pos[0] > this.roomEdge || this.pos[0] < -this.roomEdge || this.pos[1] > this.roomEdge || this.pos[1] < -this.roomEdge){
+			this.shutdown();
+		}
 		this.aiVars['accel'] += accel;
 	}
 	else{
@@ -174,6 +175,9 @@ var ai1 = function(){
 		}
 		this.pos[0] += this.aiVars['travelDir'][0] * this.aiVars['accel'];
 		this.pos[1] += this.aiVars['accelDir'];
+		if(this.pos[0] > this.roomEdge || this.pos[0] < this.roomEdge || this.pos[1] > this.roomEdge || this.pos[1] < this.roomEdge){
+			this.shutdown();
+		}
 		this.aiVars['accel'] += accel;
 	}
 }
@@ -195,13 +199,14 @@ var ai2 = function(){
 	}
 	
 	var movedist = 0.07;
-	if(this.pos[0] + (movedist * this.aiVars['xDir']) < this.xMin ||
-		this.pos[0] + (movedist * this.aiVars['xDir']) > this.xMax)
+	if(this.pos[0] + (movedist * this.aiVars['xDir']) < -this.roomEdge ||
+		this.pos[0] + (movedist * this.aiVars['xDir']) > this.roomEdge)
 	{
+		
 		this.aiVars['xDir'] *= -1; 
 	}
-	if(this.pos[1] + (movedist * this.aiVars['yDir']) < this.yMin ||
-		this.pos[1] + (movedist * this.aiVars['yDir']) > this.yMax)
+	if(this.pos[1] + (movedist * this.aiVars['yDir']) < -this.roomEdge ||
+		this.pos[1] + (movedist * this.aiVars['yDir']) > this.roomEdge)
 	{
 		this.aiVars['yDir'] *= -1;
 	}
@@ -224,13 +229,13 @@ var ai3 = function(){
 	}
 	
 	var movedist = 0.06;
-	if(this.pos[0] + (movedist * this.aiVars['xDir']) < this.xMin ||
-		this.pos[0] + (movedist * this.aiVars['xDir']) > this.xMax)
+	if(this.pos[0] + (movedist * this.aiVars['xDir']) < -this.roomEdge ||
+		this.pos[0] + (movedist * this.aiVars['xDir']) > this.roomEdge)
 	{
 		this.aiVars['xDir'] *= -1; 
 	}
-	if(this.pos[1] + (movedist * this.aiVars['yDir']) < this.yMin ||
-		this.pos[1] + (movedist * this.aiVars['yDir']) > this.yMax)
+	if(this.pos[1] + (movedist * this.aiVars['yDir']) < -this.roomEdge ||
+		this.pos[1] + (movedist * this.aiVars['yDir']) > this.roomEdge)
 	{
 		this.aiVars['yDir'] *= -1;
 	}

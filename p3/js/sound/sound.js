@@ -4,6 +4,7 @@ soundManager.useFlashBlock = true;
 console.log(soundManager);
 var sounds = new Array();
 var soundFlags;
+var hasSounds = false;
 soundManager.onready(function() {
 	console.log("Sound manager ready!");
 	//ID of sound, and the url path to the sound.
@@ -13,6 +14,7 @@ soundManager.onready(function() {
 	sounds["aiBloodSplat"] = soundManager.createSound({id: "aiBloodSplat", url: "sounds/55234__slykmrbyches__splattt.mp3"});
 	sounds["bgm0"].play();
 	sounds['aiBloodSplat'];
+	hasSounds = true;
 });
 
 function loopSound(sound){

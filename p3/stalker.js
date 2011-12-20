@@ -53,4 +53,4 @@ function Stalker(spawnRoom){
 
 }
 
-Stalker..prototype = new GameObject3D;
+Stalker.prototype = new GameObject3D;
