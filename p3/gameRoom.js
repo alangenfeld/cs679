@@ -68,7 +68,60 @@ function GameRoom(type, x, y, pxSize){
 											[pxSize/5,pxSize/5,1], ai1));
 		}
 	}
+	//Enemy 1
+	if(enemyType <= 1.0){
+				//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 4.0 + 1.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai0, this));
+		}
+	}
+	//Enemy 2
+	else if(enemyType <= 2.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai1, this));
+		}
+	}
+	//Enemy 2
+	else if(enemyType <= 3.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		this.enemyArray.push(new Enemy(	[(-2.0)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-1.3)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-0.6)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.1)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.8)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(1.5)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(2.2)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+	}
+	//Enemy 3
+	else if(enemyType <= 4.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai3, this));
+		}
+	}
   }
+  
   
   for(var enemy in this.enemyArray){
 	this.enemyArray[enemy].render = false;

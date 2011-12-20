@@ -9,6 +9,8 @@ function Enemy(pos, dim,ai) {
   
   this.enabled = false;
   
+  this.soundIndex = "aiBloodSplat";
+  
   this.aiVars = new Array();
   this.ai = ai;
   // use to compare light settings using spacebar. 
@@ -44,6 +46,8 @@ var ai0 = function(){
 	this.damage = 2.0 / 60.0;
 
 	if(this.aiVars['count'] === undefined){
+		this.aiVars['xDir'] = 0;
+		this.aiVars['yDir'] = 0;
 		this.aiVars['count'] = 0;
 	}
 	var moveDist = 0.05;
@@ -51,36 +55,65 @@ var ai0 = function(){
 	
 	if(this.aiVars['count'] === 0){
 		this.direction = Math.floor(Math.random() * 4);
+		if(this.direction == 0){
+			this.aiVars['xDir'] = 0;
+			this.aiVars['yDir'] = 1;
+		}
+		if(this.direction == 1){
+			this.aiVars['xDir'] = 0;
+			this.aiVars['yDir'] = -1;
+		}
+		if(this.direction == 2){
+			this.aiVars['xDir'] = 1;
+			this.aiVars['yDir'] = 0;
+		}
+		if(this.direction == 3){
+			this.aiVars['xDir'] = -1;
+			this.aiVars['yDir'] = 0;
+		}
 	}
-	//North
-	if(this.direction === 0){
-		this.pos[1] -= moveDist;
+	
+	if(this.pos[0] + (moveDist * this.aiVars['xDir']) < this.xMin ||
+		this.pos[0] + (moveDist * this.aiVars['xDir']) > this.xMax)
+	{
+		this.aiVars['xDir'] *= -1; 
+
+
+
 	}
-	//East
-	if(this.direction === 1){
-		this.pos[0] += moveDist;
+	if(this.pos[1] + (moveDist * this.aiVars['yDir']) < this.yMin ||
+		this.pos[1] + (moveDist * this.aiVars['yDir']) > this.yMax)
+	{
+		this.aiVars['yDir'] *= -1;
+
+
+
 	}
-	//South
-	if(this.direction === 2){
-		this.pos[1] += moveDist;
-	}
-	//West
-	if(this.direction === 3){
-		this.pos[0] -= moveDist;
-	}
+	
+	this.pos[0] += this.aiVars['xDir'] * moveDist;
+	this.pos[1] += this.aiVars['yDir'] * moveDist;
+	
+
+
+
+
+
+
+
+
 	this.aiVars['count']++;
 	this.aiVars['count'] %= moveCount;
 }
 
 //Fly tword player.
 var ai1 = function(){
-	loadModel(this, "ShadowEnemy1");
-	this.damage = 3.0 / 60.0;
+
+	this.damage = 3.0;
 	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
-	var accel = 0.013;
-	var accelDir = 0.01;
+	var accel = 0.008;
+	var accelDir = 0.003;
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['count'] = delay;
 		this.aiVars['count2'] = delay2 + delayRand;
@@ -144,3 +177,73 @@ var ai1 = function(){
 		this.aiVars['accel'] += accel;
 	}
 }
+
+
+var ai2 = function(){
+	if(this.aiVars['xDir'] === undefined){
+		this.aiVars['xDir'] = 0;
+		this.aiVars['yDir'] = 1.0;
+		this.aiVars['count'] = 1;
+	}
+	
+	this.aiVars['count']--;
+	if(this.aiVars['count'] <= 0){
+		if(Math.random() < 0.6){
+			this.aiVars['yDir'] *= -1;
+		}
+		this.aiVars['count'] = 40;
+	}
+	
+	var movedist = 0.07;
+	if(this.pos[0] + (movedist * this.aiVars['xDir']) < this.xMin ||
+		this.pos[0] + (movedist * this.aiVars['xDir']) > this.xMax)
+	{
+		this.aiVars['xDir'] *= -1; 
+	}
+	if(this.pos[1] + (movedist * this.aiVars['yDir']) < this.yMin ||
+		this.pos[1] + (movedist * this.aiVars['yDir']) > this.yMax)
+	{
+		this.aiVars['yDir'] *= -1;
+	}
+	
+	//Max is 4.5
+	//Min is -4.5
+	this.pos[0] += movedist * this.aiVars['xDir'];
+	
+	//Max is 3.5
+	//Min is -5
+	this.pos[1] += movedist * this.aiVars['yDir'];
+	
+}
+
+var ai3 = function(){
+	if(this.aiVars['xDir'] === undefined){
+		this.aiVars['xDir'] = (Math.random() * 2.0) - 1.0;
+		this.aiVars['yDir'] = (Math.random() * 2.0) - 1.0;
+	
+	}
+	
+	var movedist = 0.06;
+	if(this.pos[0] + (movedist * this.aiVars['xDir']) < this.xMin ||
+		this.pos[0] + (movedist * this.aiVars['xDir']) > this.xMax)
+	{
+		this.aiVars['xDir'] *= -1; 
+	}
+	if(this.pos[1] + (movedist * this.aiVars['yDir']) < this.yMin ||
+		this.pos[1] + (movedist * this.aiVars['yDir']) > this.yMax)
+	{
+		this.aiVars['yDir'] *= -1;
+	}
+	
+	//Max is 4.5
+	//Min is -4.5
+	this.pos[0] += movedist * this.aiVars['xDir'];
+	
+	//Max is 3.5
+	//Min is -5
+	this.pos[1] += movedist * this.aiVars['yDir'];
+	
+}
+
+//Follow the player.
+var ai4 = function(){}
