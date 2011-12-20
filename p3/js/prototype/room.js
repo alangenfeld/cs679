@@ -1,4 +1,4 @@
-function Room(size, doors, floorTexture) {
+function Room(size, doors) {
   this.walls = new Array();
   if (doors) {
     this.doors = doors;
@@ -9,7 +9,7 @@ function Room(size, doors, floorTexture) {
   this.size = size;
 
   // floor  
-  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0], floorTexture));
+  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0], "wall.png"));
 
   // north
   if (this.doors[0]) {
