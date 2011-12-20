@@ -3,17 +3,16 @@ function Enemy(pos, dim,ai) {
   this.roomEdge = this.planeSize/2 -.25;
   this.pos = pos;
   this.originalPos = pos;
-
   this.roll = 0;
   this.pitch = 90;
 
-  this.damage = 1.0;
+  this.damage = 10.0;
   
   this.enabled = false;
   
   this.soundIndex = "aiBloodSplat";
-  
-  this.aiVars = new Array();
+	this.aiVars = new Array();
+	
   this.ai = ai;
   // use to compare light settings using spacebar. 
 
@@ -35,6 +34,8 @@ function Enemy(pos, dim,ai) {
   };
 
   this.update = function(){
+  
+	console.log(currentRoom);
 	if(this.enabled){
 		this.render = true;
 		this.shadows = true;
@@ -52,12 +53,13 @@ Enemy.prototype = new GameObject3D;
 
 //Random movement.
 var ai0 = function(){
-	this.damage = 10.0;
+	this.damage = 20.0;
 
 	if(this.aiVars['count'] === undefined){
 		this.aiVars['xDir'] = 0;
 		this.aiVars['yDir'] = 0;
 		this.aiVars['count'] = 0;
+		this.aiVars['fireCount'] = 0;
 	}
 	var moveDist = 0.05;
 	var moveCount = 30;
@@ -82,14 +84,13 @@ var ai0 = function(){
 		}
 	}
 	
+	
 	if(this.pos[0] + (moveDist * this.aiVars['xDir']) < -this.roomEdge ||
 		this.pos[0] + (moveDist * this.aiVars['xDir']) > this.roomEdge)
 	{
 		this.aiVars['xDir'] *= -1; 
-
-
-
 	}
+	
 	if(this.pos[1] + (moveDist * this.aiVars['yDir']) < -this.roomEdge ||
 		this.pos[1] + (moveDist * this.aiVars['yDir']) > this.roomEdge)
 	{
@@ -106,7 +107,7 @@ var ai0 = function(){
 //Fly tword player.
 var ai1 = function(){
 
-	this.damage = 3.0;
+	this.damage = 10.0;
 	var delay = 10;
 	var delay2 = 10;
 	var delayRand = (Math.random() * 20);
@@ -184,6 +185,8 @@ var ai1 = function(){
 
 
 var ai2 = function(){
+	
+	this.damage = 15.0;
 	if(this.aiVars['xDir'] === undefined){
 		this.aiVars['xDir'] = 0;
 		this.aiVars['yDir'] = 1.0;
@@ -221,14 +224,19 @@ var ai2 = function(){
 	
 }
 
-var ai3 = function(){
+var ai3 = function(){	
+	
+	this.damage = 15.0;
 	if(this.aiVars['xDir'] === undefined){
 		this.aiVars['xDir'] = (Math.random() * 2.0) - 1.0;
 		this.aiVars['yDir'] = (Math.random() * 2.0) - 1.0;
-	
+		
+		var normal = Math.sqrt(Math.pow(this.aiVars['xDir'], 2.0) + Math.pow(this.aiVars['yDir'], 2.0));
+		this.aiVars['xDir'] = this.aiVars['xDir'] / normal;
+		this.aiVars['yDir'] = this.aiVars['yDir'] / normal;
 	}
 	
-	var movedist = 0.06;
+	var movedist = 0.15;
 	if(this.pos[0] + (movedist * this.aiVars['xDir']) < -this.roomEdge ||
 		this.pos[0] + (movedist * this.aiVars['xDir']) > this.roomEdge)
 	{
@@ -250,5 +258,5 @@ var ai3 = function(){
 	
 }
 
-//Follow the player.
+//straight line.
 var ai4 = function(){}

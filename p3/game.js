@@ -18,13 +18,8 @@ function setup() {
   level = new Dungeon(size,pxRoomSize);
   
   currentRoom = level.dungeon[level.spawnX][level.spawnY];
+  currentRoom.enemyArray = new Array();
   currentRoom.enable();
-  
-  enemy = Array();
-  enemy.push(new Enemy([1,2,-1], [.3,.3,.3], ai1));
-  enemy.push(new Enemy([-2,3,-1], [.3,.3,.3], ai1));
-  enemy.push(new Enemy([-3,-2,-1], [.3,.3,.3], ai1));
-  enemy.push(new Enemy([2,0,-1], [.3,.3,.3], ai1));
   
   player = new Player([0, 0, 1], [1, 1, 1], pxRoomSize);
   
