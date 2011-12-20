@@ -4,6 +4,7 @@
 function GameObject() {
   this.render = true;
   this.shadow = true;
+  this.enabled = true;
 
   this.init = function() {
     objectManager.objects.push(this);
@@ -30,15 +31,17 @@ function ObjectManager() {
 
   this.updateAll = function() {
     for (idx in this.objects) {
-      this.objects[idx].update();
+      if (this.objects[idx].enabled) {
+	this.objects[idx].update();	
+      }
     }
   };
 
   this.drawAll = function() {
     for (idx in this.objects) {
-      if (shadowPass >= 0 && this.objects[idx].shadow) {
+      if (shadowPass >= 0 && this.objects[idx].shadow && this.objects[idx].enabled) {
 	this.objects[idx].draw();
-      } else if (shadowPass < 0 && this.objects[idx].render) {
+      } else if (shadowPass < 0 && this.objects[idx].render && this.objects[idx].enabled) {
 	this.objects[idx].draw();
       }
     }

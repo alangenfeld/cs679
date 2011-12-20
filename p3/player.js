@@ -23,7 +23,7 @@ function Player(pos, dim, planeSize){
 
   // set the light to a warm color
   this.light.col = [.8, .6, .5];
-  this.lightOffset = 0;
+  this.lightOffset = 0.5;
 
   var planeSize = planeSize;
   var roomSize = 5;
@@ -149,12 +149,11 @@ function Player(pos, dim, planeSize){
 		}
 	}
   this.draw = function(){
-    fade += .03
-    /*ctx.drawImage(roomImg,0,0,150,150);
-     if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
-     if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2-15, 120);}
-     if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2-15);}
-     if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2-15);}*/
+    fade += .06;
+
+    ctx.fillStyle = "#808080";
+    ctx.fillRect(0, 0, 155, 155);
+
     var offsetx = currentRoom.x - 2;
     var offsety = currentRoom.y - 2;
     for(var y = 0; y<5; y++){
@@ -165,21 +164,15 @@ function Player(pos, dim, planeSize){
     	}
     	else{
     	  ctx.drawImage(roomImg,x*30,y*30);
-    	  ctx.fillStyle =  "rgba(255, 0, 0, 1)";
-    	  ctx.font = "bold 26px"
-    	  if(someRoom.type.indexOf("n")!=-1){ctx.fillRect (x*30+13, y*30, 4, 2);}
+    	  ctx.fillStyle =  "rgba(0, 0, 0, 1)";
+    	  if(someRoom.type.indexOf("n")!=-1){ctx.fillRect (x*30+13, y*30, 4, 4);}
     	  if(someRoom.type.indexOf("s")!=-1){ctx.fillRect (x*30+13, y*30+28, 4, 2);}
     	  if(someRoom.type.indexOf("e")!=-1){ctx.fillRect (x*30+28, y*30+13, 2, 4);}
-	  	  if(someRoom.type.indexOf("w")!=-1){ctx.fillRect (x*30, y*30+13, 2, 4);}
-		  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){
-		  	ctx.fillStyle =  "rgba(255, 0, 0, "+((Math.sin(fade)+1)/2)*.5+")";
-		  	ctx.fillRect (x*30, y*30, 30, 30);
-		  }
-
-    	  //if(currentRoom.type.indexOf("s")!=-1){ctx.fillRect(offsetx+x*30+12,offsety+y*30,offsetx+x*30,offsety+y*30+30);}
-    	  //if(currentRoom.type.indexOf("e")!=-1){ctx.fillRect(offsetx+x*30,offsety+y*30,offsetx+x*30,offsety+y*30);}
-    	  //if(currentRoom.type.indexOf("w")!=-1){ctx.fillRect(offsetx+x*30+4,offsety+y*30,offsetx+x*30,offsety+y*30);}
-	  //context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
+	  if(someRoom.type.indexOf("w")!=-1){ctx.fillRect (x*30, y*30+13, 2, 4);}
+	  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){
+	    ctx.fillStyle =  "rgba(255, 255, 255, "+(((Math.sin(fade)+1)/2)*.3 + .3) +")";
+	    ctx.fillRect (x*30+3, y*30+3, 24, 24);
+	  }
     	}
       }
     }

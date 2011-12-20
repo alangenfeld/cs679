@@ -57,6 +57,5 @@ body {
 }
 
 #sm2-container {
-  position:absolute;
-  top: -500px;
+  opacity: 0.01;
 }
