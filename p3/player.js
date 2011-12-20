@@ -6,6 +6,7 @@ function Player(pos, dim, planeSize){
   this.maxSanity = 100;
   this.sanity = 100;
   this.sanityRegen = .01;
+  this.damageCounter = 0;
   
   loadModel(this, "simplePlayer");
 
@@ -31,6 +32,10 @@ function Player(pos, dim, planeSize){
   this.enterCool = 0;
 
   this.update = function(){	
+	//Decrement the damage counter so we can take damage again.
+	if(this.damageCounter > 0){
+		this.damageCounter--;
+	}
     var speed = 0.12;
     var roomEdge = planeSize/2 -.25;
     //instead of making it continuous... make it snap?
@@ -133,6 +138,13 @@ function Player(pos, dim, planeSize){
   
   var fade = 0;
   
+	this.takeDamage = function(enemy){
+		if(this.damageCounter == 0){
+			this.damageCounter = 30;
+			this.sanity -= enemy.damage;
+			sounds[enemy.soundIndex].play();
+		}
+	}
   this.draw = function(){
     fade += .06;
 
