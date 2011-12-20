@@ -4,6 +4,8 @@
 function setup() {
   shadows = true;
   
+  camera.pos = [0, -16, 22];
+
   emptyImg = new Image();   // Create new img element
   emptyImg.src = 'img/emptyImg.png';	
   roomImg = new Image();   // Create new img element
@@ -12,7 +14,7 @@ function setup() {
   size = 17;
   
   //init level
-  pxRoomSize = 10;
+  pxRoomSize = 15;
   level = new Dungeon(size,pxRoomSize);
   
   currentRoom = level.dungeon[level.spawnX][level.spawnY];

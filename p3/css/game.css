@@ -9,6 +9,10 @@
   z-index: 1;
 }
 
+body {
+  background: #808080;
+}
+
 #display2 {
   left: 0;
   position: absolute;
@@ -21,6 +25,7 @@
 }
 
 .screen {
+  background: #F0F0F0;
   width: 800px;
   height: 600px;
   position: relative;
