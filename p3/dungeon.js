@@ -24,11 +24,14 @@ function Dungeon(max, pxRoomSize){
 
   this.exitRoom = [0,0];
 
-  while(roomsToMake.length!=0 && roomCount < size){
+  var iter = 0;
+
+  while(roomsToMake.length!=0 && roomCount < size && iter<100){
     console.log("making another room");
     thisRoom = roomsToMake.pop();
     currentX = thisRoom.x;
     currentY = thisRoom.y;
+    iter++;
     //var exitRoom = thisRoom.exitRoom;
     //get the room's string
     var roomString = genRoomString((max-roomCount), thisRoom.type, currentX, currentY);
@@ -63,7 +66,6 @@ function Dungeon(max, pxRoomSize){
       roomsToMake.push(new GameRoom(nextType, nextX, nextY, pxRoomSize))
       
       this.dungeon[nextY][nextX] = new GameRoom(nextType, nextX, nextY, pxRoomSize);
-      
     }
   }
   //debugger;

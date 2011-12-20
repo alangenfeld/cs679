@@ -12,6 +12,9 @@ function Stalker(spawnRoom){
 	
 	
 	this.update = function(){
+		loadModel(this, "bugEyed");
+  		this.color3d = [.5, 0, .5];
+  		this.shaderName = "enemy";
 		speed = .02;
 		//if player is in the same room
 		if(currentRoom == this.room){
