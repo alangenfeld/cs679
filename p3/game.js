@@ -65,9 +65,10 @@ function win() {
 }
 
 function  adjustScreen() {
-  display.width = document.width;
-  display2.width = document.width;
-  display.height = document.height;
+  display.width = window.innerWidth;
+  display2.width = window.innerWidth;
+  display2.height = window.innerHeight;
+  display.height = window.innerHeight;
   setTimeout(adjustScreen, 3000);
 }
 

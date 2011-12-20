@@ -159,7 +159,7 @@ function fetchModel(modelName) {
     i = xhr.i
     ;
     if (xhr.readyState == 4) {
-      model = parseTHREE(JSON.parse(xhr.response));
+      model = parseTHREE(JSON.parse(xhr.responseText));
     }
   }
   xhr = new XMLHttpRequest;
