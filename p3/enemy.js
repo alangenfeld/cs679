@@ -3,7 +3,7 @@ function Enemy(pos, dim,ai) {
   this.originalPos = pos;
 
   this.roll = 0;
-  this.pitch = 0;
+  this.pitch = 90;
 
   this.damage = 1.0;
   

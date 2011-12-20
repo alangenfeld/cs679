@@ -40,30 +40,17 @@ function Shader(name) {
   };
 
   this.setShadowVertex = function(obj, verts, vtxIdx) {
-    obj["shadowVertex"] = gl.createBuffer();
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
-
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
-
     this.shadowMapper["vertex"] = gl.getAttribLocation(this.shadowMapper, "vertex");
     gl.enableVertexAttribArray(this.shadowMapper["vertex"]);
-
-    if (vtxIdx) {
-      obj["shadowVertexIndex"] = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj["shadowVertexIndex"]);
-      
-      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(vtxIdx), gl.STATIC_DRAW);
-    }
   };
   
   this.bindShadowVertex = function(obj) {
-    gl.bindBuffer(gl.ARRAY_BUFFER, obj["shadowVertex"]);
+    gl.bindBuffer(gl.ARRAY_BUFFER, obj["vertex"]);
     gl.vertexAttribPointer(this.shadowMapper["vertex"], 3,
 			   gl.FLOAT, false, 0, 0);
 
     gl.uniform3fv(this.shadowMapper.lightPos, light.pos);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj["shadowVertexIndex"]);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj["vtxIndexBuffer"]);
   };
 
 
