@@ -10,9 +10,10 @@ $("lightsOff").onclick = function() {
 };
 
 shadows = true;
+camera.pos = [0, -18,25];
 var light = new Light([0,0,5], true);
 light.manualControl = true;
-var room = new Room(10);
+var room = new Room(15);
 var boxes = Array();
 var enemies = Array();
 

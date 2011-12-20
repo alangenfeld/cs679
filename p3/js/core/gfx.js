@@ -10,6 +10,7 @@ var showDepthMapFace = -1;
 //gl.clearColor(1.0, 1.0, 1.0, 1.0);
 gl.clearColor(0,0,0, 1.0);
 gl.enable(gl.DEPTH_TEST);
+gl.disable(gl.BLEND);
 var mMatrix = mat4.create();
 var mMatrixStack = [];
 var vMatrix = mat4.create();
