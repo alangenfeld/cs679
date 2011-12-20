@@ -142,7 +142,10 @@ function Player(pos, dim, planeSize){
 		if(this.damageCounter == 0){
 			this.damageCounter = 30;
 			this.sanity -= enemy.damage;
-			sounds[enemy.soundIndex].play();
+			
+			if(hasSounds){
+				sounds[enemy.soundIndex].play();
+			}
 		}
 	}
   this.draw = function(){
