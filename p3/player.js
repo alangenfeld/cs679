@@ -134,6 +134,11 @@ function Player(pos, dim, planeSize){
   var fade = 0;
   
   this.draw = function(){
+  
+  	if(currentRoom.exitRoom){
+  		//ctx.drawImage(puzzleImg,0,0,600,800);
+  	}
+  
     fade += .03
     /*ctx.drawImage(roomImg,0,0,150,150);
      if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
