@@ -10,6 +10,8 @@ function setup() {
   emptyImg.src = 'img/emptyImg.png';	
   roomImg = new Image();   // Create new img element
   roomImg.src = 'img/roomImg.png';
+  puzzleImg = new Image();   // Create new img element
+  puzzleImg.src = 'img/puzzle.jpg';
   
   size = 17;
   

@@ -116,8 +116,13 @@ function GameRoom(type, x, y, pxSize){
 		this.enemyArray[enemy].shadow = true;
 		this.enemyArray[enemy].enabled = true;
 	}
-	
-    this.roomRender = new Room(pxRoomSize, walls);
+
+    if(this.exitRoom){
+    	this.roomRender = new Room(pxRoomSize, walls,"puzzleWall.png");
+    }
+    else{
+    	this.roomRender = new Room(pxRoomSize, walls,"wall.png");
+    }
     //this.roomRender.render = false;
     //this.roomRender.shadow = false;
     
