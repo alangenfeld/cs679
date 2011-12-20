@@ -57,5 +57,6 @@ body {
 }
 
 #sm2-container {
-  display: none;
+  position:absolute;
+  top: -500px;
 }

@@ -22,14 +22,14 @@ function Enemy(pos, dim,ai) {
   this.init3d();
 
   this.draw = function() {
-    mPushMatrix();
+		mPushMatrix();
 
-    mat4.translate(mMatrix, this.pos);
-    mat4.rotate(mMatrix, degToRad(this.roll), [0, 0, 1]);
-    mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
+		mat4.translate(mMatrix, this.pos);
+		mat4.rotate(mMatrix, degToRad(this.roll), [0, 0, 1]);
+		mat4.rotate(mMatrix, degToRad(this.pitch), [1, 0, 0]);
 
-    this.draw3d();
-    mPopMatrix();
+		this.draw3d();
+		mPopMatrix();
   };
 
   this.update = function(){

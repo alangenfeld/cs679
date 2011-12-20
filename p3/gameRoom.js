@@ -144,7 +144,9 @@ function GameRoom(type, x, y, pxSize){
 	for(var enemy in this.enemyArray){
 		var eclu = ecluDist(this.enemyArray[enemy].pos, player.pos);
 		if(eclu < 0.7){
-			player.sanity -= this.enemyArray[enemy].damage;
+			console.log(sounds);
+			console.log(enemy);
+			player.takeDamage(this.enemyArray[enemy]);
 		};
 	}
   }
