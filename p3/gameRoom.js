@@ -10,6 +10,7 @@ function GameRoom(type, x, y, pxSize){
   this.init();
   this.exitRoom = false;
   this.box = null;
+  this.pxSize = pxSize;
   
   for(var i = 0; i<size; i++) {
     this.grid[i] = new Array(5);
@@ -21,6 +22,7 @@ function GameRoom(type, x, y, pxSize){
   var randY = Math.round(Math.random()*4);
   
   var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
+  console.log("px: " + pxSize);
   
   var boxColorProb = Math.random();
   
@@ -44,8 +46,8 @@ function GameRoom(type, x, y, pxSize){
   
     //Adding in enemies based on a dice roll..
   this.enemyArray = new Array();
-  if(Math.random() < 0.7){
-	var enemyType = Math.random() * 2.0;
+  if(Math.random() < 0.9){
+	var enemyType = Math.random() * 4.0;
 	//Enemy 1
 	if(enemyType <= 1.0){
 				//Determine the number of enemies
@@ -54,18 +56,48 @@ function GameRoom(type, x, y, pxSize){
 			var randE0X = Math.round(Math.random() * 4.0);
 			var randE0Y = Math.round(Math.random() * 4.0);
 			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
-											[pxSize/5,pxSize/5,1], ai0));
+											[pxSize/5,pxSize/5,1], ai0, this));
 		}
 	}
 	//Enemy 2
-	else{
+	else if(enemyType <= 2.0){
 		//Determine the number of enemies
-		var numEnemies = Math.floor(Math.random() * 8.0 + 1.0);
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
 		for(var i = 0; i < numEnemies; i++){
 			var randE0X = Math.round(Math.random() * 4.0);
 			var randE0Y = Math.round(Math.random() * 4.0);
-			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),-1], 
-											[pxSize/5,pxSize/5,1], ai1));
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai1, this));
+		}
+	}
+	//Enemy 2
+	else if(enemyType <= 3.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		this.enemyArray.push(new Enemy(	[(-2.0)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-1.3)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-0.6)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.1)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.8)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(1.5)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(2.2)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+	}
+	//Enemy 2
+	else if(enemyType <= 4.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai3, this));
 		}
 	}
   }
@@ -91,7 +123,8 @@ function GameRoom(type, x, y, pxSize){
 	for(var enemy in this.enemyArray){
 		var eclu = ecluDist(this.enemyArray[enemy].pos, player.pos);
 		if(eclu < 0.7){
-			player.sanity -= this.enemyArray[enemy].damage;
+			player.takeDamage(this.enemyArray[enemy]);
+			
 		};
 	}
   }
