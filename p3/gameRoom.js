@@ -44,7 +44,7 @@ function GameRoom(type, x, y, pxSize){
   
     //Adding in enemies based on a dice roll..
   this.enemyArray = new Array();
-  if(Math.random() < 0.7){
+  if(Math.random() < 0.7 ){
 	var enemyType = Math.random() * 4.0;
 	
 	//Enemy 1 - Enemies that just wander around.
