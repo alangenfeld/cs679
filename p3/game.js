@@ -12,7 +12,7 @@ function setup() {
   roomImg.src = 'img/roomImg.png';
 
   puzzleSplash = new Image();
-  puzzleSplash.src = 'img/puzzleSplash.jpg';
+  puzzleSplash.src = 'img/firstPuzzleSplash.jpg';
   
   size = 17;
   
