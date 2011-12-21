@@ -94,5 +94,3 @@ if (statsOn) {
     game.start();
   };
 }
-
-
