@@ -26,7 +26,7 @@ function Dungeon(max, pxRoomSize){
 
   var iter = 0;
 
-  while(roomsToMake.length!=0 && roomCount < size && iter<100){
+  while(roomsToMake.length!=0 && roomCount < size && iter < 100){
     console.log("making another room");
     thisRoom = roomsToMake.pop();
     currentX = thisRoom.x;

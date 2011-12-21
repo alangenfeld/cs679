@@ -174,7 +174,7 @@ function GameRoom(type, x, y, pxSize){
   this.setExitRoom = function(){
   	console.log("Setting up the exit room");
   	this.exitRoom = true;
-  	var someBox = new ColorBox([this.box.pos[0],this.box.pos[1],2], [2,2,2],[2,2,2]);
+  	var someBox = new ColorBox([0,0,1], [2,2,2],[2,2,2]);
   	someBox.rotating = true;
   	//this.grid[this.box.pos[0]][this.box.pos[1]] = someBox;
   	this.box.shutdown();

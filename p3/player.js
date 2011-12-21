@@ -150,6 +150,7 @@ function Player(pos, dim, planeSize){
 	}
   this.draw = function(){
     fade += .06;
+	if(currentRoom.exitRoom){ctx.drawImage(puzzleSplash, display.width/2-400,0);}
 
     ctx.fillStyle = "#808080";
     ctx.fillRect(0, 0, 155, 155);
