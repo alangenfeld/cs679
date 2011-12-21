@@ -164,7 +164,7 @@ var ai1 = function(){
 		if(this.pos[0] - player.pos[0] < 0){
 			this.aiVars['accelDir'] += accelDir;
 		}
-		//console.log(this.aiVars['travelDir']);
+
 		this.pos[1] += this.aiVars['travelDir'][1] * this.aiVars['accel'];
 		this.pos[0] += this.aiVars['accelDir'];
 		if(this.pos[0] > this.roomEdge || this.pos[0] < -this.roomEdge || this.pos[1] > this.roomEdge || this.pos[1] < -this.roomEdge){

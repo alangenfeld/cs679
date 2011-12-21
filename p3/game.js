@@ -10,6 +10,15 @@ function setup() {
   emptyImg.src = 'img/emptyImg.png';	
   roomImg = new Image();   // Create new img element
   roomImg.src = 'img/roomImg.png';
+  keyImg = new Image();   // Create new img element
+  keyImg.src = 'img/key.png';
+  puzzleSplash = new Image();
+  puzzleSplash.src = 'img/firstPuzzleSplash.jpg';
+  keySplash = new Image();
+  keySplash.src = 'img/firstPuzzleSplash.jpg';
+  splashImage = new Image();
+  
+  showFlash = false;
   
   size = 17;
   

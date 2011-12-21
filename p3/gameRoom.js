@@ -10,6 +10,7 @@ function GameRoom(type, x, y, pxSize){
   this.init();
   this.exitRoom = false;
   this.box = null;
+  this.key = null;
   
   for(var i = 0; i<size; i++) {
     this.grid[i] = new Array(5);
@@ -20,27 +21,15 @@ function GameRoom(type, x, y, pxSize){
   var randX = Math.round(Math.random()*4);
   var randY = Math.round(Math.random()*4);
   
-  var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
-  
   var boxColorProb = Math.random();
   
-  if(boxColorProb>1/3*2){
-    someBox.shutdown();
-    someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,0,1]);
-  }
   if(boxColorProb>1/3&&boxColorProb<1/3*2){
-    someBox.shutdown();
     someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,1,0]);
+    someBox.render = false;
+  	someBox.shadow = false;
+  	this.grid[randX][randY] = someBox;
+  	this.box = someBox;
   }
-  
-  //we minus 3 to center it
-  //TODO can we disable a box so that the current room's box is the only one shown?
-  
-  someBox.render = false;
-  someBox.shadow = false;
-
-  this.grid[randX][randY] = someBox;
-  
   
     //Adding in enemies based on a dice roll..
   this.enemyArray = new Array();
@@ -106,7 +95,6 @@ function GameRoom(type, x, y, pxSize){
 	this.enemyArray[enemy].render = false;
 	this.enemyArray[enemy].shadow = false;
   }
-  this.box = someBox;
   
   //we can also decide what kind of room it is here. puzzle room etc
 
@@ -138,6 +126,10 @@ function GameRoom(type, x, y, pxSize){
     // this uses references to the global variables in game.js
     //currentRoom.checkCollisionAt(player.roomx, player.roomy);
 	currentRoom.checkEnemyCollisions();
+	if(player.hasKey&&this.key!=null){
+		this.key.render = false;
+		this.key.shadow = false;
+	}
   };
   
   this.enable = function(){
@@ -147,6 +139,11 @@ function GameRoom(type, x, y, pxSize){
     if(this.type.indexOf("e")!=-1){walls[1]=true;}
     if(this.type.indexOf("w")!=-1){walls[2]=true;}
     if(this.type.indexOf("s")!=-1){walls[3]=true;}
+    
+    if(this.key != null && !player.hasKey){
+  		this.key.render = true;
+		this.key.shadow = true;
+	}
     
 	for(var enemy in this.enemyArray){
 		this.enemyArray[enemy].render = true;
@@ -160,8 +157,6 @@ function GameRoom(type, x, y, pxSize){
     else{
     	this.roomRender = new Room(pxRoomSize, walls, "wall.png");
     }
-    //this.roomRender.render = false;
-    //this.roomRender.shadow = false;
     
     for(var a = 0; a<size; a++){
       for(var b = 0; b<size; b++){
@@ -172,24 +167,35 @@ function GameRoom(type, x, y, pxSize){
 		}
       }
     }
-    this.box.render = true;
     console.log("moving to the next room with type : "+currentRoom.type+" at x ="+currentRoom.x+" y="+currentRoom.y + " exit room = "+currentRoom.exitRoom);
   };
+  
+  this.setKeyRoom = function(){
+    	var someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,0,1]);
+    	this.key = someBox;
+    	this.key.rotating = true;
+	  	this.key.render = false;
+		this.key.shadow = false;
+  }
   
   this.setExitRoom = function(){
   	console.log("Setting up the exit room");
   	this.exitRoom = true;
-  	var someBox = new ColorBox([this.box.pos[0],this.box.pos[1],2], [2,2,2],[2,2,2]);
+  	var someBox = new ColorBox([0,0,1], [2,2,2],[2,2,2]);
   	someBox.rotating = true;
-  	//this.grid[this.box.pos[0]][this.box.pos[1]] = someBox;
-  	this.box.shutdown();
+  	if(this.box != null){
+  		this.box.shutdown();
+  	}
   	this.box = someBox;
   	this.box.render = false;
   	this.box.shadow = false;
   }
   
   this.disable = function(){
-  	this.box.render = false;
+  if(this.key != null){
+  	this.key.render = false;
+	this.key.shadow = false;
+  }
     this.roomRender.shutdown();
 		for(var enemy in this.enemyArray){
 		this.enemyArray[enemy].render = false;

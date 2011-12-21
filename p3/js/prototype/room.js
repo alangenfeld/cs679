@@ -47,7 +47,7 @@ function Room(size, doors, floorMaterial) {
 
   // south
   if (this.doors[3]) {
-    this.walls.push(new Plane([0, -size/2-.75, 0], size/5, size/5, 0, [0,0,0], "wall.png"));
+    this.walls.push(new Plane([0, -size/2, .01], size/5, size/5, 0, [0,0,0], "floor.png"));
   }
 
   this.shutdown = function() {

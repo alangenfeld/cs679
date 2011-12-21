@@ -26,7 +26,7 @@ function Dungeon(max, pxRoomSize){
 
   var iter = 0;
 
-  while(roomsToMake.length!=0 && roomCount < size && iter<100){
+  while(roomsToMake.length!=0 && roomCount < size && iter < 100){
     console.log("making another room");
     thisRoom = roomsToMake.pop();
     currentX = thisRoom.x;
@@ -70,7 +70,22 @@ function Dungeon(max, pxRoomSize){
   }
   //debugger;
   this.dungeon[this.exitRoom[0]][this.exitRoom[1]].setExitRoom();
-    
+
+  var roomList = new Array();
+
+  for(var x = 0; x<max;x++){
+  	for(var y = 0; y<max; y++){
+  		if(this.dungeon[y][x] != null){
+  			if(y != this.spawnY && x!= this.spawnX){
+  				roomList.push(this.dungeon[y][x]);
+  			}
+  		}
+  	}
+  }
+  debugger;
+  var keyIndex = Math.round(Math.random()*(roomList.length-1));
+  keyRoom = roomList[keyIndex];
+  keyRoom.setKeyRoom();
   
   
 }
