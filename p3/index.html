@@ -1,59 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+   Design by Free CSS Templates
+   http://www.freecsstemplates.org
+   Released for free under a Creative Commons Attribution 2.5 License
+
+   Name       : Shallow Grunge
+   Description: A two-column, fixed-width design with dark color scheme.
+   Version    : 1.0
+   Released   : 20080809
+
+  -->
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link href="css/game.css" title="compact" rel="stylesheet" type="text/css">
-</head>
-<body>
-  <div id="landing" class="screen centered show">
-    <div id="instr" class="centered text">
-      <img src="img/gameStartSplash.jpg" height="600" width="800" /> 
-      loading...
-    </div>
-  </div>
-  <div id="win" class="screen centered hidden">
-    <img src="img/gameWinSplash.jpg" height="600" width="800" /> 
-  </div>
-  <div id="loss" class="screen centered hidden">
-	<img src="img/gameEndSplash.jpg" height="600" width="800" /> 
-  </div>
-  <div id="winning" class="screen centered hidden">
-	<img src="img/winSplash.jpg" height="600" width="800" /> 
-  </div>
-  <div id="game" class="fullscreen centered hidden">
-    <canvas id="display"  width="800" height="600"></canvas>
-    <canvas id="display2" width="800" height="155"></canvas>
-  </div>
-</body>
-<script>
-  var statsOn = false;
-</script>
-<script type="text/javascript" src="js/core/util.js"></script>
-<script type="text/javascript" src="js/core/matrix.js"></script>
-<script type="text/javascript" src="js/core/shader.js"></script>
-<script type="text/javascript" src="js/core/gfx.js"></script>
-<script type="text/javascript" src="js/core/engine.js"></script>
-<script type="text/javascript" src="js/core/object.js"></script>
-<script type="text/javascript" src="js/core/object3d.js"></script>
-<script type="text/javascript" src="js/core/input.js"></script>
-<script type="text/javascript" src="js/core/camera.js"></script>  
-<script type="text/javascript" src="js/core/lights.js"></script>  
-<script type="text/javascript" src="js/sound/soundmanager2-nodebug-jsmin.js"></script>
-<script type="text/javascript" src="js/sound/sound.js"></script>
-
-
-<script type="text/javascript" src="js/prototype/plane.js"></script> 
-<script type="text/javascript" src="js/prototype/wall.js"></script> 
-<script type="text/javascript" src="js/prototype/box.js"></script>
-<script type="text/javascript" src="js/prototype/room.js"></script> 
-
-<script type="text/javascript" src="js/hud.js"></script>
-<script type="text/javascript" src="js/player.js"></script>
-<script type="text/javascript" src="js/enemy.js"></script>
-<script type="text/javascript" src="js/stalker.js"></script>
-<script type="text/javascript" src="js/dungeon.js"></script>
-<script type="text/javascript" src="js/gameRoom.js"></script>
-
-<!-- load the game script last -->
-<script type="text/javascript" src="js/game.js"></script>
-</html>
+  <head>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Shallow Grunge by Free CSS Templates</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+	<div id="logo">
+	  <h1><a href="#">Shadow Maze</a></h1>
+	  <p> - The Adventure, the game, the experience</p>
+	</div>
+	<!-- end #search -->
+      </div>
+      <!-- end #header -->
+      <div id="menu">
+	<ul>
+	  <li><a href="index.html">Home</a></li>
+	  <li><a href="game.html">Game</a></li>
+	  <li><a href="media.html">Media</a></li>
+	  <li><a href="advice.html">Future Advice</a></li>
+	  <li><a href="about.html">Credits</a></li>
+	</ul>
+      </div>
+      <!-- end #menu -->
+      <div id="page">
+	<div id="content">
+	  <div class="post">
+	    <h1 class="title"><a href="#">The beginning to the adventure.</a></h1>
+	    <p class="meta"></p>
+	    <div class="entry">
+	      <p>The afterlife, in a way it's the largest myster we must face.  Some think we go to a paradise, others believe there is no afterlife. After being dead and mining oar in the brutal shadow world for 10 years. <br> 
+		  You found a small passage way.  <br><br>Without pause or hesitation, knowing anything would be better that continuing to work, you throw yourself into the passage only to look for another way out.</p>
+		  </div>
+		</div>
+		<div class="post">
+		  <h1 class="title"><a href="#">How to play.</a></h1>
+		  <p class="meta"></p>
+		  <div class="entry">
+		    <p>Use the W A S and D keys to move up, left, down, and right respectively. <br>
+			Dodge the shadows and explore the caverns for an exit. </p>
+		    </div>
+		    <div class="post">
+		      <h1 class="title"><a href="#">The Golden Release</a></h1>
+		      <p class="meta"></p>
+		      <div class="entry">
+			<p>After 4 weeks of countless all nighters, debating over the smallest design decision, and writing wall upon walls of text on the white boards.  Now we are finally ready to release.  <br>Please enjoy our golden release of <a href="p3/index.html">The Shadow Maze</a></p>
+			</div>
+		      </div>
+		    </div>
+		    <div class="post">
+		      <h1 class="title"><a href="#">Cool stuff not to miss.</a></h1>
+		      <p class="meta"></p>
+		      <div class="entry">
+			<p>
+			  <ul>
+			    <li>Random dungeon generation.  Be sure to play through the game more than once.</li>
+			    <li>Awesome home made shadows.</li>
+			    <li>Multiple AI types.</li>
+			    <li>The eerie sounds - be sure to play with headphones or speakers.</li>	
+			  </ul>
+			</p>
+		      </div>
+		    </div>
+		  </div>
+		  <!-- end #content -->
+		  
+		  <!-- end #sidebar -->
+		  <div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #page -->
+	      </div>
+	      <!-- end #footer -->
+	    </body>
+	  </html>
