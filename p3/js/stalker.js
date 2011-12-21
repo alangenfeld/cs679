@@ -18,7 +18,7 @@ function Stalker(spawnRoom){
   //get a random tile in the spawn room to spawn the stalker
   //set the pos
   //playerDirection
-  loadModel(this, "anglerFish");
+  loadModel(this, "CreepyFollow");
   var moveCounter = 0;
   this.color3d = [.5, 0, .5];
   this.shaderName = "enemy";
