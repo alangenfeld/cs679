@@ -195,7 +195,7 @@ var ai2 = function(){
 		this.aiVars['yDir'] = 1.0;
 		this.aiVars['count'] = 1;
 		this.aiVars['init'] = false;
-		this.model = "ShadowEnemy2";
+		this.model = "bugEyed";
 		return;
 	}
 	
