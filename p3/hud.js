@@ -4,8 +4,22 @@ function HUD() {
 
   this.init();
   
+  var messTimer = 0;
+  this.mess = "";
+  
+  this.showMessage = function(message){
+  	this.MessTimer = 1;
+  	this.mess = message;
+  }
+  
   this.draw = function(){
     this.fade += .04;
+    
+    if(messTimer>0){
+    	ctx.fillStyle = "#808080";
+    	ctx.font = "20pt sans-serif";    
+    	ctx.fillText(this.mess, 0, display.height-25);
+    }
     
     ctx.fillStyle = "#808080";
     ctx.fillRect(0, 0, 155, 155);
@@ -44,6 +58,7 @@ function HUD() {
     ctx.fillStyle = "#008000";
     ctx.fillRect(sanityPos, 40, 2*player.sanity, 20);
 
+	ctx.fillStyle = "#808080";
     ctx.font = "20pt sans-serif";    
     ctx.fillText("Sanity", sanityPos + 60, 25);
 
@@ -63,7 +78,7 @@ function HUD() {
     }
 
 	 if(showFlash==true){
-    	ctx.drawImage(splashImage,display.width/2-400,display.height/2-300);
+    	ctx.drawImage(splashImage, display.width/2-400,display.height/2-300);
     }
 
   };

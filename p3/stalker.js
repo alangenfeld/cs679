@@ -11,13 +11,14 @@ function Stalker(spawnRoom){
 	this.roll = 0;
 	this.pitch = 90;
 	this.soundIndex = "eating";
-	this.damage = 90;
+	this.damage = 70;
+	this.firstStalk = true;
 	
 	this.shaderName = "enemy";
 	//get a random tile in the spawn room to spawn the stalker
 	//set the pos
 	//playerDirection
-	loadModel(this, "bugEyed");
+	loadModel(this, "anglerFish");
 	var moveCounter = 0;
 	this.color3d = [.5, 0, .5];
 	this.shaderName = "enemy";
@@ -31,7 +32,11 @@ function Stalker(spawnRoom){
 			this.render = true;
 			this.stalking = true;
 			dirSet = false;
-			
+			if(this.firstStalk){
+				splashImage = stalkerSplash;
+				showFlash = true;
+				this.firstStalk = false;
+			}
 		}
 		//else, move towards a random door
 		else{
@@ -45,7 +50,7 @@ function Stalker(spawnRoom){
 		}
 		
 		//move towards your destination
-		if(this.stalking){
+		if(this.stalking&&!showFlash){
 			if(currentRoom == this.room){
 				var destX = parseFloat(player.pos[0]) - parseFloat(this.pos[0]);
 				var destY = parseFloat(player.pos[1]) - parseFloat(this.pos[1]);

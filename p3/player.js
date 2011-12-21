@@ -69,7 +69,7 @@ function Player(pos, dim, planeSize){
     if (this.hasKey && keyboard.space) {
       this.light.col = this.specialLightColor;
       this.specialLightOn = true;
-      this.sanity = this.sanity -= sanityRegen * 2;
+      this.sanity = this.sanity -= this.sanityRegen * 5;
     } else {
       this.light.col = this.defaultLightColor;
       this.specialLightOn = false;
@@ -98,12 +98,6 @@ function Player(pos, dim, planeSize){
     // use to compare light settings using spacebar. 
     if (keyboard.space && game.tick - player.lastPress > cooldown) {
       player.lastPress = game.tick;
-    }
-    
-    //check end condition
-    // was having problems with this
-    if (keyboard.enter && (currentRoom.exitRoom)){
-      win();
     }
 
     //am I at the edge? if so...
@@ -149,11 +143,28 @@ function Player(pos, dim, planeSize){
     this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
     
-    if(currentRoom == keyRoom){
+    if(currentRoom.exitRoom && this.roomy == 2 && this.roomx ==2 && this.specialLightOn){
+    	win();
+    }
+    
+    if(currentRoom.box != null && 
+    	this.roomy == Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
+    	&& this.roomx == Math.round(currentRoom.box.pos[1]/(planeSize/roomSize)+2)){
+    	//console.log("Regen sanity");
+    	this.sanity += this.sanityRegen*20;
+    }
+    
+    if(currentRoom == keyRoom && !player.hasKey){
     	if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
     		this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
     		player.hasKey = true;
+    		splashImage = lanternSplash;
+			showFlash = true;
     	}
+    }
+    
+    if(this.sanity>this.maxSanity){
+    	this.sanity = this.maxSanity;
     }
     
   };
@@ -164,7 +175,7 @@ function Player(pos, dim, planeSize){
       this.sanity -= enemy.damage;
       
       if(hasSounds){
-	sounds[enemy.soundIndex].play();
+		sounds[enemy.soundIndex].play();
       }
     }
   };

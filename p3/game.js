@@ -16,6 +16,10 @@ function setup() {
   puzzleSplash.src = 'img/firstPuzzleSplash.jpg';
   keySplash = new Image();
   keySplash.src = 'img/firstPuzzleSplash.jpg';
+  lanternSplash = new Image();
+  lanternSplash.src = 'img/lanternSplash.jpg';
+  stalkerSplash = new Image();
+  stalkerSplash.src = 'img/stalkerSplash.jpg';
   splashImage = new Image();
   showFlash = false;
   
