@@ -1,6 +1,8 @@
 /**
  * sets up the game. dont use var to make the variables global.
  */
+ 
+numberWins = 0;
 function setup() {
   shadows = true;
   
@@ -23,7 +25,7 @@ function setup() {
   splashImage = new Image();
   showFlash = false;
   
-  size = 17;
+  size = 14+numberWins;
   
   //init level
   pxRoomSize = 15;
@@ -50,11 +52,13 @@ function restart() {
   if (!statsOn) {
     $("loss").style.display = "none";
     $("win").style.display = "none";
+    $("winning").style.display = "none";
     $("game").style.display = "block";    
   }
 }
 
 function gameOver() {
+  numberWins = 0;
   if (!statsOn) {
     $("game").style.display = "none";
     $("loss").style.display = "block";
@@ -65,9 +69,21 @@ function gameOver() {
 }
 
 function win() {
+  numberWins++;
   if (!statsOn) {
     $("game").style.display = "none";
     $("win").style.display = "block";
+  } else {
+
+  }
+  game.over(restart);    
+}
+
+function gameEnd() {
+  numberWins = 0;
+  if (!statsOn) {
+    $("game").style.display = "none";
+    $("winning").style.display = "block";
   } else {
 
   }

@@ -121,6 +121,17 @@ function GameRoom(type, x, y, pxSize){
 	}
   }
   
+  this.damageBox = function(){
+  	if(this.box != null){
+  		this.box.health -= 05;
+  		if(this.box.health <0){
+  			this.box.render = false;
+			this.box.shadow = false;
+			this.box.shutdown();
+			this.box = null;
+  		}
+  	}
+  }
   
   this.update = function() {
     // this uses references to the global variables in game.js

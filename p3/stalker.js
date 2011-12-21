@@ -37,10 +37,12 @@ function Stalker(spawnRoom){
 			this.render = true;
 			this.stalking = true;
 			dirSet = false;
-			if(this.firstStalk){
+			if(this.firstStalk&&numberWins<1){
 				splashImage = stalkerSplash;
 				showFlash = true;
 				this.firstStalk = false;
+			}else{
+				player.hud.showMessage("The stalker returns");
 			}
 		}
 		//else, move towards a random door

@@ -4,21 +4,22 @@ function HUD() {
 
   this.init();
   
-  var messTimer = 0;
+  this.messTimer = 0;
   this.mess = "";
   
   this.showMessage = function(message){
-  	this.MessTimer = 1;
+  	this.messTimer = 1;
   	this.mess = message;
   }
   
   this.draw = function(){
     this.fade += .04;
     
-    if(messTimer>0){
+    if(this.messTimer>0){
     	ctx.fillStyle = "#808080";
     	ctx.font = "20pt sans-serif";    
-    	ctx.fillText(this.mess, 0, display.height-25);
+    	ctx.fillText(this.mess, display.width/2, 25);
+    	this.messTimer -= .01;
     }
     
     ctx.fillStyle = "#808080";
@@ -68,7 +69,7 @@ function HUD() {
     ctx.fillRect(220, 55, 40, 40);
 
     if (player.hasKey) {
-      ctx.fillStyle = "#000080";
+      ctx.fillStyle = "#808080";
       ctx.fillText("Magic Lantern", 170, 25);
 
       ctx.drawImage(keyImg, 220, 55);

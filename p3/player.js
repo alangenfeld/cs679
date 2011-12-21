@@ -144,22 +144,29 @@ function Player(pos, dim, planeSize){
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
     
     if(currentRoom.exitRoom && this.roomy == 2 && this.roomx ==2 && this.specialLightOn){
-    	win();
+    	if(numberWins == 3){
+    		gameEnd();
+    	}else{
+ 		   	win();
+ 		}
     }
     
     if(currentRoom.box != null && 
     	this.roomx == Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
     	&& this.roomy == Math.round(currentRoom.box.pos[1]/(planeSize/roomSize)+2)){
-    	console.log("Regen sanity");
+    	player.hud.showMessage("Regaining Sanity");
     	this.sanity += this.sanityRegen*20;
+    	currentRoom.damageBox();
     }
     
     if(currentRoom == keyRoom && !player.hasKey){
     	if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
     		this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
     		player.hasKey = true;
-    		splashImage = lanternSplash;
-			showFlash = true;
+    		if(numberWins<1){
+	    		splashImage = lanternSplash;
+				showFlash = true;
+			}
     	}
     }
     
