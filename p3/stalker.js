@@ -11,13 +11,14 @@ function Stalker(spawnRoom){
 	this.roll = 0;
 	this.pitch = 90;
 	this.soundIndex = "eating";
-	this.damage = 90;
+	this.damage = 70;
+	this.firstStalk = true;
 	
 	this.shaderName = "enemy";
 	//get a random tile in the spawn room to spawn the stalker
 	//set the pos
 	//playerDirection
-	loadModel(this, "bugEyed");
+	loadModel(this, "anglerFish");
 	var moveCounter = 0;
 	this.color3d = [.5, 0, .5];
 	this.shaderName = "enemy";
@@ -26,20 +27,33 @@ function Stalker(spawnRoom){
 	this.init3d();  
 	
 	this.update = function(){
+	
+		if(showFlash){
+			return;
+		}
+	
 		//if player is in the same room
 		if(currentRoom == this.room){
 			this.render = true;
 			this.stalking = true;
 			dirSet = false;
-			
+			if(this.firstStalk&&numberWins<1){
+				splashImage = stalkerSplash;
+				showFlash = true;
+				this.firstStalk = false;
+			}else{
+				player.hud.showMessage("The stalker returns");
+			}
 		}
 		//else, move towards a random door
 		else{
 			this.render = false;
 			if(!this.dirSet){
-				console.log(this.room);
-				var dirIndex = (Math.floor(Math.random()*this.room.type.length));
-				this.dir = this.room.type.charAt(dirIndex);
+				//console.log(this.room);
+				if(this.room != null){
+					var dirIndex = (Math.floor(Math.random()*this.room.type.length));
+					this.dir = this.room.type.charAt(dirIndex);
+				}
 			}
 			moveCounter = (moveCounter + 1) % (75 + addedDelay);
 		}

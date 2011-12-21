@@ -4,8 +4,23 @@ function HUD() {
 
   this.init();
   
+  this.messTimer = 0;
+  this.mess = "";
+  
+  this.showMessage = function(message){
+  	this.messTimer = 1;
+  	this.mess = message;
+  }
+  
   this.draw = function(){
     this.fade += .04;
+    
+    if(this.messTimer>0){
+    	ctx.fillStyle = "#808080";
+    	ctx.font = "20pt sans-serif";    
+    	ctx.fillText(this.mess, display.width/2, 25);
+    	this.messTimer -= .01;
+    }
     
     ctx.fillStyle = "#808080";
     ctx.fillRect(0, 0, 155, 155);
@@ -44,6 +59,7 @@ function HUD() {
     ctx.fillStyle = "#008000";
     ctx.fillRect(sanityPos, 40, 2*player.sanity, 20);
 
+	ctx.fillStyle = "#808080";
     ctx.font = "20pt sans-serif";    
     ctx.fillText("Sanity", sanityPos + 60, 25);
 
@@ -53,7 +69,7 @@ function HUD() {
     ctx.fillRect(220, 55, 40, 40);
 
     if (player.hasKey) {
-      ctx.fillStyle = "#000080";
+      ctx.fillStyle = "#808080";
       ctx.fillText("Magic Lantern", 170, 25);
 
       ctx.drawImage(keyImg, 220, 55);
@@ -63,7 +79,7 @@ function HUD() {
     }
 
 	 if(showFlash==true){
-    	ctx.drawImage(splashImage,display.width/2-400,display.height/2-300);
+    	ctx.drawImage(splashImage, display.width/2-400,display.height/2-300);
     }
 
   };
