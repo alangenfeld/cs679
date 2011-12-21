@@ -22,7 +22,7 @@ function Stalker(spawnRoom){
   var moveCounter = 0;
   this.color3d = [.5, 0, .5];
   this.shaderName = "enemy";
-  this.speed = 0.03;
+  this.speed = 0.035 + .004 * numberWins;
   
   this.init3d();  
   
