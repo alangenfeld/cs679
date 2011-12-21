@@ -148,9 +148,9 @@ function Player(pos, dim, planeSize){
     }
     
     if(currentRoom.box != null && 
-    	this.roomy == Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
-    	&& this.roomx == Math.round(currentRoom.box.pos[1]/(planeSize/roomSize)+2)){
-    	//console.log("Regen sanity");
+    	this.roomx == Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
+    	&& this.roomy == Math.round(currentRoom.box.pos[1]/(planeSize/roomSize)+2)){
+    	console.log("Regen sanity");
     	this.sanity += this.sanityRegen*20;
     }
     

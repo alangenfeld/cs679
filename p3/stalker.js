@@ -27,6 +27,11 @@ function Stalker(spawnRoom){
 	this.init3d();  
 	
 	this.update = function(){
+	
+		if(showFlash){
+			return;
+		}
+	
 		//if player is in the same room
 		if(currentRoom == this.room){
 			this.render = true;
@@ -42,15 +47,17 @@ function Stalker(spawnRoom){
 		else{
 			this.render = false;
 			if(!this.dirSet){
-				console.log(this.room);
-				var dirIndex = (Math.floor(Math.random()*this.room.type.length));
-				this.dir = this.room.type.charAt(dirIndex);
+				//console.log(this.room);
+				if(this.room != null){
+					var dirIndex = (Math.floor(Math.random()*this.room.type.length));
+					this.dir = this.room.type.charAt(dirIndex);
+				}
 			}
 			moveCounter = (moveCounter + 1) % (75 + addedDelay);
 		}
 		
 		//move towards your destination
-		if(this.stalking&&!showFlash){
+		if(this.stalking){
 			if(currentRoom == this.room){
 				var destX = parseFloat(player.pos[0]) - parseFloat(this.pos[0]);
 				var destY = parseFloat(player.pos[1]) - parseFloat(this.pos[1]);

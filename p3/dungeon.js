@@ -82,7 +82,7 @@ function Dungeon(max, pxRoomSize){
   		}
   	}
   }
-  debugger;
+  //debugger;
   var keyIndex = Math.round(Math.random()*(roomList.length-1));
   keyRoom = roomList[keyIndex];
   keyRoom.setKeyRoom();
