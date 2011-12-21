@@ -12,6 +12,8 @@ function setup() {
   roomImg.src = 'img/roomImg.png';
   keyImg = new Image();   // Create new img element
   keyImg.src = 'img/key.png';
+  puzzleSplash = new Image();
+  puzzleSplash.src = 'img/puzzleSplash.jpg';
   
   size = 17;
   

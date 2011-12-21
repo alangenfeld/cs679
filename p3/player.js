@@ -136,7 +136,6 @@ function Player(pos, dim, planeSize){
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
   };
   
-
   this.takeDamage = function(enemy){
     if(this.damageCounter == 0){
       this.damageCounter = 30;
