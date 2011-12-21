@@ -262,4 +262,5 @@ function difStrings(a,b){
   }
   return a;
 }
+
 GameRoom.prototype = new GameObject;

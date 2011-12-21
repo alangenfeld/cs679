@@ -10,7 +10,7 @@ function Stalker(spawnRoom){
 	var addedDelay = 0;
 	this.roll = 0;
 	this.pitch = 90;
-	this.soundIndex = "aiHit0";
+	this.soundIndex = "eating";
 	this.damage = 90;
 	
 	this.shaderName = "enemy";
