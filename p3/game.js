@@ -17,7 +17,6 @@ function setup() {
   keySplash = new Image();
   keySplash.src = 'img/firstPuzzleSplash.jpg';
   splashImage = new Image();
-  
   showFlash = false;
   
   size = 17;

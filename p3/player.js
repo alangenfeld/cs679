@@ -69,10 +69,15 @@ function Player(pos, dim, planeSize){
     if (this.hasKey && keyboard.space) {
       this.light.col = this.specialLightColor;
       this.specialLightOn = true;
+      this.sanity = this.sanity -= sanityRegen * 2;
     } else {
       this.light.col = this.defaultLightColor;
       this.specialLightOn = false;
     }
+    
+    if(keyboard.space) {
+    	showFlash = false;
+    }	
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
       this.pos[0] -= speed;
