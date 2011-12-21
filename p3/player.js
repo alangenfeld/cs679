@@ -20,7 +20,7 @@ function Player(pos, dim, planeSize){
   this.shaderName = "player";
 
   // somebody should change this probably
-  this.color3d = [.8, .2, .2];
+  this.color3d = [.2, .2, .8];
 
   this.shadow = false;
   this.init3d();  
@@ -37,11 +37,20 @@ function Player(pos, dim, planeSize){
   this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
   this.enterCool = 0;
 
+  var lastRoom = null;
+
   this.update = function(){	
     //Decrement the damage counter so we can take damage again.
     if(this.damageCounter > 0){
       this.damageCounter--;
     }
+
+	if(currentRoom.exitRoom && currentRoom != lastRoom){
+		splashImage = puzzleSplash;
+		showFlash = true;
+	}
+	
+	lastRoom = currentRoom;
 
     var speed = 0.12;
     var roomEdge = planeSize/2 -.25;
@@ -130,10 +139,18 @@ function Player(pos, dim, planeSize){
       currentRoom = level.dungeon[currentRoom.y][currentRoom.x+1];
       currentRoom.enable();
       this.pos[0]=-(roomEdge);
-    }
+    } 
     
     this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
+    
+    if(currentRoom == keyRoom){
+    	if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
+    		this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
+    		player.hasKey = true;
+    	}
+    }
+    
   };
   
   this.takeDamage = function(enemy){

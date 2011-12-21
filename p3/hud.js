@@ -1,11 +1,14 @@
 function HUD() {
   
   this.fade = 0;
+  this.splashFade = 1;
 
   this.init();
-
+  
   this.draw = function(){
     this.fade += .04;
+    
+    ctx.globalAlpha = 1;
     
     ctx.fillStyle = "#808080";
     ctx.fillRect(0, 0, 155, 155);
@@ -60,6 +63,18 @@ function HUD() {
     } else {
       ctx.fillStyle = "#808080";
       ctx.fillText("No Item", 190, 25);
+    }
+
+	 if(this.splashFade>0&&showFlash==true){
+        this.splashFade = this.splashFade - .01;
+        console.log(this.splashFade);
+    	ctx.globalAlpha = this.splashFade;
+    	
+    	ctx.drawImage(splashImage,display.width/2-400,display.height/2-300);
+    }
+    else{
+    	showFlash = false;
+    	this.splashFade = 1;
     }
 
   };
