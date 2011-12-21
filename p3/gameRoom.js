@@ -10,6 +10,7 @@ function GameRoom(type, x, y, pxSize){
   this.init();
   this.exitRoom = false;
   this.box = null;
+  this.key = null;
   
   for(var i = 0; i<size; i++) {
     this.grid[i] = new Array(5);
@@ -20,33 +21,22 @@ function GameRoom(type, x, y, pxSize){
   var randX = Math.round(Math.random()*4);
   var randY = Math.round(Math.random()*4);
   
-  var someBox = new Box([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1]);
-  
   var boxColorProb = Math.random();
   
-  if(boxColorProb>1/3*2){
-    someBox.shutdown();
-    someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,0,1]);
-  }
   if(boxColorProb>1/3&&boxColorProb<1/3*2){
-    someBox.shutdown();
     someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,1,0]);
+    someBox.render = false;
+  	someBox.shadow = false;
+  	this.grid[randX][randY] = someBox;
+  	this.box = someBox;
   }
-  
-  //we minus 3 to center it
-  //TODO can we disable a box so that the current room's box is the only one shown?
-  
-  someBox.render = false;
-  someBox.shadow = false;
-
-  this.grid[randX][randY] = someBox;
-  
   
     //Adding in enemies based on a dice roll..
   this.enemyArray = new Array();
-  if(Math.random() < 0.7){
-	var enemyType = Math.random() * 2.0;
-	//Enemy 1
+  if(Math.random() < 0.7 ){
+	var enemyType = Math.random() * 4.0;
+	
+	//Enemy 1 - Enemies that just wander around.
 	if(enemyType <= 1.0){
 				//Determine the number of enemies
 		var numEnemies = Math.floor(Math.random() * 4.0 + 1.0);
@@ -54,27 +44,57 @@ function GameRoom(type, x, y, pxSize){
 			var randE0X = Math.round(Math.random() * 4.0);
 			var randE0Y = Math.round(Math.random() * 4.0);
 			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
-											[pxSize/5,pxSize/5,1], ai0));
+											[pxSize/5,pxSize/5,1], ai0, this));
 		}
 	}
-	//Enemy 2
-	else{
+	//Enemy 2 - Fast enemies that fly at you
+	else if(enemyType <= 2.0){
 		//Determine the number of enemies
-		var numEnemies = Math.floor(Math.random() * 8.0 + 1.0);
+		var numEnemies = Math.floor(Math.random() * 5.0 + 2.0);
 		for(var i = 0; i < numEnemies; i++){
 			var randE0X = Math.round(Math.random() * 4.0);
 			var randE0Y = Math.round(Math.random() * 4.0);
-			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),-1], 
-											[pxSize/5,pxSize/5,1], ai1));
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai1, this));
+		}
+	}
+	//Enemy 2 - Enemies that go north and south.
+	else if(enemyType <= 3.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		this.enemyArray.push(new Enemy(	[(-2.0)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-1.3)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(-0.6)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.1)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(0.8)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(1.5)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+		this.enemyArray.push(new Enemy(	[(2.2)*(pxSize/5),0,1], 
+										[pxSize/5,pxSize/5,1], ai2, this));
+	}
+	//Enemy 3 - Bouncing enemies.
+	else if(enemyType <= 4.0){
+		//Determine the number of enemies
+		var numEnemies = Math.floor(Math.random() * 5.0 + 5.0);
+		for(var i = 0; i < numEnemies; i++){
+			var randE0X = Math.round(Math.random() * 4.0);
+			var randE0Y = Math.round(Math.random() * 4.0);
+			this.enemyArray.push(new Enemy(	[(randE0X-2)*(pxSize/5),(randE0Y-2)*(pxSize/5),1], 
+											[pxSize/5,pxSize/5,1], ai3, this));
 		}
 	}
   }
+  
   
   for(var enemy in this.enemyArray){
 	this.enemyArray[enemy].render = false;
 	this.enemyArray[enemy].shadow = false;
   }
-  this.box = someBox;
   
   //we can also decide what kind of room it is here. puzzle room etc
 
@@ -84,23 +104,43 @@ function GameRoom(type, x, y, pxSize){
 
   
   var ecluDist = function(pos0, pos1){
-	return Math.sqrt(Math.pow(pos0[0] - pos1[0], 2.0) + Math.pow(pos0[1] - pos1[1], 2.0) + Math.pow(pos0[2] - pos1[2], 2.0));
+	return Math.sqrt(Math.pow(pos0[0] - pos1[0], 2.0) + Math.pow(pos0[1] - pos1[1], 2.0));
   }
   
   this.checkEnemyCollisions = function(){
 	for(var enemy in this.enemyArray){
 		var eclu = ecluDist(this.enemyArray[enemy].pos, player.pos);
 		if(eclu < 0.7){
-			player.sanity -= this.enemyArray[enemy].damage;
+			player.takeDamage(this.enemyArray[enemy]);
 		};
+	}
+	if(stalker.room === this){
+		if(ecluDist(stalker.pos, player.pos) < 1.0){
+			player.takeDamage(stalker);
+		}
 	}
   }
   
+  this.damageBox = function(){
+  	if(this.box != null){
+  		this.box.health -= 05;
+  		if(this.box.health <0){
+  			this.box.render = false;
+			this.box.shadow = false;
+			this.box.shutdown();
+			this.box = null;
+  		}
+  	}
+  }
   
   this.update = function() {
     // this uses references to the global variables in game.js
     //currentRoom.checkCollisionAt(player.roomx, player.roomy);
 	currentRoom.checkEnemyCollisions();
+	if(player.hasKey&&this.key!=null){
+		this.key.render = false;
+		this.key.shadow = false;
+	}
   };
   
   this.enable = function(){
@@ -111,15 +151,23 @@ function GameRoom(type, x, y, pxSize){
     if(this.type.indexOf("w")!=-1){walls[2]=true;}
     if(this.type.indexOf("s")!=-1){walls[3]=true;}
     
+    if(this.key != null && !player.hasKey){
+  		this.key.render = true;
+		this.key.shadow = true;
+	}
+    
 	for(var enemy in this.enemyArray){
 		this.enemyArray[enemy].render = true;
 		this.enemyArray[enemy].shadow = true;
 		this.enemyArray[enemy].enabled = true;
 	}
 	
-    this.roomRender = new Room(pxRoomSize, walls);
-    //this.roomRender.render = false;
-    //this.roomRender.shadow = false;
+    if(currentRoom.exitRoom){
+    	this.roomRender = new Room(pxRoomSize, walls, "puzzleWall.png");
+    }
+    else{
+    	this.roomRender = new Room(pxRoomSize, walls, "wall.png");
+    }
     
     for(var a = 0; a<size; a++){
       for(var b = 0; b<size; b++){
@@ -130,24 +178,35 @@ function GameRoom(type, x, y, pxSize){
 		}
       }
     }
-    this.box.render = true;
     console.log("moving to the next room with type : "+currentRoom.type+" at x ="+currentRoom.x+" y="+currentRoom.y + " exit room = "+currentRoom.exitRoom);
   };
+  
+  this.setKeyRoom = function(){
+    	var someBox = new ColorBox([(randX-2)*(pxSize/5),(randY-2)*(pxSize/5),0], [pxSize/5,pxSize/5,1],[0,0,1]);
+    	this.key = someBox;
+    	this.key.rotating = true;
+	  	this.key.render = false;
+		this.key.shadow = false;
+  }
   
   this.setExitRoom = function(){
   	console.log("Setting up the exit room");
   	this.exitRoom = true;
-  	var someBox = new ColorBox([this.box.pos[0],this.box.pos[1],2], [2,2,2],[2,2,2]);
+  	var someBox = new ColorBox([0,0,1], [2,2,2],[2,2,2]);
   	someBox.rotating = true;
-  	//this.grid[this.box.pos[0]][this.box.pos[1]] = someBox;
-  	this.box.shutdown();
+  	if(this.box != null){
+  		this.box.shutdown();
+  	}
   	this.box = someBox;
   	this.box.render = false;
   	this.box.shadow = false;
   }
   
   this.disable = function(){
-  	this.box.render = false;
+  if(this.key != null){
+  	this.key.render = false;
+	this.key.shadow = false;
+  }
     this.roomRender.shutdown();
 		for(var enemy in this.enemyArray){
 		this.enemyArray[enemy].render = false;
@@ -214,4 +273,5 @@ function difStrings(a,b){
   }
   return a;
 }
+
 GameRoom.prototype = new GameObject;

@@ -14,6 +14,7 @@ var updateStats = function() {
     $("fps").innerHTML = (Math.floor(1000 / (renderFinish - lastRender))) + " fps";
     $("num_objs").innerHTML = (objectManager.objects.length);
   }
+
   lastRender = renderFinish;
 };
 
@@ -158,7 +159,7 @@ function fetchModel(modelName) {
     i = xhr.i
     ;
     if (xhr.readyState == 4) {
-      model = parseTHREE(JSON.parse(xhr.response));
+      model = parseTHREE(JSON.parse(xhr.responseText));
     }
   }
   xhr = new XMLHttpRequest;
@@ -283,10 +284,10 @@ function parseTHREE( json ) {
     hasFaceColor        = isBitSet( type, 6 );
     hasFaceVertexColor  = isBitSet( type, 7 );
 
+    face = {};
+
     if ( isQuad ) {
       
-      face = {};
-
       face.a = faces[ offset ++ ];
       face.b = faces[ offset ++ ];
       face.c = faces[ offset ++ ];

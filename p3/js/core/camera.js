@@ -1,5 +1,5 @@
 function Camera() {
-  this.pos = vec3.create([0, -12, 15]);
+  this.pos = vec3.create([0, 0, 0]);
 
   this.init();
   this.yaw = 0.0;

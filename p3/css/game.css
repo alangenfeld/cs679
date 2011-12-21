@@ -2,15 +2,15 @@
   float: left;
 }
 
-canvas {
-
-}
-
 #display {
   left: 0;
   position: absolute;
   top: 0;
   z-index: 1;
+}
+
+body {
+  background: #000;
 }
 
 #display2 {
@@ -25,11 +25,17 @@ canvas {
 }
 
 .screen {
+  background: #F0F0F0;
   width: 800px;
   height: 600px;
   position: relative;
   border: solid black 1px;
   box-shadow: 0 0 15px rgba(0,0,0,1);
+}
+
+.fullscreen {
+  width: 100%;
+  height: 100%;
 }
 
 .centered {
@@ -50,3 +56,8 @@ canvas {
   text-align: center;
 }
 
+#sm2-container {
+	position: absolute;
+	top: -500px;
+  opacity: 0.01;
+}

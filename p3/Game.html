@@ -38,11 +38,11 @@
   </div>
   <div class="screen centered">
     <canvas id="display"  width="800" height="600"></canvas>
-    <canvas id="display2" width="800" height="150"></canvas>
+    <canvas id="display2" width="800" height="600"></canvas>
   </div>
-</audio>
+</body>
 <script>
-var statsOn = true;
+  var statsOn = true;
 </script>
 <script type="text/javascript" src="js/core/util.js"></script>
 <script type="text/javascript" src="js/core/matrix.js"></script>
@@ -53,14 +53,14 @@ var statsOn = true;
 <script type="text/javascript" src="js/core/object3d.js"></script>
 <script type="text/javascript" src="js/core/input.js"></script>
 <script type="text/javascript" src="js/core/camera.js"></script>  
-<script type="text/javascript" src="js/core/lights.js"></script>    
+<script type="text/javascript" src="js/core/lights.js"></script>  
+<script type="text/javascript" src="js/sound/soundmanager2-nodebug-jsmin.js"></script>
+<script type="text/javascript" src="js/sound/sound.js"></script>  
 <script type="text/javascript" src="enemy.js"></script>
 <script type="text/javascript" src="dungeon.js"></script>
+<script type="text/javascript" src="hud.js"></script>
 <script type="text/javascript" src="player.js"></script>
-<script type="text/javascript" src="js/sound/soundmanager2-nodebug-jsmin.js"></script>
-<script type="text/javascript" src="js/sound/sound.js"></script>
 
-<!-- load game objects after the engine core -->
 
 <script type="text/javascript" src="js/prototype/plane.js"></script> 
 <script type="text/javascript" src="js/prototype/wall.js"></script> 
@@ -74,5 +74,4 @@ var statsOn = true;
 
 <!-- load the game script last -->
 <script type="text/javascript" src="game.js"></script>
-
 </html>

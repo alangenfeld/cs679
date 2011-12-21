@@ -121,7 +121,7 @@ Box.prototype = new GameObject3D;
 
 function ColorBox(pos, dim, color) {
   this.pos = pos;
-
+  this.health = 100;
   this.width = dim[0];
   this.depth = dim[1];
   this.height = dim[2];

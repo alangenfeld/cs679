@@ -3,15 +3,24 @@ function Player(pos, dim, planeSize){
   this.pos = pos;
   this.roll = 0;
   this.pitch = 90;
+
   this.maxSanity = 100;
   this.sanity = 100;
-  
+  this.sanityRegen = .01;
+  this.damageCounter = 0;
+  this.hasKey = false;
+  this.defaultLightColor = [.8, .6, .5]; 
+  this.specialLightColor = [.2, .2, .9]; 
+  this.specialLightOn = false;
+
+  this.hud = new HUD();
+
   loadModel(this, "simplePlayer");
 
   this.shaderName = "player";
 
   // somebody should change this probably
-  this.color3d = [.8, .2, .2];
+  this.color3d = [.2, .2, .8];
 
   this.shadow = false;
   this.init3d();  
@@ -19,9 +28,8 @@ function Player(pos, dim, planeSize){
   this.lastPress = 0;
   this.light = new Light(pos);
 
-  // set the light to a warm color
-  this.light.col = [.8, .6, .5];
-  this.lightOffset = 0;
+  this.light.col = this.defaultLightColor;
+  this.lightOffset = 0.5;
 
   var planeSize = planeSize;
   var roomSize = 5;
@@ -29,10 +37,25 @@ function Player(pos, dim, planeSize){
   this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
   this.enterCool = 0;
 
+  var lastRoom = null;
+
   this.update = function(){	
+    //Decrement the damage counter so we can take damage again.
+    if(this.damageCounter > 0){
+      this.damageCounter--;
+    }
+
+	if(currentRoom.exitRoom && currentRoom != lastRoom){
+		splashImage = puzzleSplash;
+		showFlash = true;
+	}
+	
+	lastRoom = currentRoom;
+
     var speed = 0.12;
     var roomEdge = planeSize/2 -.25;
     //instead of making it continuous... make it snap?
+
     //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
 
     // if crazy game over
@@ -40,8 +63,21 @@ function Player(pos, dim, planeSize){
       gameOver();
     }
     if (this.sanity < 100){
-      this.sanity += .04;      
+      this.sanity += this.sanityRegen;      
     }
+
+    if (this.hasKey && keyboard.space) {
+      this.light.col = this.specialLightColor;
+      this.specialLightOn = true;
+      this.sanity = this.sanity -= this.sanityRegen * 5;
+    } else {
+      this.light.col = this.defaultLightColor;
+      this.specialLightOn = false;
+    }
+    
+    if(keyboard.space) {
+    	showFlash = false;
+    }	
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
       this.pos[0] -= speed;
@@ -63,124 +99,95 @@ function Player(pos, dim, planeSize){
     if (keyboard.space && game.tick - player.lastPress > cooldown) {
       player.lastPress = game.tick;
     }
-    
-    //check end condition
-      // was having problems with this
-/*    if(this.roomx==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
-    	&& this.roomy==Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2) 
-    	&& keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.exitRoom)){
-    	//TODO display something like YOU ARE WINNER ALL YOUR BASES
-      win();
-    }
-    */
-    if (keyboard.enter && (currentRoom.exitRoom)){
-      win();
-    }
 
     //am I at the edge? if so...
     //south
     //currentRoom.
     
-    roomEdge -= .25
+    roomEdge -= .25;
     
-//    if(this.roomx==2 && this.roomy==0 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("s")!=-1)){
-	if(this.pos[0]>-1 && this.pos[0]<1 && this.pos[1]<-roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("s")!=-1)){
+    if(this.pos[0]>-1 && this.pos[0]<1 && this.pos[1]<-roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("s")!=-1)){
       this.enterCool = game.tick;
       currentRoom.disable();
       currentRoom = level.dungeon[currentRoom.y+1][currentRoom.x];
       currentRoom.enable();
-      console.log("moving down");
       this.pos[1]=(roomEdge);
     }
     
     //north
-//    if(this.roomx==2 && this.roomy==4 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("n")!=-1)){
     if(this.pos[0]>-1 && this.pos[0]<1 && this.pos[1]>roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("n")!=-1)){
       this.enterCool = game.tick;
       currentRoom.disable();
       currentRoom = level.dungeon[currentRoom.y-1][currentRoom.x];
       currentRoom.enable();
-      console.log("moving on up");
       this.pos[1]=-(roomEdge);
     }
     //West
-//    if(this.roomx==0 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("w")!=-1)){
-	if(this.pos[1]>-1 && this.pos[1]<1 && this.pos[0]<-roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("w")!=-1)){
+    if(this.pos[1]>-1 && this.pos[1]<1 && this.pos[0]<-roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("w")!=-1)){
       this.enterCool = game.tick;
       currentRoom.disable();
       currentRoom = level.dungeon[currentRoom.y][currentRoom.x-1];
       currentRoom.enable();
-      console.log("moving west");
       this.pos[0]=(roomEdge);
     }
     
     //east
-//    if(this.roomx==4 && this.roomy==2 && keyboard.enter && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
-	if(this.pos[1]>-1 && this.pos[1]<1 && this.pos[0]>roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
+    if(this.pos[1]>-1 && this.pos[1]<1 && this.pos[0]>roomEdge && game.tick-this.enterCool>cooldown && (currentRoom.type.indexOf("e")!=-1)){
       this.enterCool = game.tick;
       currentRoom.disable();
       currentRoom = level.dungeon[currentRoom.y][currentRoom.x+1];
       currentRoom.enable();
-      console.log("moving east");
       this.pos[0]=-(roomEdge);
-    }
+    } 
     
-
     this.roomx = Math.round(this.pos[0]/(planeSize/roomSize)+2);
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
-  }
-  
-  var fade = 0;
-  
-  this.draw = function(){
-    fade += .03
-    /*ctx.drawImage(roomImg,0,0,150,150);
-     if(currentRoom.type.indexOf("n")!=-1){ctx.drawImage(emptyImg, 150/2-15, 0);}
-     if(currentRoom.type.indexOf("s")!=-1){ctx.drawImage(emptyImg, 150/2-15, 120);}
-     if(currentRoom.type.indexOf("e")!=-1){ctx.drawImage(emptyImg, 120, 150/2-15);}
-     if(currentRoom.type.indexOf("w")!=-1){ctx.drawImage(emptyImg, 0, 150/2-15);}*/
-    var offsetx = currentRoom.x - 2;
-    var offsety = currentRoom.y - 2;
-    for(var y = 0; y<5; y++){
-      for(var x = 0; x<5; x++){
-    	var someRoom = level.dungeon[offsety+y][offsetx+x];
-    	if(someRoom == null || someRoom.visited == false){
-    	  ctx.drawImage(emptyImg,x*30,y*30);
+    
+    if(currentRoom.exitRoom && this.roomy == 2 && this.roomx ==2 && this.specialLightOn){
+    	if(numberWins == 3){
+    		gameEnd();
+    	}else{
+ 		   	win();
+ 		}
+    }
+    
+    if(currentRoom.box != null && 
+    	this.roomx == Math.round(currentRoom.box.pos[0]/(planeSize/roomSize)+2)
+    	&& this.roomy == Math.round(currentRoom.box.pos[1]/(planeSize/roomSize)+2)){
+    	player.hud.showMessage("Regaining Sanity");
+    	this.sanity += this.sanityRegen*20;
+    	currentRoom.damageBox();
+    }
+    
+    if(currentRoom == keyRoom && !player.hasKey){
+    	if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
+    		this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
+    		player.hasKey = true;
+    		if(numberWins<1){
+	    		splashImage = lanternSplash;
+				showFlash = true;
+			}
     	}
-    	else{
-    	  ctx.drawImage(roomImg,x*30,y*30);
-    	  ctx.fillStyle =  "rgba(255, 0, 0, 1)";
-    	  ctx.font = "bold 26px"
-    	  if(someRoom.type.indexOf("n")!=-1){ctx.fillRect (x*30+13, y*30, 4, 2);}
-    	  if(someRoom.type.indexOf("s")!=-1){ctx.fillRect (x*30+13, y*30+28, 4, 2);}
-    	  if(someRoom.type.indexOf("e")!=-1){ctx.fillRect (x*30+28, y*30+13, 2, 4);}
-	  	  if(someRoom.type.indexOf("w")!=-1){ctx.fillRect (x*30, y*30+13, 2, 4);}
-		  if(someRoom.x == currentRoom.x && someRoom.y == currentRoom.y){
-		  	ctx.fillStyle =  "rgba(255, 0, 0, "+((Math.sin(fade)+1)/2)*.5+")";
-		  	ctx.fillRect (x*30, y*30, 30, 30);
-		  }
-
-    	  //if(currentRoom.type.indexOf("s")!=-1){ctx.fillRect(offsetx+x*30+12,offsety+y*30,offsetx+x*30,offsety+y*30+30);}
-    	  //if(currentRoom.type.indexOf("e")!=-1){ctx.fillRect(offsetx+x*30,offsety+y*30,offsetx+x*30,offsety+y*30);}
-    	  //if(currentRoom.type.indexOf("w")!=-1){ctx.fillRect(offsetx+x*30+4,offsety+y*30,offsetx+x*30,offsety+y*30);}
-	  //context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
-    	}
+    }
+    
+    if(this.sanity>this.maxSanity){
+    	this.sanity = this.maxSanity;
+    }
+    
+  };
+  
+  this.takeDamage = function(enemy){
+    if(this.damageCounter == 0){
+      this.damageCounter = 30;
+      this.sanity -= enemy.damage;
+      
+      if(hasSounds){
+		sounds[enemy.soundIndex].play();
       }
     }
+  };
 
-    
-    ctx.fillStyle = "#808080";
-    ctx.fillRect(495, 35, 210, 30);
-
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(500, 40, 200, 20);
-
-    ctx.fillStyle = "#008000";
-    ctx.fillRect(500, 40, 2*this.sanity, 20);
-
-    ctx.font = "20pt sans-serif";    
-    ctx.fillText("Sanity", 560, 25);
-
+  this.draw = function(){
     // draw player model
     mPushMatrix();
 
@@ -190,7 +197,6 @@ function Player(pos, dim, planeSize){
 
     this.draw3d();
     mPopMatrix();
-    
   };
 
 }

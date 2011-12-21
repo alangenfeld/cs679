@@ -1,4 +1,4 @@
-function Room(size, doors) {
+function Room(size, doors, floorMaterial) {
   this.walls = new Array();
   if (doors) {
     this.doors = doors;
@@ -9,7 +9,7 @@ function Room(size, doors) {
   this.size = size;
 
   // floor  
-  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0], "wall.png"));
+  this.walls.push(new Plane([0,0,0], size, size, 0, [0,0,0], floorMaterial));
 
   // north
   if (this.doors[0]) {
@@ -47,7 +47,7 @@ function Room(size, doors) {
 
   // south
   if (this.doors[3]) {
-    this.walls.push(new Plane([0, -size/2-.75, 0], 1.5, 1.5, 0, [0,0,0], "wall.png"));
+    this.walls.push(new Plane([0, -size/2, .01], size/5, size/5, 0, [0,0,0], "floor.png"));
   }
 
   this.shutdown = function() {

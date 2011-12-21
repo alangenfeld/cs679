@@ -47,7 +47,6 @@ var Game = function() {
     ctx.clearRect(0, 0, display2.width, display2.height);
 
     render();
-
     renderFinish = Date.now();
     
     updateStats();
