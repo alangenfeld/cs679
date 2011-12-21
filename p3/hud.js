@@ -5,7 +5,7 @@ function HUD() {
   this.init();
 
   this.draw = function(){
-    this.fade += .06;
+    this.fade += .04;
     
     ctx.fillStyle = "#808080";
     ctx.fillRect(0, 0, 155, 155);
@@ -46,6 +46,22 @@ function HUD() {
 
     ctx.font = "20pt sans-serif";    
     ctx.fillText("Sanity", sanityPos + 60, 25);
+
+    ctx.fillStyle = "#808080";
+    ctx.fillRect(215, 50, 50, 50);
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(220, 55, 40, 40);
+
+    if (player.hasKey) {
+      ctx.fillStyle = "#000080";
+      ctx.fillText("Magic Lantern", 170, 25);
+
+      ctx.drawImage(keyImg, 220, 55);
+    } else {
+      ctx.fillStyle = "#808080";
+      ctx.fillText("No Item", 190, 25);
+    }
+
   };
 }
 HUD.prototype = new GameObject;
