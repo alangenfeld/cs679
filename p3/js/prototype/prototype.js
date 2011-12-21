@@ -16,7 +16,7 @@ var room = new Room(10);
 var boxes = Array();
 var enemies = Array();
 
-var boss = new ModelMan([0, 0, 3], "ShadowEnemy1");
+var boss = new ModelMan([0, 0, 3], "bugEyed");
 
 
 boxes.push( new ColorBox([3, 0, 2], [1, 1, 1], [0,0,1]));
