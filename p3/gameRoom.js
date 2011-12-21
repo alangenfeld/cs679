@@ -116,7 +116,7 @@ function GameRoom(type, x, y, pxSize){
 
   
   var ecluDist = function(pos0, pos1){
-	return Math.sqrt(Math.pow(pos0[0] - pos1[0], 2.0) + Math.pow(pos0[1] - pos1[1], 2.0) + Math.pow(pos0[2] - pos1[2], 2.0));
+	return Math.sqrt(Math.pow(pos0[0] - pos1[0], 2.0) + Math.pow(pos0[1] - pos1[1], 2.0));
   }
   
   this.checkEnemyCollisions = function(){
@@ -125,6 +125,11 @@ function GameRoom(type, x, y, pxSize){
 		if(eclu < 0.7){
 			player.takeDamage(this.enemyArray[enemy]);
 		};
+	}
+	if(stalker.room === this){
+		if(ecluDist(stalker.pos, player.pos) < 1.0){
+			player.takeDamage(stalker);
+		}
 	}
   }
   

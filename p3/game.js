@@ -21,8 +21,11 @@ function setup() {
   currentRoom.enemyArray = new Array();
   currentRoom.enable();
   
-  player = new Player([0, 0, 1], [1, 1, 1], pxRoomSize);
   
+  
+  player = new Player([0, 0, 1], [1, 1, 1], pxRoomSize);
+  console.log(level.exitRoom);
+  stalker = new Stalker(level.dungeon[level.exitRoom[0]][level.exitRoom[1]]);
   light = player.light;
   
   console.log(currentRoom.type);
