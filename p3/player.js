@@ -42,9 +42,11 @@ function Player(pos, dim, planeSize){
     if(this.damageCounter > 0){
       this.damageCounter--;
     }
+
     var speed = 0.12;
     var roomEdge = planeSize/2 -.25;
     //instead of making it continuous... make it snap?
+
     //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
 
     // if crazy game over
@@ -53,6 +55,14 @@ function Player(pos, dim, planeSize){
     }
     if (this.sanity < 100){
       this.sanity += this.sanityRegen;      
+    }
+
+    if (this.hasKey && keyboard.space) {
+      this.light.col = this.specialLightColor;
+      this.specialLightOn = true;
+    } else {
+      this.light.col = this.defaultLightColor;
+      this.specialLightOn = false;
     }
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
