@@ -36,15 +36,15 @@ function Enemy(pos, dim, ai) {
   this.update = function(){
   
 	if(this.enabled&&!showFlash&&!player.specialLightOn){
-		this.render = true;
-		this.shadows = true;
-		this.ai();
+	  this.render = true;
+	  this.shadow = true;
+	  this.ai();
 	}
-	else{
-		this.render = false;
-		this.shadows = false;
-		
-	}
+    else{
+      this.render = false;
+      this.shadow = false;
+      
+    }
   };
   
 }

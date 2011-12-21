@@ -29,7 +29,7 @@ function Player(pos, dim, planeSize){
   this.light = new Light(pos);
 
   this.light.col = this.defaultLightColor;
-  this.lightOffset = 0.5;
+  this.lightOffset = 0.2;
 
   var planeSize = planeSize;
   var roomSize = 5;
@@ -44,19 +44,18 @@ function Player(pos, dim, planeSize){
     if(this.damageCounter > 0){
       this.damageCounter--;
     }
-
-	if(currentRoom.exitRoom && currentRoom != lastRoom){
-		splashImage = puzzleSplash;
-		showFlash = true;
-	}
-	
-	lastRoom = currentRoom;
-
+    
+    if(currentRoom.exitRoom && currentRoom != lastRoom){
+      splashImage = puzzleSplash;
+      showFlash = true;
+      game.pause();
+    }
+    
+    lastRoom = currentRoom;
+    
     var speed = 0.12;
-    var roomEdge = planeSize/2 -.25;
+    var roomEdge = planeSize/2 -1.0;
     //instead of making it continuous... make it snap?
-
-    //console.log("pos ="+this.pos[0]+" planelim =" +-planeSize/2);
 
     // if crazy game over
     if (this.sanity <= 0) {
@@ -76,7 +75,7 @@ function Player(pos, dim, planeSize){
     }
     
     if(keyboard.space) {
-    	showFlash = false;
+      showFlash = false;
     }	
 
     if(keyboard.left && this.pos[0]>-roomEdge) {
@@ -144,11 +143,11 @@ function Player(pos, dim, planeSize){
     this.roomy = Math.round(this.pos[1]/(planeSize/roomSize)+2);
     
     if(currentRoom.exitRoom && this.roomy == 2 && this.roomx ==2 && this.specialLightOn){
-    	if(numberWins == 3){
-    		gameEnd();
-    	}else{
- 		   	win();
- 		}
+      if(numberWins == 3){
+    	gameEnd();
+      }else{
+ 	win();
+      }
     }
     
     if(currentRoom.box != null && 
@@ -160,14 +159,15 @@ function Player(pos, dim, planeSize){
     }
     
     if(currentRoom == keyRoom && !player.hasKey){
-    	if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
-    		this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
-    		player.hasKey = true;
-    		if(numberWins<1){
-	    		splashImage = lanternSplash;
-				showFlash = true;
-			}
-    	}
+      if(this.roomx == Math.round(currentRoom.key.pos[0]/(planeSize/roomSize)+2)&&
+    	 this.roomy == Math.round(currentRoom.key.pos[1]/(planeSize/roomSize)+2)){
+    	player.hasKey = true;
+    	if(numberWins<1){
+	  splashImage = lanternSplash;
+	  showFlash = true;
+	  game.pause();
+	}
+      }
     }
     
     if(this.sanity>this.maxSanity){

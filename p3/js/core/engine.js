@@ -25,6 +25,7 @@ var Game = function() {
       game.start();
     } else {
       // fix for delay of game over message in some browsers
+      render();
       this.gloop = setTimeout(game.wait, 30);
     }
   };

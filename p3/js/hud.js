@@ -8,12 +8,15 @@ function HUD() {
   this.mess = "";
   
   this.showMessage = function(message){
-  	this.messTimer = 1;
-  	this.mess = message;
-  }
+    this.messTimer = 1;
+    this.mess = message;
+  };
   
+  this.update = function() {
+    this.fade += .04;    
+  };
+
   this.draw = function(){
-    this.fade += .04;
     
     if(this.messTimer>0){
     	ctx.fillStyle = "#808080";
@@ -78,8 +81,8 @@ function HUD() {
       ctx.fillText("No Item", 190, 25);
     }
 
-	 if(showFlash==true){
-    	ctx.drawImage(splashImage, display.width/2-400,display.height/2-300);
+    if(showFlash==true) {
+      ctx.drawImage(splashImage, display.width/2-400,display.height/2-300);
     }
 
   };
