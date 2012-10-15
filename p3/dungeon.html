@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <link href="css/game.css" title="compact" rel="stylesheet" type="text/css">
+</head>
+<html>
+<body>
+<body>
+  <div class="title centered">
+    Proto
+  </div>
+  <script>
+    var statsOn = true;
+  </script>
+  <div class="util">
+    <span>
+      Update Time:
+    </span>
+    <span id="ut"></span>
+    <br/>
+    <span>
+      Render Time:
+    </span>
+    <span id="rt"></span>
+    <br/>
+    <span>
+      FPS:
+    </span>
+    <span id="fps"></span>
+    <br/>
+    <span>
+      Objects:
+    </span>
+    <span id="num_objs"></span>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <button id="lightsOn" type="button">Lights On</button><br/>
+    <button id="lightsOff" type="button">Lights Off</button><br/>
+  </div>
+  <div class="screen centered">
+    <canvas id="display"  width="800" height="600"></canvas>
+    <canvas id="display2" width="1" height="1"></canvas>
+  </div>
+</audio>
+<canvas id="myCanvas" width="800" height="800"></canvas>  
+<h1>dungeon maker alpha</h1>
+<script type="text/javascript" src="enemy.js"></script>
+<script type="text/javascript" src="dungeon.js"></script>
+<script type="text/javascript" src="GameRoom.js"></script>
+<script type="text/javascript" src="player.js"></script>
+<script type="text/javascript" src="js/core/util.js"></script>
+<script type="text/javascript" src="js/core/matrix.js"></script>
+<script type="text/javascript" src="js/core/shader.js"></script>
+<script type="text/javascript" src="js/core/gfx.js"></script>
+<script type="text/javascript" src="js/core/engine.js"></script>
+<script type="text/javascript" src="js/core/object.js"></script>
+<script type="text/javascript" src="js/core/object3d.js"></script>
+<script type="text/javascript" src="js/core/input.js"></script>
+<script type="text/javascript" src="js/core/camera.js"></script>  
+<script type="text/javascript" src="js/core/lights.js"></script>  
+<script type="text/javascript" src="js/sound/soundmanager2-nodebug-jsmin.js"></script>
+<script type="text/javascript" src="js/sound/sound.js"></script>
+<script type="text/javascript" src="js/prototype/plane.js"></script> 
+<script type="text/javascript" src="js/prototype/box.js"></script>
+<script type="text/javascript" src="js/prototype/room.js"></script> 
+<script type="text/javascript">
+    var FPS = 30;
+	
+	var canvas = document.getElementById("myCanvas");
+	var context = canvas.getContext("2d");
+	var emptyImg = new Image();   // Create new img element
+	emptyImg.src = 'img/emptyImg.png';	
+	var roomImg = new Image();   // Create new img element
+	roomImg.src = 'img/roomImg.png';
+	
+	context.fillStyle = "#000000";
+
+	var size = 6;
+	
+	var level = new Dungeon(size);
+		
+	setInterval(function() {
+			update();
+			draw();
+		}, 1000/FPS);
+	
+    function update(){	
+
+    }
+	
+	
+    function draw(){
+    	for(var x = 0; x<size; x++){
+    		for(var y = 0; y<size; y++){
+    			if(level.dungeon[y][x]!=null){
+    				context.drawImage(roomImg, x*30, y*30);
+    				context.fillStyle    = '#f00';
+					context.font = "bold 26px"
+					context.fillText(level.dungeon[y][x].type, x*30, y*30+15);
+				}
+    			else{
+    				context.drawImage(emptyImg, x*30, y*30);
+    			}
+    		}
+    	}
+    }
+
+
+</script>
+
+</body>
+</html>
